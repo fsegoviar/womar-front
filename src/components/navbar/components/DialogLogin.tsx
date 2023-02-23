@@ -137,7 +137,7 @@ export const DialogLogin = (props: PropsLogin) => {
                   </div>
                 </>
               ) : (
-                <div className="w-[400px]">
+                <div className="w-[250px] flex justify-center sm:block sm:w-[300px]">
                   <LoadingComponent />
                 </div>
               )}
