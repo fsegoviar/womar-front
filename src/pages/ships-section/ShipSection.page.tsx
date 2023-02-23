@@ -111,7 +111,7 @@ export const ShipSectionPage = () => {
                       }}
                       onClick={() => {
                         setSelectedOffer(false);
-                        setFilter({ ...filter, tipoPublicacion: 2 });
+                        setFilter({ ...filter, tipoPublicacion: 4 });
                       }}
                     >
                       Ofrecen
