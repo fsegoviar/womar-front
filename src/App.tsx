@@ -1,5 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { HomePage, MaritimePersonnelPage, ShipSectionPage } from './pages';
+import {
+  AdminPage,
+  HomePage,
+  MaritimePersonnelPage,
+  PublishPage,
+  ResultSearch,
+  ShipSectionPage,
+  UserSectionPage
+} from './pages';
 
 function App() {
   return (
@@ -11,6 +19,10 @@ function App() {
           path={'/personal_maritimo'}
           element={<MaritimePersonnelPage />}
         />
+        <Route path={'/perfil/:userId'} element={<UserSectionPage />} />
+        <Route path={'/publicar/:userId'} element={<PublishPage />} />
+        <Route path={'resultados_busqueda'} element={<ResultSearch />} />
+        <Route path={'/administrador'} element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
   );
