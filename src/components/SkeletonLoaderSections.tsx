@@ -1,7 +1,7 @@
 import Skeleton from '@mui/material/Skeleton';
 import React from 'react';
 
-export const SkeletonLoader = () => {
+export const SkeletonLoaderSections = () => {
   return (
     <div className="grid gap-4 grid-cols-4">
       <Skeleton

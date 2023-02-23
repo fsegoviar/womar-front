@@ -3,22 +3,22 @@ import {
   CategoriesResponsive,
   ContainCategories,
   DetailPublish,
+  SkeletonLoaderSections,
   SmartPreviewService
 } from '../../components';
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box/Box';
 import { PageBase } from '../../components/PageBase';
-import { DetailService } from '../../interfaces';
 import axios, { AxiosError } from 'axios';
-import { SkeletonLoaderSections } from '../../components/SkeletonLoaderSections';
+import { DetailService } from '../../interfaces';
 
-export const ShipSectionPage = () => {
+export const MaritimePersonnelPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
-  const [listShips, setListShips] = useState<DetailService[]>([]);
+  const [listPublish, setListPublish] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
   const [filter, setFilter] = useState({
-    categorias: [1],
+    categorias: [2],
     orderBy: true,
     search: '',
     tipoPublicacion: 1
@@ -39,7 +39,7 @@ export const ShipSectionPage = () => {
         )
         .then((response: any) => {
           console.log('Response =>', response.data);
-          setListShips(response.data);
+          setListPublish(response.data);
         })
         .catch((error: AxiosError) => {
           console.log(error);
@@ -183,11 +183,13 @@ export const ShipSectionPage = () => {
               </Grid>
               <Grid item xs={3} className="hidden sm:grid">
                 <div className="flex justify-center items-center w-full h-full">
-                  <p className="text-white font-bold text-3xl">Embarcaciones</p>
+                  <p className="text-white font-bold text-3xl">
+                    Personal Marítimo
+                  </p>
                   <div
                     className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"
                     style={{
-                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
+                      backgroundImage: `url(${require('../../assets/images/ico-p-maritimo-blanco.png')})`
                     }}
                   ></div>
                 </div>
@@ -201,21 +203,21 @@ export const ShipSectionPage = () => {
                   <SkeletonLoaderSections />
                 </Grid>
               )}
-              {listShips!.length > 0 &&
+              {listPublish!.length > 0 &&
                 !load &&
-                listShips!.map((ship, index) => (
+                listPublish!.map((publish, index) => (
                   <Grid item xs={12} key={index} lg={4}>
                     <SmartPreviewService
                       key={index}
-                      title={ship.titulo}
-                      price={ship.precio}
-                      direccion={ship.direccion}
-                      urlImgCover={ship.urlImagenPrincipal}
-                      openContact={() => openModalContact(ship)}
+                      title={publish.titulo}
+                      price={publish.precio}
+                      direccion={publish.direccion}
+                      urlImgCover={publish.urlImagenPrincipal}
+                      openContact={() => openModalContact(publish)}
                     />
                   </Grid>
                 ))}
-              {listShips!.length === 0 && !load && (
+              {listPublish!.length === 0 && !load && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
               <section className="hidden sm:flex my-10 flex-col justify-center items-center w-full md:flex-row ">

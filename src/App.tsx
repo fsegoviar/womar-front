@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { HomePage, ShipSectionPage } from './pages';
+import { HomePage, MaritimePersonnelPage, ShipSectionPage } from './pages';
 
 function App() {
   return (
@@ -7,6 +7,10 @@ function App() {
       <Routes>
         <Route path={'/'} element={<HomePage />} />
         <Route path={'/embarcaciones'} element={<ShipSectionPage />} />
+        <Route
+          path={'/personal_maritimo'}
+          element={<MaritimePersonnelPage />}
+        />
       </Routes>
     </BrowserRouter>
   );
