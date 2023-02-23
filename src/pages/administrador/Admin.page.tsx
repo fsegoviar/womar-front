@@ -111,21 +111,6 @@ export const AdminPage = () => {
             title={'Publicaciones Totales'}
             numberData={publishReject}
           />
-
-          {/* <Box>
-            {publishPerCategory && (
-              <>
-                <Typography
-                  variant="h6"
-                  component={'div'}
-                  style={{ fontWeight: 'bold' }}
-                >
-                  Nº Publicaciones por categoría
-                </Typography>
-                <PieChart pieData={publishPerCategory} />
-              </>
-            )}
-          </Box> */}
         </Stack>
         <Divider sx={{ my: 4 }} />
         <Grid container>

@@ -12,6 +12,7 @@ import './publish-section.styles.css';
 import { EditPublish } from './components/EditPublish';
 import { CreateNewPublishRes } from './components/CreateNewPublishRes';
 import { ObtenerPublicacionDeUsuario } from '../../services';
+import { EditPublishRes } from './components/EditPublishRes';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -120,11 +121,22 @@ export const PublishPage = () => {
         />
       </div>
       {openModalEdit && (
-        <EditPublish
-          open={openModalEdit}
-          close={setOpenModalEdit}
-          publish={publishSelected!}
-        />
+        <>
+          <div className="hidden sm:block">
+            <EditPublish
+              open={openModalEdit}
+              close={setOpenModalEdit}
+              publish={publishSelected!}
+            />
+          </div>
+          <div className="block sm:hidden">
+            <EditPublishRes
+              open={openModalEdit}
+              close={setOpenModalEdit}
+              publish={publishSelected!}
+            />
+          </div>
+        </>
       )}
       {openModalDelete && (
         <DisabledPublish
