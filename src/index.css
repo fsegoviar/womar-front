@@ -1,3 +1,110 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'sailec-medium' !important;
+  }
+}
+
+@font-face {
+  font-family: 'sailec-black';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-black.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sailec-bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-bold.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sailec-light';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-light.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sailec-medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-medium.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sailec-regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-regular.otf') format('truetype');
+}
+
+@font-face {
+  font-family: 'sailec-thin';
+  font-style: normal;
+  font-weight: normal;
+  src: local(''), url('./assets/fonts/sailec-thin.otf') format('truetype');
+}
+
+.font {
+  font-family: 'sailec' !important;
+}
+
+.font-thin {
+  font-family: 'sailec-thin' !important;
+}
+
+.font-regular {
+  font-family: 'sailec-regular' !important;
+}
+
+.font-medium {
+  font-family: 'sailec-medium' !important;
+}
+
+.font-light {
+  font-family: 'sailec-light' !important;
+}
+
+.font-bold {
+  font-family: 'sailec-bold' !important;
+}
+
+.font-black {
+  font-family: 'sailec-black' !important;
+}
+
+.color-primary {
+  color: #000aff;
+}
+
+.color-secondary {
+  color: #00bfe8;
+}
+
+.color-third {
+  color: #00e9ba;
+}
+
+.bg-primary {
+  background-color: #000aff;
+}
+
+.bg-secondary {
+  background-color: #00bfe8;
+}
+
+.bg-third {
+  background-color: #00e9ba;
+}
+
+body {
+  width: 100vw !important;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
