@@ -121,16 +121,17 @@ export const Navbar = () => {
                 </>
               ) : (
                 <>
-                  <Box
-                    sx={{
-                      display: { xs: 'none', md: 'flex' }
-                    }}
-                  >
-                    <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
-                      Publicaciones
-                    </BtnNavbar>
+                  <div className="flex items-center">
+                    <div>
+                      <BtnNavbar
+                        className="py-1 font-thin"
+                        onClick={() => navigate(`/publicar/${IdUser}`)}
+                      >
+                        Publicaciones
+                      </BtnNavbar>
+                    </div>
                     <UserMenu handleCloseSession={handleCloseSession} />
-                  </Box>
+                  </div>
                 </>
               )}
             </div>
