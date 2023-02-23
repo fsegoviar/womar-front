@@ -9,7 +9,7 @@ export const ObtenerCategorias = () => {
 
   const fetchData = async () => {
     await axios
-      .get(`${process.env.REACT_APP_URL_API}/Categorias/ObtenerCategorias`)
+      .get(`${process.env.REACT_APP_URL_BACKEND}/Misc/ObtenerCategorias`)
       .then((response: any) => {
         setCategories(response.data);
       })

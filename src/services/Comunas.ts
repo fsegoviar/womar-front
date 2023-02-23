@@ -10,7 +10,7 @@ export const ObtenerComunas = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_URL_API}/Comunas/ObtenerComunas`,
+        `${process.env.REACT_APP_URL_BACKEND}/Misc/Regiones`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`

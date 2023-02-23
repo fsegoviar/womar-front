@@ -5,7 +5,7 @@ type PropsItem = {
 
 export const ItemFooter = (props: PropsItem) => {
   return (
-    <div className="flex flex-col justify-center items-center mx-7">
+    <div className="flex flex-col justify-center items-center mx-7 z-0">
       {/* Icono */}
       <div
         className="bg-center bg-contain bg-no-repeat w-16 h-16"
