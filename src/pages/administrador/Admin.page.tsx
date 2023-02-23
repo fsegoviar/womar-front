@@ -2,7 +2,7 @@ import { Container } from '@mui/system';
 import { useState } from 'react';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { PageBase } from '../../components/PageBase';
-import { Divider, Grid, Stack, Typography } from '@mui/material';
+import { Divider, Grid, Stack } from '@mui/material';
 import { CardInfor } from './components/CardInfor';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -94,21 +94,21 @@ export const AdminPage = () => {
           }}
         >
           <CardInfor
-            bgCard="#07BC77"
+            bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
             title={'Usuarios Registrados'}
             numberData={countUsers}
           />
           <CardInfor
-            bgCard="#07BC77"
+            bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Aceptadas'}
+            title={'Publicaciones Pendientes'}
             numberData={publishAccept}
           />
           <CardInfor
-            bgCard="#07BC77"
+            bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Rechazadas'}
+            title={'Publicaciones Totales'}
             numberData={publishReject}
           />
 
@@ -130,9 +130,6 @@ export const AdminPage = () => {
         <Divider sx={{ my: 4 }} />
         <Grid container>
           <Grid item xs={12}>
-            <Typography variant={'h4'} sx={{ mb: 2 }}>
-              Administrador de Usuarios
-            </Typography>
             <DataTable
               value={usuarios}
               responsiveLayout="stack"

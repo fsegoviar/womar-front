@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material';
+import { Paper } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
 
@@ -17,17 +17,17 @@ export const CardInfor = (props: PropsCard) => {
         p: 3,
         backgroundColor: props.bgCard,
         color: '#FFFFFF',
-        borderRadius: 5,
-        height: '125px'
+        borderRadius: '50px',
+        maxWidth: '250px',
+        height: '125px',
+        display: 'flex',
+        alignItems: 'center'
       }}
     >
+      <p className="text-[48px] inline">{props.numberData}</p>
       <Box sx={{ display: 'flex', mb: 2 }}>
-        {props.icon}
-        <Typography variant="h5">{props.title}</Typography>
+        <p className="text-2xl text-left pl-2">{props.title}</p>
       </Box>
-      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-        {props.numberData}
-      </Typography>
     </Paper>
   );
 };
