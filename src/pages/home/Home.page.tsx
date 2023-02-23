@@ -6,11 +6,30 @@ import {
 } from '../../components';
 import { SimpleCarousel } from './components/SimpleCarousel';
 import Carousel from 'react-multi-carousel';
+import { Carousel as Carousel3D } from '3d-react-carousal';
 import { CardItem } from './components/CardItem';
 import { ItemFooter } from './components/ItemFooter';
 import { Contactanos } from './components/Contactanos';
 
 export const HomePage = () => {
+  let slides = [
+    <img
+      className="rounded-3xl"
+      src={`${require('../../assets/images/comofunciona-1.png')}`}
+      alt="1"
+    />,
+    <img
+      className="rounded-3xl"
+      src={`${require('../../assets/images/comofunciona-2.png')}`}
+      alt="2"
+    />,
+    <img
+      className="rounded-3xl"
+      src={`${require('../../assets/images/comofunciona-3.png')}`}
+      alt="3"
+    />
+  ];
+
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -99,40 +118,22 @@ export const HomePage = () => {
         </Carousel>
       </section>
       {/*Como funciona womar y Carrusel 3D */}
-      <section className="flex flex-col items-center py-4">
+      <section className="hidden sm:flex flex-col items-center py-4">
         <h2
           style={{ color: '#003BE9' }}
           className="my-10 font-bold sm:text-4xl tracking-[.30em] text-lg text-center"
         >
           ¿CÓMO FUNCIONA WOMAR?
         </h2>
-        {/* <Carousel3D
-              arrows={true}
-              dotsNavigation={false}
-              dotsNavigationInside={true}
-              width={'90%'}
-              height={'400px'}
-              carouselStyle={'3d'}
-            >
-              <div
-                className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
-                style={{
-                  backgroundImage: `url(${require('../../assets/images/comofunciona-1.png')})`
-                }}
-              ></div>
-              <div
-                className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
-                style={{
-                  backgroundImage: `url(${require('../../assets/images/comofunciona-2.png')})`
-                }}
-              ></div>
-              <div
-                className="bg-center bg-cover bg-no-repeat w-[100%] h-[100%] "
-                style={{
-                  backgroundImage: `url(${require('../../assets/images/comofunciona-3.png')})`
-                }}
-              ></div>
-            </Carousel3D> */}
+        <div className="w-[1000px] h-[300px]">
+          <Carousel3D
+            className="w-full h-full"
+            autoplay={true}
+            interval={4000}
+            arrows={false}
+            slides={slides}
+          />
+        </div>
       </section>
       <footer
         className="relative bg-center bg-cover bg-no-repeat w-full h-72 mt-10"
