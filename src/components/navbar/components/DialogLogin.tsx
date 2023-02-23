@@ -137,7 +137,9 @@ export const DialogLogin = (props: PropsLogin) => {
                   </div>
                 </>
               ) : (
-                <LoadingComponent />
+                <div className="w-[400px]">
+                  <LoadingComponent />
+                </div>
               )}
             </div>
           </div>
