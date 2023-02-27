@@ -167,7 +167,6 @@ export const EditPublish = (props: PropsDialog) => {
     formData.append('Descripcion', data.descripcion);
     formData.append('Precio', String(data.precio));
     formData.append('Activo', String('true'));
-    // if(props.publish.estado === StatusPublish.RECHAZADA)
 
     setLoading(true);
 
@@ -183,7 +182,7 @@ export const EditPublish = (props: PropsDialog) => {
           }
         }
       )
-      .then((response: any) => console.log('Response =>', response))
+      .then((response: any) => props.close)
       .catch((error: any) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };
@@ -384,11 +383,7 @@ export const EditPublish = (props: PropsDialog) => {
                         }}
                       >
                         <InputLabel>Categoria</InputLabel>
-                        <SelectForm
-                          style={{ width: '100%' }}
-                          label="Categoria"
-                          readOnly
-                        >
+                        <SelectForm style={{ width: '100%' }} label="Categoria">
                           {categories.map((categorie, index) => (
                             <MenuItem key={index} value={categorie.id}>
                               {categorie.nombre}
@@ -416,7 +411,6 @@ export const EditPublish = (props: PropsDialog) => {
                             style={{ width: '100%' }}
                             label="Comuna"
                             required
-                            readOnly
                           >
                             {comunas.map((comuna, index) => (
                               <MenuItem key={index} value={comuna.id}>
