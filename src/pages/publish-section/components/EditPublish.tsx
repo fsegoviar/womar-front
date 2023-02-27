@@ -167,6 +167,7 @@ export const EditPublish = (props: PropsDialog) => {
     formData.append('Descripcion', data.descripcion);
     formData.append('Precio', String(data.precio));
     formData.append('Activo', String('true'));
+    // if(props.publish.estado === StatusPublish.RECHAZADA)
 
     setLoading(true);
 

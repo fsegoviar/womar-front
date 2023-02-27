@@ -77,6 +77,40 @@ export const ObtenerPublicacionDeUsuario = () => {
   return { publishUser, loading, error };
 };
 
+export const ObtenerPublicacionesPorEstado = (id: number) => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [publish, setPublish] = useState<DetailService[]>([]);
+
+  const fetchData = async () => {
+    await axios
+      .get(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerPublicacionesPorEstado?idEstado=${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
+      )
+      .then((response: any) => {
+        console.log('DATA => ', response.data);
+        setPublish(response.data);
+      })
+      .catch((error: AxiosError) => {
+        console.log(error);
+        setError(true);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return { publish, loading, error };
+};
+
 export const EditarPublicacion = (data: any, token: string) => {
   const fetchData = async () => {
     await axios.put(

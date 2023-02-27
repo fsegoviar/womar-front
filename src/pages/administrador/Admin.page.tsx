@@ -1,76 +1,49 @@
 import { Container } from '@mui/system';
-import { useState } from 'react';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { PageBase } from '../../components/PageBase';
-import { Divider, Grid, Stack } from '@mui/material';
+import { Divider, Stack } from '@mui/material';
 import { CardInfor } from './components/CardInfor';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { Button } from 'primereact/button';
-import { DialogDisabledUser } from './components/DialogDisabledUser';
 
-import { UsuariosAdmin } from '../../interfaces';
 import {
   CantidadUsuario,
   PublicacionesAceptadas,
-  PublicacionesRechazadas,
-  ObtenerUsuario
+  PublicacionesRechazadas
 } from '../../services';
+import { BsPeopleFill } from 'react-icons/bs';
+import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
+import { UserTable } from './UserTable';
+import { TabView, TabPanel } from 'primereact/tabview';
+import { PublishAdmin } from './components/PublishAdmin';
+
 export const AdminPage = () => {
-  // const [pieData, setPieData] = useState();
-  const [openModalDisabled, setOpenModalDisabled] = useState(false);
-  const [userSelected, setUserSelected] = useState({
-    usuarioId: '',
-    activo: false
-  });
   const { result: countUsers } = CantidadUsuario();
   const { result: publishAccept } = PublicacionesAceptadas();
   const { result: publishReject } = PublicacionesRechazadas();
-  const { usuarios } = ObtenerUsuario();
-  // const { result: publishPerCategory } = PublicacionesPorCategoria();
 
-  const handleDisabledUser = (user: UsuariosAdmin) => {
-    setOpenModalDisabled(true);
-    setUserSelected({
-      usuarioId: user.id,
-      activo: user.activo
-    });
+  const headerUserPanel = (options: any) => {
+    return (
+      <button
+        type="button"
+        onClick={options.onClick}
+        className={options.className}
+      >
+        <BsPeopleFill size={24} className="mr-2" />
+        {options.titleElement}
+      </button>
+    );
   };
 
-  const actionDisabled = (rowData: UsuariosAdmin) => {
-    if (rowData.activo) {
-      return (
-        <div style={{ display: 'flex' }}>
-          <div style={{ margin: '0 5px' }}>
-            <Button
-              icon="pi pi-user-minus"
-              className="p-button-rounded p-button-sm p-button-danger"
-              onClick={() => handleDisabledUser(rowData)}
-            />
-          </div>
-        </div>
-      );
-    } else {
-      return (
-        <div style={{ display: 'flex' }}>
-          <div style={{ margin: '0 5px' }}>
-            <Button
-              icon="pi pi-user-plus"
-              className="p-button-rounded p-button-outlined p-button-sm p-button-success"
-              onClick={() => handleDisabledUser(rowData)}
-            />
-          </div>
-        </div>
-      );
-    }
-  };
-
-  const statusUser = (rowData: UsuariosAdmin) => {
-    if (rowData.activo) {
-      return <p>ACTIVO</p>;
-    } else {
-      return <p>DESHABILITADO</p>;
-    }
+  const headerPublishPanel = (options: any) => {
+    return (
+      <button
+        type="button"
+        onClick={options.onClick}
+        className={options.className}
+      >
+        <HiOutlineClipboardDocumentList size={24} className="mr-2" />
+        {options.titleElement}
+      </button>
+    );
   };
 
   return (
@@ -113,43 +86,18 @@ export const AdminPage = () => {
           />
         </Stack>
         <Divider sx={{ my: 4 }} />
-        <Grid container>
-          <Grid item xs={12}>
-            <DataTable
-              value={usuarios}
-              responsiveLayout="stack"
-              breakpoint="960px"
-              dataKey="id"
-              rows={15}
-              style={{ padding: '30px 0' }}
-            >
-              <Column field="nombre" header={'Nombre'} sortable></Column>
-              <Column field="email" header={'Email'} sortable></Column>
-              <Column
-                field="publicaciones"
-                header={'Nº de publicaciones'}
-                sortable
-              ></Column>
-              <Column
-                field="activo"
-                header={'Estado'}
-                body={statusUser}
-                sortable
-              ></Column>
-              <Column
-                body={actionDisabled}
-                exportable={false}
-                style={{ minWidth: '8rem' }}
-              ></Column>
-            </DataTable>
-          </Grid>
-        </Grid>
+        <TabView>
+          <TabPanel header="Panel de Usuarios" headerTemplate={headerUserPanel}>
+            <UserTable />
+          </TabPanel>
+          <TabPanel
+            header="Panel de Publicaciones"
+            headerTemplate={headerPublishPanel}
+          >
+            <PublishAdmin />
+          </TabPanel>
+        </TabView>
       </Container>
-      <DialogDisabledUser
-        open={openModalDisabled}
-        closeModal={setOpenModalDisabled}
-        info={userSelected}
-      />
     </PageBase>
   );
 };
