@@ -165,7 +165,12 @@ export const ObtenerInfoUsuario = () => {
           }
         }
       );
-      result = response.data;
+
+      if (response.status !== 401) {
+        result = response.data;
+      } else {
+        error = true;
+      }
     } catch (_error) {
       error = true;
     }

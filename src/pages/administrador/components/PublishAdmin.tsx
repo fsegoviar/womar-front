@@ -17,16 +17,22 @@ export const PublishAdmin = () => {
 
   return (
     <>
-      <Grid container>
-        {publish.map((item, index) => (
-          <Grid item xs={12} md={4} key={index} className="sm:px-3 py-2">
-            <CardPublish
-              publish={item}
-              openCard={() => handleOpenModal(item)}
-            />
+      {publish.length > 0 ? (
+        <>
+          <Grid container>
+            {publish.map((item, index) => (
+              <Grid item xs={12} md={4} key={index} className="sm:px-3 py-2">
+                <CardPublish
+                  publish={item}
+                  openCard={() => handleOpenModal(item)}
+                />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </>
+      ) : (
+        <p className="font-bold text-lg">sin publicaciones pendientes</p>
+      )}
       {openDetail && (
         <DialogDetailPublish
           publish={selectedPublish}

@@ -4,6 +4,7 @@ export type DetailService = {
   id: string;
   imagenes: string[];
   direccion: string;
+  categoria: string;
   precio: number;
   titulo: string;
   tipo: string;

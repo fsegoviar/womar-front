@@ -9,6 +9,7 @@ import { Box, FormControl, Grid, Stack, TextField } from '@mui/material';
 import { InputForm } from '../../../styles/InputForm';
 import styled from '@emotion/styled';
 import axios, { AxiosError } from 'axios';
+import { LoadingComponent } from '../../../components';
 
 const TextAreaForm = styled(TextField)`
   background: white;
@@ -38,6 +39,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
   const [mensaje, setMensaje] = useState('');
+  const [loading, setLoading] = useState(false);
   const [images] = useState<ImageListType>(() => {
     let newListImg: ImageListType = [];
     props.publish.imagenes.forEach((url: any) => {
@@ -50,7 +52,6 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
   });
 
   useEffect(() => {
-    console.log('Publish Edit => ', props.publish);
     if (props.open) modalRef.current.style.display = 'flex';
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,6 +72,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
   );
 
   const handleAccept = async () => {
+    setLoading(true);
     await axios
       .post(
         `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Aprobar`,
@@ -83,11 +85,13 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
           }
         }
       )
-      .then(() => props.closeModal)
-      .catch((error: AxiosError) => console.log('Error =>', error));
+      .then(() => closeModal())
+      .catch((error: AxiosError) => console.log('Error =>', error))
+      .finally(() => setLoading(false));
   };
 
   const handleReject = async () => {
+    setLoading(true);
     await axios
       .post(
         `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/Rechazar`,
@@ -101,8 +105,9 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
           }
         }
       )
-      .then(() => props.closeModal)
-      .catch((error: AxiosError) => console.log('Error =>', error));
+      .then(() => closeModal())
+      .catch((error: AxiosError) => console.log('Error =>', error))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -116,142 +121,176 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
         id="window-container-modal-admin "
         ref={containerRef}
       >
-        <>
-          <Box className="flex items-center justify-between">
-            <h1 className="text-4xl py-5 text-[#000aff]">
-              Detalle publicación
-            </h1>
-            <Box>
-              <p className="text-md font-thin text-[#949494]">
-                Tipo de publicación
-              </p>
-              <Box
-                className="rounded-full "
-                style={{ border: '1px solid #000aff' }}
-              >
-                <button
-                  className="text-[#000aff] px-10 py-1 text-xl  rounded-full"
-                  style={{
-                    backgroundColor:
-                      props.publish.tipo === 'Buscar' ? '#00e9ba' : ''
-                  }}
+        {loading ? (
+          <div style={{ height: '75vh' }}>
+            <LoadingComponent />
+          </div>
+        ) : (
+          <>
+            <Box className="flex items-center justify-between">
+              <h1 className="text-4xl py-5 text-[#000aff]">
+                Detalle publicación
+              </h1>
+              <Box>
+                <p className="text-md font-thin text-[#949494]">
+                  Tipo de publicación
+                </p>
+                <Box
+                  className="rounded-full "
+                  style={{ border: '1px solid #000aff' }}
                 >
-                  Buscan
-                </button>
-                <button
-                  className="text-[#000aff] px-10 py-1 text-xl rounded-full"
-                  style={{
-                    backgroundColor:
-                      props.publish.tipo === 'Ofrezco' ? '#00e9ba' : ''
-                  }}
-                >
-                  Ofrecen
-                </button>
+                  <button
+                    className="text-[#000aff] px-10 py-1 text-xl  rounded-full"
+                    style={{
+                      backgroundColor:
+                        props.publish.tipo === 'Buscar' ? '#00e9ba' : ''
+                    }}
+                  >
+                    Buscan
+                  </button>
+                  <button
+                    className="text-[#000aff] px-10 py-1 text-xl rounded-full"
+                    style={{
+                      backgroundColor:
+                        props.publish.tipo === 'Ofrezco' ? '#00e9ba' : ''
+                    }}
+                  >
+                    Ofrecen
+                  </button>
+                </Box>
               </Box>
             </Box>
-          </Box>
-          <Grid container>
-            <ImageUploading
-              multiple
-              value={images}
-              onChange={() => {}}
-              maxNumber={5}
-            >
-              {({ imageList }: any) => (
-                // write your building UI
-                <div className="upload__image-wrapper w-full flex">
-                  {imageList.map((image: ImageType, index: number) => (
-                    <div
-                      key={index}
-                      className="image-item"
-                      style={{
-                        position: 'relative',
-                        width: '100px',
-                        height: '90px',
-                        border: '1px solid #c2c2c2',
-                        borderRadius: '10px',
-                        marginLeft: '15px'
-                      }}
-                    >
-                      <img
-                        src={image.dataURL}
-                        alt=""
-                        width="100px"
-                        height={'100%'}
+            <Grid container>
+              <ImageUploading
+                multiple
+                value={images}
+                onChange={() => {}}
+                maxNumber={5}
+              >
+                {({ imageList }: any) => (
+                  // write your building UI
+                  <div className="upload__image-wrapper w-full flex">
+                    {imageList.map((image: ImageType, index: number) => (
+                      <div
+                        key={index}
+                        className="image-item"
                         style={{
-                          paddingTop: '10px',
-                          backgroundSize: 'cover'
+                          position: 'relative',
+                          width: '100px',
+                          height: '90px',
+                          border: '1px solid #c2c2c2',
+                          borderRadius: '10px',
+                          marginLeft: '15px'
                         }}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </ImageUploading>
-            <Grid item xs={12} className="pt-10">
-              <p className=" text-md font-thin text-[#949494]">
-                Datos de la publicacion
-              </p>
-              <div>
-                <Grid container>
-                  <Grid item xs={7} className="pr-4">
-                    <InputForm
-                      size="small"
-                      id="title"
-                      style={{
-                        margin: '10px 0',
-                        width: '100%'
-                      }}
-                      value={props.publish.titulo}
-                      disabled
-                    />
-                    <FormControl
-                      fullWidth
-                      sx={{
-                        p: 0,
-                        m: 0,
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        mb: 1
-                      }}
-                    >
+                      >
+                        <img
+                          src={image.dataURL}
+                          alt=""
+                          width="100px"
+                          height={'100%'}
+                          style={{
+                            paddingTop: '10px',
+                            backgroundSize: 'cover'
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ImageUploading>
+              <Grid item xs={12} className="pt-10">
+                <p className=" text-md font-thin text-[#949494]">
+                  Datos de la publicacion
+                </p>
+                <div>
+                  <Grid container>
+                    <Grid item xs={7} className="pr-4">
                       <InputForm
-                        id="category"
+                        size="small"
+                        id="title"
                         style={{
                           margin: '10px 0',
                           width: '100%'
                         }}
-                        size="small"
+                        value={props.publish.titulo}
                         disabled
                       />
-                    </FormControl>
-                    <Stack
-                      direction="row"
-                      sx={{ mb: 1, justifyContent: 'space-around' }}
-                      spacing={2}
-                    >
                       <FormControl
+                        fullWidth
                         sx={{
                           p: 0,
                           m: 0,
                           display: 'flex',
                           justifyContent: 'center',
                           alignItems: 'center',
-                          width: '49%'
+                          mb: 1
                         }}
                       >
                         <InputForm
-                          id="Comuna"
+                          id="category"
                           style={{
-                            margin: '5px 0',
+                            margin: '10px 0',
                             width: '100%'
                           }}
                           size="small"
+                          value={props.publish.categoria}
                           disabled
-                          value={props.publish.direccion}
                         />
                       </FormControl>
+                      <Stack
+                        direction="row"
+                        sx={{ mb: 1, justifyContent: 'space-around' }}
+                        spacing={2}
+                      >
+                        <FormControl
+                          sx={{
+                            p: 0,
+                            m: 0,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '49%'
+                          }}
+                        >
+                          <InputForm
+                            id="Comuna"
+                            style={{
+                              margin: '5px 0',
+                              width: '100%'
+                            }}
+                            size="small"
+                            disabled
+                            value={props.publish.direccion}
+                          />
+                        </FormControl>
+                        <InputForm
+                          id="price"
+                          style={{
+                            margin: '5px 0',
+                            width: '49%'
+                          }}
+                          size="small"
+                          disabled
+                          value={props.publish.precio}
+                        />
+                      </Stack>
+                    </Grid>
+                    <Grid item xs={5}>
+                      <TextAreaForm
+                        id="description"
+                        fullWidth
+                        sx={{ my: 1 }}
+                        multiline
+                        disabled
+                        rows={4}
+                        value={props.publish.descripcion}
+                        variant="outlined"
+                      />
+                    </Grid>
+                  </Grid>
+                  <hr className="py-2" />
+                  <Grid item xs={12}>
+                    <div className="flex justify-between">
                       <InputForm
                         id="price"
                         style={{
@@ -260,84 +299,57 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
                         }}
                         size="small"
                         disabled
-                        value={props.publish.precio}
+                        value={props.publish.usuarioPublicante}
                       />
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={5}>
+                      <InputForm
+                        id="price"
+                        style={{
+                          margin: '5px 0',
+                          width: '49%'
+                        }}
+                        size="small"
+                        disabled
+                        value={props.publish.fechaCreacion}
+                      />
+                    </div>
                     <TextAreaForm
                       id="description"
                       fullWidth
                       sx={{ my: 1 }}
+                      label="Observaciones *"
+                      onChange={(e) => setMensaje(e.target.value)}
                       multiline
-                      disabled
-                      rows={4}
-                      value={props.publish.descripcion}
+                      rows={2}
                       variant="outlined"
                     />
                   </Grid>
-                </Grid>
-                <hr className="py-2" />
-                <Grid item xs={12}>
-                  <div className="flex justify-between">
-                    <InputForm
-                      id="price"
-                      style={{
-                        margin: '5px 0',
-                        width: '49%'
-                      }}
-                      size="small"
-                      disabled
-                      value={props.publish.usuarioPublicante}
-                    />
-                    <InputForm
-                      id="price"
-                      style={{
-                        margin: '5px 0',
-                        width: '49%'
-                      }}
-                      size="small"
-                      disabled
-                      value={props.publish.fechaCreacion}
-                    />
-                  </div>
-                  <TextAreaForm
-                    id="description"
-                    fullWidth
-                    sx={{ my: 1 }}
-                    label="Observaciones *"
-                    onChange={(e) => setMensaje(e.target.value)}
-                    multiline
-                    rows={2}
-                    variant="outlined"
-                  />
-                </Grid>
 
-                <Box
-                  className="flex justify-center"
-                  sx={{ '& > :not(style)': { m: 1 } }}
-                >
-                  <button
-                    className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
-                    onClick={handleReject}
+                  <Box
+                    className="flex justify-center"
+                    sx={{ '& > :not(style)': { m: 1 } }}
                   >
-                    Rechazar
-                  </button>
-                  <button
-                    className="text-white rounded-full py-2 px-10 cursor-pointer"
-                    onClick={handleAccept}
-                    style={{
-                      background:
-                        'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
-                    }}
-                  >
-                    Aprobar
-                  </button>
-                </Box>
-              </div>
+                    <button
+                      className="text-white rounded-full py-2 px-10 cursor-pointer bg-[#D5278F]"
+                      onClick={handleReject}
+                    >
+                      Rechazar
+                    </button>
+                    <button
+                      className="text-white rounded-full py-2 px-10 cursor-pointer"
+                      onClick={handleAccept}
+                      style={{
+                        background:
+                          'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+                      }}
+                    >
+                      Aprobar
+                    </button>
+                  </Box>
+                </div>
+              </Grid>
             </Grid>
-          </Grid>
-        </>
+          </>
+        )}
       </div>
     </div>
   );
