@@ -17,6 +17,7 @@ import styled from '@emotion/styled';
 import { InputForm } from '../../../styles/InputForm';
 import { RegisterUser, TypeUser } from '../../../interfaces';
 import { ObtenerComunas, Registrar } from '../../../services';
+import ChileanRutify from 'chilean-rutify';
 
 const SelectForm = styled(Select)`
   border-color: #000aff;
@@ -46,14 +47,27 @@ export const DialogRegister = (props: PropsRegister) => {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors }
-  } = useForm<RegisterUser>();
-  // const [open, setOpen] = useState(props.open);
+  } = useForm<RegisterUser>({
+    defaultValues: {
+      Nombre: '',
+      ApellidoPaterno: '',
+      ApellidoMaterno: '',
+      Rut: '',
+      ComunaId: 0,
+      Telefono: 0,
+      Email: '',
+      Password: '',
+      Role: '',
+      Origen: 0,
+      ImagenPerfil: new FormData()
+    }
+  });
   const { comunas } = ObtenerComunas();
   const [loading, setLoading] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
+  const [inputRut, setInputRut] = useState('');
 
   useEffect(() => {
     setValue('Role', 'Cliente');
@@ -82,6 +96,7 @@ export const DialogRegister = (props: PropsRegister) => {
   };
 
   const onSubmitRegisterLocal = (data: RegisterUser) => {
+    // console.log('DATA SEND => ', data);
     let formData = new FormData();
     formData.append('Nombre', data.Nombre);
     formData.append('ApellidoPaterno', data.ApellidoPaterno);
@@ -139,23 +154,42 @@ export const DialogRegister = (props: PropsRegister) => {
                     className="font"
                     error={!!errors.Nombre}
                     id="name"
-                    style={{ margin: '10px 0', width: '100%' }}
+                    style={{ marginTop: '10px', width: '100%' }}
                     label="Nombres *"
-                    {...register('Nombre', { required: true })}
+                    {...register('Nombre', {
+                      required: true
+                    })}
                   />
+                  {errors.Nombre?.type === 'required' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Nombre requerido
+                    </span>
+                  )}
                   <Stack
                     direction="row"
                     sx={{ mb: 1, justifyContent: 'space-around' }}
                     spacing={2}
                   >
-                    <InputForm
-                      size="small"
-                      error={!!errors.ApellidoPaterno}
-                      style={{ margin: '10px 0', width: '49%' }}
-                      id="surname1"
-                      label="Apellido Paterno *"
-                      {...register('ApellidoPaterno', { required: true })}
-                    />
+                    <div className="flex flex-col">
+                      <InputForm
+                        size="small"
+                        error={!!errors.ApellidoPaterno}
+                        style={{
+                          margin: errors.ApellidoPaterno
+                            ? '10px 0 0 0'
+                            : '10px 0'
+                        }}
+                        id="surname1"
+                        label="Apellido Paterno *"
+                        {...register('ApellidoPaterno', { required: true })}
+                      />
+                      {errors.ApellidoPaterno && (
+                        <span className="text-red-500 text-sm font-light">
+                          Apellido Paterno requerido
+                        </span>
+                      )}
+                    </div>
+
                     <InputForm
                       size="small"
                       error={!!errors.ApellidoMaterno}
@@ -176,63 +210,132 @@ export const DialogRegister = (props: PropsRegister) => {
                       mb: 1
                     }}
                   >
-                    <InputLabel>Dirección</InputLabel>
+                    <InputLabel>Región</InputLabel>
                     <SelectForm
                       style={{ width: '100%' }}
-                      label="Dirección"
-                      value={getValues('ComunaId')}
-                      onChange={(evnt) => {
-                        if (evnt.target.value) {
+                      {...register('ComunaId', {
+                        required: true,
+                        onChange: (evnt) => {
                           setValue('ComunaId', Number(evnt.target.value));
                         }
-                      }}
+                      })}
                     >
-                      {comunas.map((comuna) => (
-                        <MenuItem key={comuna.id} value={comuna.id}>
+                      {comunas.map((comuna, index) => (
+                        <MenuItem key={index} value={comuna.id}>
                           {comuna.nombre}
                         </MenuItem>
                       ))}
                     </SelectForm>
+                    {errors.ComunaId && (
+                      <span className="text-red-500 text-sm font-light">
+                        Selecciona una Región
+                      </span>
+                    )}
                   </FormControl>
                   <Stack
                     direction="row"
                     sx={{ my: 1, justifyContent: 'space-around' }}
                     spacing={2}
                   >
-                    <InputForm
-                      id="dni"
-                      size="small"
-                      label="Rut"
-                      style={{ margin: '10px 0', width: '49%' }}
-                      onChange={(e: any) => {
-                        setValue('Rut', e.target.value);
-                      }}
-                    />
-                    <InputForm
-                      id="phone"
-                      size="small"
-                      type={'number'}
-                      style={{ margin: '10px 0', width: '49%' }}
-                      label="Telefono"
-                      {...register('Telefono')}
-                    />
+                    <div className="flex flex-col">
+                      <InputForm
+                        id="rut"
+                        size="small"
+                        error={!!errors.Email}
+                        value={inputRut}
+                        style={{ margin: errors.Rut ? '10px 0 0 0' : '10px 0' }}
+                        label="Rut"
+                        {...register('Rut', {
+                          required: true,
+                          onChange: (e) => {
+                            console.log('e', e.target.value);
+                            if (e.target.value !== 'undefine') {
+                              setInputRut(
+                                String(ChileanRutify.formatRut(e.target.value))
+                              );
+                              setValue(
+                                'Rut',
+                                String(ChileanRutify.formatRut(e.target.value))
+                              );
+                            } else {
+                              setValue('Rut', '');
+                            }
+                          }
+                        })}
+                      />
+                      {errors.Rut?.type === 'required' && (
+                        <span className="text-red-500 text-sm font-light">
+                          Rut requerido
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col">
+                      <InputForm
+                        size="small"
+                        error={!!errors.Telefono}
+                        type={'number'}
+                        style={{
+                          margin: errors.Telefono ? '10px 0 0 0' : '10px 0'
+                        }}
+                        label="Telefono"
+                        {...register('Telefono', {
+                          required: true,
+                          minLength: 5
+                        })}
+                      />
+                      {errors.Telefono && (
+                        <span className="text-red-500 text-sm font-light">
+                          Telefono requerido
+                        </span>
+                      )}
+                    </div>
                   </Stack>
                   <InputForm
                     error={!!errors.Email}
                     type={'email'}
                     size="small"
-                    style={{ marginBottom: '10px', width: '100%' }}
+                    style={{
+                      marginBottom: errors.Email ? '' : '10px',
+                      width: '100%'
+                    }}
                     label="Correo electrónico *"
-                    {...register('Email', { required: true })}
+                    {...register('Email', {
+                      required: true,
+                      pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+                    })}
                   />
+                  {errors.Email?.type === 'required' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Correo electrónico requerido
+                    </span>
+                  )}
+                  {errors.Email?.type === 'pattern' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Formato de correo no valido
+                    </span>
+                  )}
                   <InputForm
                     error={!!errors.Password}
                     type={'password'}
                     size="small"
-                    style={{ margin: '10px 0', width: '100%' }}
+                    style={{
+                      margin: errors.Password ? '10px 0 0 0' : '10px 0',
+                      width: '100%'
+                    }}
                     label="Contraseña *"
-                    {...register('Password', { required: true })}
+                    {...register('Password', { required: true, minLength: 5 })}
                   />
+                  {errors.Password?.type === 'required' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Constraseña requerido
+                    </span>
+                  )}
+                  {errors.Password?.type === 'minLength' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Debe tener como minimo 6 caracteres
+                    </span>
+                  )}
                   <Box
                     className="flex justify-center"
                     sx={{ '& > :not(style)': { m: 1 }, py: 1 }}
