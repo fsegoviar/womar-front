@@ -16,7 +16,7 @@ const dataNavigation = [
     icon: <AnchorIcon sx={{ width: '30px', height: '30px' }} />
   },
   {
-    site: '/otros_srvicios',
+    site: '/otros_servicios',
     title: 'Otros Servicios',
     icon: <MiscellaneousServicesIcon sx={{ width: '30px', height: '30px' }} />
   }

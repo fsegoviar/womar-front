@@ -14,11 +14,32 @@ import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
 import { UserTable } from './UserTable';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { PublishAdmin } from './components/PublishAdmin';
+import { useEffect, useState } from 'react';
+import { parseJwt } from '../../utils';
+import { DialogLogin } from '../../components/navbar/components/DialogLogin';
 
 export const AdminPage = () => {
-  const { result: countUsers } = CantidadUsuario();
-  const { result: publishAccept } = PublicacionesAceptadas();
-  const { result: publishReject } = PublicacionesRechazadas();
+  const [openLogin, setOpenLogin] = useState(false);
+
+  const [countUsers, setCountUsers] = useState(0);
+  const [publishAccept, setPublishAccept] = useState(0);
+  const [publishReject, setPublishReject] = useState(0);
+
+  const { IdUser } = parseJwt();
+
+  useEffect(() => {
+    if (IdUser) {
+      const { result: countUsersFetch } = CantidadUsuario();
+      const { result: publishAcceptFetch } = PublicacionesAceptadas();
+      const { result: publishRejectFetch } = PublicacionesRechazadas();
+
+      setCountUsers(countUsersFetch);
+      setPublishAccept(publishAcceptFetch);
+      setPublishReject(publishRejectFetch);
+    } else {
+      setOpenLogin(true);
+    }
+  }, [IdUser]);
 
   const headerUserPanel = (options: any) => {
     return (
@@ -31,6 +52,16 @@ export const AdminPage = () => {
         {options.titleElement}
       </button>
     );
+  };
+
+  const handleCloseDialogLogin = () => {
+    setTimeout(() => {
+      setOpenLogin(false);
+    }, 500);
+  };
+
+  const handleOpenSession = (token: string) => {
+    localStorage.setItem('tokenWomar', token);
   };
 
   const headerPublishPanel = (options: any) => {
@@ -98,6 +129,13 @@ export const AdminPage = () => {
           </TabPanel>
         </TabView>
       </Container>
+      {openLogin && (
+        <DialogLogin
+          open={openLogin}
+          handleClose={handleCloseDialogLogin}
+          handleOpenSession={handleOpenSession}
+        />
+      )}
     </PageBase>
   );
 };

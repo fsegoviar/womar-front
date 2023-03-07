@@ -5,3 +5,4 @@ export * from './user-section';
 export * from './publish-section';
 export * from './result-search';
 export * from './administrador';
+export * from './other-sections';

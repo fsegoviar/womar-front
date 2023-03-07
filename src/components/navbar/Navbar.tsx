@@ -43,14 +43,10 @@ export const Navbar = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegisterLocal, setOpenRegisterLocal] = useState(false);
   const { IdUser } = parseJwt();
-  const [proveedor, setProveedor] = useState('');
-  const [openRegisterExternal, setOpenRegisterExternal] = useState(false);
   const [isLogged, setIsLogged] = useState(
     !!localStorage.getItem('tokenWomar')
   );
   const [hiddenMenuResponsive, setHiddenMenuResponsive] = useState(true);
-
-  console.log('Datos navbar =>', proveedor, openRegisterExternal);
 
   const handleCloseSession = () => {
     setIsLogged(false);
@@ -67,6 +63,14 @@ export const Navbar = () => {
     localStorage.setItem('tokenWomar', token);
 
     setIsLogged(true);
+  };
+
+  const verifyLoggedOnPublish = (): void => {
+    if (IdUser) {
+      navigate(`/publicar/${IdUser}`);
+    } else {
+      setOpenLogin(true);
+    }
   };
 
   //* Methods register
@@ -109,7 +113,7 @@ export const Navbar = () => {
             <div className="hidden sm:block">
               {!isLogged ? (
                 <>
-                  <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
+                  <BtnNavbar onClick={() => verifyLoggedOnPublish()}>
                     Publicar
                   </BtnNavbar>
                   <BtnNavbar onClick={() => setOpenLogin(true)}>
@@ -125,7 +129,7 @@ export const Navbar = () => {
                     <div>
                       <BtnNavbar
                         className="py-1 font-thin"
-                        onClick={() => navigate(`/publicar/${IdUser}`)}
+                        onClick={() => verifyLoggedOnPublish()}
                       >
                         Publicaciones
                       </BtnNavbar>
@@ -163,8 +167,6 @@ export const Navbar = () => {
           open={openLogin}
           handleClose={handleCloseDialogLogin}
           handleOpenSession={handleOpenSession}
-          setProveedor={setProveedor}
-          isOpenRegisterExternal={setOpenRegisterExternal}
         />
       )}
       {openRegisterLocal && (

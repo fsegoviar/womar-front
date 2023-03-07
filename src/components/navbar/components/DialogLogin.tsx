@@ -13,8 +13,6 @@ interface PropsLogin {
   open: boolean;
   handleClose: () => void;
   handleOpenSession: (value: string) => void;
-  isOpenRegisterExternal: (value: boolean) => void;
-  setProveedor: (value: string) => void;
 }
 
 export const DialogLogin = (props: PropsLogin) => {

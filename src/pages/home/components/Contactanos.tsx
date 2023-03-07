@@ -20,7 +20,11 @@ type FormContactType = {
 export const Contactanos = (props: PropsContactanos) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
-  const { register, handleSubmit } = useForm<FormContactType>();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit
+  } = useForm<FormContactType>();
 
   useLayoutEffect(() => {
     if (props.open) modalRef.current.style.display = 'flex';
@@ -59,39 +63,78 @@ export const Contactanos = (props: PropsContactanos) => {
             <input
               type="text"
               placeholder="Nombre"
-              className="border-2 rounded-md border-gray-500 p-1 w-full"
-              {...register('nombre')}
+              className={`border-2 rounded-md p-1 w-full ${
+                errors.nombre ? 'border-red-500' : 'border-gray-500'
+              }`}
+              {...register('nombre', { required: true })}
             />
+            {errors.nombre && (
+              <span className="text-red-500 font-thin text-sm">
+                Campo requerido
+              </span>
+            )}
           </div>
           <div className="w-full mt-2">
             <input
               type="text"
               placeholder="Asunto"
-              className="border-2 rounded-md border-gray-500 p-1 w-full"
-              {...register('asunto')}
+              className={`border-2 rounded-md p-1 w-full ${
+                errors.asunto ? 'border-red-500' : 'border-gray-500'
+              }`}
+              {...register('asunto', { required: true })}
             />
+            {errors.asunto && (
+              <span className="text-red-500 font-thin text-sm">
+                Campo requerido
+              </span>
+            )}
           </div>
           <div className="grid grid-cols-2 gap-2 mt-2">
-            <input
-              type="text"
-              placeholder="Correo electrónico"
-              className="border-2 rounded-md border-gray-500 p-1"
-              {...register('emailOrigen')}
-            />
-            <input
-              type="number"
-              placeholder="Teléfono"
-              className="border-2 rounded-md border-gray-500 p-1"
-              {...register('telefono')}
-            />
+            <div className="flex flex-col">
+              <input
+                type="text"
+                placeholder="Correo electrónico"
+                className={`border-2 rounded-md p-1 w-full ${
+                  errors.emailOrigen ? 'border-red-500' : 'border-gray-500'
+                }`}
+                {...register('emailOrigen', { required: true })}
+              />
+              {errors.emailOrigen && (
+                <span className="text-red-500 font-thin text-sm">
+                  Campo requerido
+                </span>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <input
+                type="number"
+                placeholder="Teléfono"
+                className={`border-2 rounded-md p-1 w-full ${
+                  errors.telefono ? 'border-red-500' : 'border-gray-500'
+                }`}
+                {...register('telefono', { required: true })}
+              />
+              {errors.telefono && (
+                <span className="text-red-500 font-thin text-sm">
+                  Campo requerido
+                </span>
+              )}
+            </div>
           </div>
           <div className="w-full mt-2">
             <textarea
               rows={6}
-              className="w-full border-2 rounded-md border-gray-500 p-1"
+              className={`w-full border-2 rounded-md p-1 ${
+                errors.observaciones ? 'border-red-500' : 'border-gray-500'
+              }`}
               placeholder="Mensaje"
-              {...register('observaciones')}
+              {...register('observaciones', { required: true })}
             ></textarea>
+            {errors.observaciones && (
+              <span className="text-red-500 font-thin text-sm">
+                Campo requerido
+              </span>
+            )}
           </div>
           <Box
             className="flex justify-center"
