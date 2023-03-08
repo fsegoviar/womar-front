@@ -24,22 +24,22 @@ export const AdminPage = () => {
   const [countUsers, setCountUsers] = useState(0);
   const [publishAccept, setPublishAccept] = useState(0);
   const [publishReject, setPublishReject] = useState(0);
+  const { result: countUsersFetch } = CantidadUsuario();
+  const { result: publishAcceptFetch } = PublicacionesAceptadas();
+  const { result: publishRejectFetch } = PublicacionesRechazadas();
 
   const { IdUser } = parseJwt();
 
   useEffect(() => {
     if (IdUser) {
-      const { result: countUsersFetch } = CantidadUsuario();
-      const { result: publishAcceptFetch } = PublicacionesAceptadas();
-      const { result: publishRejectFetch } = PublicacionesRechazadas();
-
       setCountUsers(countUsersFetch);
       setPublishAccept(publishAcceptFetch);
       setPublishReject(publishRejectFetch);
     } else {
       setOpenLogin(true);
     }
-  }, [IdUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const headerUserPanel = (options: any) => {
     return (
