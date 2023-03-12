@@ -3,8 +3,8 @@ interface RegisterUser {
   ApellidoPaterno: string;
   ApellidoMaterno?: string;
   Rut: string;
-  ComunaId: number;
-  Telefono?: number;
+  ComunaId: number | null;
+  Telefono: number | null;
   Email: string;
   Password: string;
   Role: string;

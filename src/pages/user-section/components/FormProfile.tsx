@@ -94,6 +94,12 @@ export const FormProfile = ({
     setFileChange(e.target.files[0]);
   };
 
+  const RequiredField = () => {
+    return (
+      <span className="font-thin text-sm text-red-500">Campo requerido</span>
+    );
+  };
+
   return (
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
       {/* Box loading */}
@@ -132,6 +138,7 @@ export const FormProfile = ({
           placeholder="Nombres *"
           {...register('nombre', { required: true })}
         />
+        {errors.nombre && <RequiredField />}
         <Grid
           container
           sx={{ mb: 1, justifyContent: 'space-around' }}
@@ -145,6 +152,7 @@ export const FormProfile = ({
               placeholder="Apellido Paterno *"
               {...register('apellidoPaterno', { required: true })}
             />
+            {errors.apellidoPaterno && <RequiredField />}
           </Grid>
           <Grid item xs={6}>
             <InputForm
@@ -153,6 +161,7 @@ export const FormProfile = ({
               placeholder="Apellido Materno *"
               {...register('apellidoMaterno', { required: true })}
             />
+            {errors.apellidoMaterno && <RequiredField />}
           </Grid>
         </Grid>
         <Grid
@@ -195,9 +204,10 @@ export const FormProfile = ({
               id="phone"
               type={'number'}
               style={{ width: '100%' }}
-              placeholder="Telefono (opcional)"
-              {...register('telefono')}
+              placeholder="Telefono"
+              {...register('telefono', { required: true })}
             />
+            {errors.telefono && <RequiredField />}
           </Grid>
         </Grid>
       </Container>

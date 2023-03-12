@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
   AdminPage,
   HomePage,
@@ -25,6 +25,7 @@ function App() {
         <Route path={'/publicar/:userId'} element={<PublishPage />} />
         <Route path={'resultados_busqueda'} element={<ResultSearch />} />
         <Route path={'/administrador'} element={<AdminPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

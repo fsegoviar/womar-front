@@ -68,7 +68,7 @@ export const SearchBar = () => {
 
   return (
     <Search
-      style={{ width: '60%' }}
+      className="sm:w-[100%] md:w-[80%]"
       onKeyUp={(e: any) => {
         if (e.keyCode === 13 && textSearch !== '') {
           searchPublish();

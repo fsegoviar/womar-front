@@ -10,6 +10,8 @@ import { Carousel as Carousel3D } from '3d-react-carousal';
 import { CardItem } from './components/CardItem';
 import { ItemFooter } from './components/ItemFooter';
 import { Contactanos } from './components/Contactanos';
+import { DialogLogin } from '../../components/navbar/components/DialogLogin';
+import { parseJwt } from '../../utils';
 
 export const HomePage = () => {
   let slides = [
@@ -51,14 +53,29 @@ export const HomePage = () => {
   };
 
   const [openContact, setOpenContact] = useState(false);
+  const [openLogin, setOpenLogin] = useState(false);
+  const { IdUser } = parseJwt();
 
-  const handleOpenContact = () => {
-    console.log('Open modal');
-    setOpenContact(true);
+  const handleCloseDialogLogin = () => {
+    setTimeout(() => {
+      setOpenLogin(false);
+    }, 500);
+  };
+
+  const handleOpenSession = (token: string) => {
+    localStorage.setItem('tokenWomar', token);
   };
 
   const handleCloseContact = () => {
     setOpenContact(false);
+  };
+
+  const verifyLogged = (): void => {
+    if (IdUser) {
+      setOpenContact(true);
+    } else {
+      setOpenLogin(true);
+    }
   };
 
   return (
@@ -173,7 +190,7 @@ export const HomePage = () => {
                 style={{
                   backgroundImage: `url(${require('../../assets/images/ico-avion.png')})`
                 }}
-                onClick={handleOpenContact}
+                onClick={verifyLogged}
               ></div>
               {/* Texto */}
               <p
@@ -195,7 +212,7 @@ export const HomePage = () => {
           <div className="flex justify-center">
             <div
               className="flex flex-col justify-center items-center mx-7"
-              onClick={handleOpenContact}
+              onClick={verifyLogged}
             >
               <div
                 className="bg-center bg-contain bg-no-repeat w-16 h-16"
@@ -220,6 +237,13 @@ export const HomePage = () => {
       </footer>
       {openContact && (
         <Contactanos open={openContact} handleClose={handleCloseContact} />
+      )}
+      {openLogin && (
+        <DialogLogin
+          open={openLogin}
+          handleClose={handleCloseDialogLogin}
+          handleOpenSession={handleOpenSession}
+        />
       )}
     </PageBase>
   );

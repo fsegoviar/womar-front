@@ -54,8 +54,8 @@ export const DialogRegister = (props: PropsRegister) => {
       ApellidoPaterno: '',
       ApellidoMaterno: '',
       Rut: '',
-      ComunaId: 0,
-      Telefono: 0,
+      ComunaId: null,
+      Telefono: null,
       Email: '',
       Password: '',
       Role: '',
@@ -324,7 +324,11 @@ export const DialogRegister = (props: PropsRegister) => {
                       width: '100%'
                     }}
                     label="Contraseña *"
-                    {...register('Password', { required: true, minLength: 5 })}
+                    {...register('Password', {
+                      required: true,
+                      minLength: 6,
+                      maxLength: 16
+                    })}
                   />
                   {errors.Password?.type === 'required' && (
                     <span className="text-red-500 text-sm font-light">
@@ -334,6 +338,11 @@ export const DialogRegister = (props: PropsRegister) => {
                   {errors.Password?.type === 'minLength' && (
                     <span className="text-red-500 text-sm font-light">
                       Debe tener como minimo 6 caracteres
+                    </span>
+                  )}
+                  {errors.Password?.type === 'maxLength' && (
+                    <span className="text-red-500 text-sm font-light">
+                      Debe tener como máximo 16 caracteres
                     </span>
                   )}
                   <Box

@@ -85,6 +85,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
   const { categories } = ObtenerCategorias();
   const [files, setFiles] = useState<any[]>([]);
   const [selectedOffer, setSelectedOffer] = useState(true);
+  const [limitImg, setLimitImg] = useState(false);
   const {
     register,
     handleSubmit,
@@ -151,22 +152,19 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
       .finally(() => setLoading(false));
   };
 
-  const onChange = (
-    imageList: ImageListType,
-    addUpdateIndex: number[] | undefined
-  ) => {
+  const onChange = (imageList: ImageListType) => {
     // data for submit
-    console.log(imageList, addUpdateIndex);
-    if (imageList.length <= 5) setCountImg(imageList.length);
-
+    if (imageList.length < 5) {
+      setCountImg(imageList.length);
+    } else {
+      setLimitImg(true);
+    }
     setImages(imageList as never[]);
 
     let blobImg: Blob = new Blob();
 
     imageList.forEach((image: any) => {
       if (image) {
-        // lfistBlobImg.push(new Blob([image.file!], { type: "image/png" }));
-        console.log(`File => `, image.file!);
         let arrFiles = files!;
         arrFiles.push(image.file!);
         setFiles(arrFiles);
@@ -261,6 +259,11 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                       >
                         Arrastra o sube tu imagen {countImg}/5
                       </button>
+                      {limitImg && (
+                        <span className="text-red-500 font-thin">
+                          Limite de imagenes 5
+                        </span>
+                      )}
                     </Grid>
                     &nbsp;
                     <Grid xs={8} className="flex p-5 pl-0">

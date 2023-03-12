@@ -92,7 +92,7 @@ export const Navbar = () => {
           <Toolbar disableGutters className="h-24">
             {/* Logo Womar */}
             <Box
-              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-56 h-14 xs:w-24"
+              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-28 mr-3 h-24 md:m-0 md:w-56 md:h-14 "
               sx={{
                 flexGrow: 1,
                 backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`
@@ -152,7 +152,7 @@ export const Navbar = () => {
         </Container>
       </AppBar>
       {!hiddenMenuResponsive && (
-        <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center z-50 bg-white">
+        <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center z-50 px-5 bg-white">
           <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
             Publicar
           </BtnNavbar>
