@@ -114,7 +114,7 @@ export const Navbar = () => {
               {!isLogged ? (
                 <>
                   <BtnNavbar onClick={() => verifyLoggedOnPublish()}>
-                    Publicar
+                    Publica
                   </BtnNavbar>
                   <BtnNavbar onClick={() => setOpenLogin(true)}>
                     Ingresa
@@ -154,7 +154,7 @@ export const Navbar = () => {
       {!hiddenMenuResponsive && (
         <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center z-50 px-5 bg-white">
           <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
-            Publicar
+            Publica
           </BtnNavbar>
           <BtnNavbar onClick={() => setOpenLogin(true)}>Ingresa</BtnNavbar>
           <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>

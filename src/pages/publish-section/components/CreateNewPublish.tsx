@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   CrearPublicacion,
   ObtenerCategorias,
@@ -124,10 +124,8 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
     //   ? formData.append('TipoId', '1')
     //   : formData.append('TipoId', '2');
     if (selectedOffer) {
-      console.log('Se guarda con Id 1');
       formData.append('TipoId', '1');
     } else {
-      console.log('Se guarda con Id 4');
       formData.append('TipoId', '4');
     }
     formData.append('Titulo', data.title);
@@ -383,10 +381,9 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                             width: '49%'
                           }}
                         >
-                          <InputLabel>Comuna</InputLabel>
+                          <InputLabel>Región</InputLabel>
                           <SelectForm
                             style={{ width: '100%' }}
-                            label="Comuna"
                             required
                             onChange={(evnt) => {
                               if (evnt.target.value) {
@@ -412,7 +409,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                             width: '49%'
                           }}
                           label="Precio *"
-                          {...register('price', { required: true })}
+                          {...register('price', { required: true, min: 1 })}
                         />
                       </Stack>
                     </Grid>

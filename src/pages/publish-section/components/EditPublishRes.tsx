@@ -258,7 +258,7 @@ export const EditPublishRes = (props: PropsDialog) => {
                     <Grid item xs={12} className="flex">
                       <Box className=" flex flex-col items-center justify-center mr-1">
                         <p className="text-md md:text-4xl md:py-5 text-[#000aff]">
-                          Nueva publicación
+                          Editar publicación
                         </p>
                         <Box>
                           <p className="text-md font-thin text-[#949494]">

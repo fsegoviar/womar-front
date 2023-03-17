@@ -240,7 +240,7 @@ export const EditPublish = (props: PropsDialog) => {
           <>
             <Box className="flex items-center justify-between">
               <h1 className="text-4xl py-5 text-[#000aff]">
-                Nueva publicación
+                Editar publicación
               </h1>
               <Box>
                 <p className="text-md font-thin text-[#949494]">

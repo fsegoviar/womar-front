@@ -388,7 +388,7 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                             width: '49%'
                           }}
                         >
-                          <InputLabel>Comuna</InputLabel>
+                          <InputLabel>Región</InputLabel>
                           <SelectForm
                             style={{ width: '100%' }}
                             label="Comuna"

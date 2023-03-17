@@ -202,12 +202,9 @@ export const DialogRegister = (props: PropsRegister) => {
                     fullWidth
                     size="small"
                     sx={{
-                      p: 0,
-                      m: 0,
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      mb: 1
                     }}
                   >
                     <InputLabel>Región</InputLabel>
@@ -278,7 +275,7 @@ export const DialogRegister = (props: PropsRegister) => {
                         style={{
                           margin: errors.Telefono ? '10px 0 0 0' : '10px 0'
                         }}
-                        label="Telefono"
+                        label="Teléfono"
                         {...register('Telefono', {
                           required: true,
                           minLength: 5
