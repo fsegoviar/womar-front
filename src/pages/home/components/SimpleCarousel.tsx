@@ -5,16 +5,16 @@ import { RxDotFilled } from 'react-icons/rx';
 export const SimpleCarousel = () => {
   const slides = [
     {
-      url: require('../../../assets/images/banner-1.jpg')
+      url: require('../../../assets/images/banner-1.png')
     },
     {
-      url: require('../../../assets/images/banner-2.jpg')
+      url: require('../../../assets/images/banner-2.png')
     },
     {
-      url: require('../../../assets/images/banner-3.jpg')
+      url: require('../../../assets/images/banner-3.png')
     },
     {
-      url: require('../../../assets/images/banner-4.jpg')
+      url: require('../../../assets/images/banner-4.png')
     }
   ];
 
