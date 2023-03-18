@@ -7,6 +7,7 @@ import {
 import { ItemFooter } from '../home/components/ItemFooter';
 import { Contactanos } from '../home/components/Contactanos';
 import { AiFillAlert } from 'react-icons/ai';
+import { CardSection } from './CardSection';
 
 export const OtherSectionsPage = () => {
   const [openContact, setOpenContact] = useState(false);
@@ -21,8 +22,31 @@ export const OtherSectionsPage = () => {
 
   return (
     <PageBase>
+      <div className={'w-full mt-10 grid items-center gap-4 grid-cols-12 p-10'}>
+        {/*Ejemplo */}
+        <CardSection
+          bgImage={require('../../assets/images/naves-1.png')}
+          title={'Buceo'}
+          urlNavigate={'buceo'}
+        />
+        <CardSection
+          bgImage={require('../../assets/images/naves-1.png')}
+          title={'Buceo'}
+          urlNavigate={'buceo'}
+        />
+        <CardSection
+          bgImage={require('../../assets/images/naves-1.png')}
+          title={'Buceo'}
+          urlNavigate={'buceo'}
+        />
+        <CardSection
+          bgImage={require('../../assets/images/naves-1.png')}
+          title={'Buceo'}
+          urlNavigate={'buceo'}
+        />
+      </div>
       <div>
-        <div className="h-[70vh] flex justify-center items-center">
+        <div className="flex justify-center items-center">
           <div className="flex flex-col justify-center items-center">
             <AiFillAlert size={48} className="text-gray-500" />
             <p className="text-xl text-gray-500">

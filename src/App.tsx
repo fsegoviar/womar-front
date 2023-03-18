@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
   AdminPage,
+  BuceoPage,
   HomePage,
   MaritimePersonnelPage,
   OtherSectionsPage,
@@ -21,6 +22,7 @@ function App() {
           element={<MaritimePersonnelPage />}
         />
         <Route path={'/otros_servicios'} element={<OtherSectionsPage />} />
+        <Route path={'/otros_servicios/buceo'} element={<BuceoPage />} />
         <Route path={'/perfil/:userId'} element={<UserSectionPage />} />
         <Route path={'/publicar/:userId'} element={<PublishPage />} />
         <Route path={'resultados_busqueda'} element={<ResultSearch />} />

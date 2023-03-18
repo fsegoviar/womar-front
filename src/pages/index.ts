@@ -6,3 +6,4 @@ export * from './publish-section';
 export * from './result-search';
 export * from './administrador';
 export * from './other-sections';
+export * from './other-services-page';
