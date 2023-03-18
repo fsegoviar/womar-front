@@ -6,3 +6,4 @@ export * from './LoadingComponent';
 export * from './SmartPreviewService';
 export * from './detail-publish';
 export * from './SkeletonLoaderSections';
+export * from './NoContent';
