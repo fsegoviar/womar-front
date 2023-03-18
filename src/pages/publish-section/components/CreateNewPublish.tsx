@@ -349,15 +349,17 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                         <SelectForm
                           style={{ width: '100%' }}
                           label="Categoria"
-                          required
-                          onChange={(evnt) => {
-                            if (evnt.target.value) {
-                              setValue(
-                                'categoriaId',
-                                evnt.target.value as number
-                              );
+                          {...register('categoriaId', {
+                            required: true,
+                            onChange: (evnt) => {
+                              if (evnt.target.value) {
+                                setValue(
+                                  'categoriaId',
+                                  evnt.target.value as number
+                                );
+                              }
                             }
-                          }}
+                          })}
                         >
                           {categories.map((categorie, index) => (
                             <MenuItem key={index} value={categorie.id}>
@@ -384,15 +386,17 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
                           <InputLabel>Región</InputLabel>
                           <SelectForm
                             style={{ width: '100%' }}
-                            required
-                            onChange={(evnt) => {
-                              if (evnt.target.value) {
-                                setValue(
-                                  'comunaId',
-                                  evnt.target.value as number
-                                );
+                            {...register('comunaId', {
+                              required: true,
+                              onChange: (evnt) => {
+                                if (evnt.target.value) {
+                                  setValue(
+                                    'comunaId',
+                                    evnt.target.value as number
+                                  );
+                                }
                               }
-                            }}
+                            })}
                           >
                             {comunas.map((comuna, index) => (
                               <MenuItem key={index} value={comuna.id}>

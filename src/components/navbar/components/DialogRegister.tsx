@@ -157,7 +157,8 @@ export const DialogRegister = (props: PropsRegister) => {
                     style={{ marginTop: '10px', width: '100%' }}
                     label="Nombres *"
                     {...register('Nombre', {
-                      required: true
+                      required: true,
+                      minLength: 2
                     })}
                   />
                   {errors.Nombre?.type === 'required' && (
@@ -181,7 +182,10 @@ export const DialogRegister = (props: PropsRegister) => {
                         }}
                         id="surname1"
                         label="Apellido Paterno *"
-                        {...register('ApellidoPaterno', { required: true })}
+                        {...register('ApellidoPaterno', {
+                          required: true,
+                          minLength: 2
+                        })}
                       />
                       {errors.ApellidoPaterno && (
                         <span className="text-red-500 text-sm font-light">
@@ -195,7 +199,10 @@ export const DialogRegister = (props: PropsRegister) => {
                       error={!!errors.ApellidoMaterno}
                       style={{ margin: '10px 0', width: '49%' }}
                       label="Apellido Materno"
-                      {...register('ApellidoMaterno', { required: false })}
+                      {...register('ApellidoMaterno', {
+                        required: false,
+                        minLength: 3
+                      })}
                     />
                   </Stack>
                   <FormControl
@@ -204,7 +211,7 @@ export const DialogRegister = (props: PropsRegister) => {
                     sx={{
                       display: 'flex',
                       justifyContent: 'center',
-                      alignItems: 'center',
+                      alignItems: 'center'
                     }}
                   >
                     <InputLabel>Región</InputLabel>
@@ -246,7 +253,7 @@ export const DialogRegister = (props: PropsRegister) => {
                           required: true,
                           onChange: (e) => {
                             console.log('e', e.target.value);
-                            if (e.target.value !== 'undefine') {
+                            if (e.target.value !== '-') {
                               setInputRut(
                                 String(ChileanRutify.formatRut(e.target.value))
                               );
@@ -255,14 +262,23 @@ export const DialogRegister = (props: PropsRegister) => {
                                 String(ChileanRutify.formatRut(e.target.value))
                               );
                             } else {
-                              setValue('Rut', '');
+                              setInputRut('');
                             }
+                          },
+                          validate: (v) => {
+                            console.log(ChileanRutify.validRut(v));
+                            return ChileanRutify.validRut(v);
                           }
                         })}
                       />
                       {errors.Rut?.type === 'required' && (
                         <span className="text-red-500 text-sm font-light">
                           Rut requerido
+                        </span>
+                      )}
+                      {errors.Rut?.type === 'validate' && (
+                        <span className="text-red-500 text-sm font-light">
+                          Rut invalido
                         </span>
                       )}
                     </div>
