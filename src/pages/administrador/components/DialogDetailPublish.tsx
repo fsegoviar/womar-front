@@ -34,6 +34,7 @@ type PropsDetailPublish = {
   publish: DetailService;
   open: boolean;
   closeModal: () => void;
+  removePublish: () => void;
 };
 export const DialogDetailPublish = (props: PropsDetailPublish) => {
   const modalRef = useRef<HTMLDivElement>(null!);
@@ -65,6 +66,16 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
       props.closeModal();
     }, 1000);
   };
+
+	const removePublish = () => {
+		containerRef.current.classList.add('close');
+    setTimeout(() => {
+      containerRef.current.classList.remove('close');
+      modalRef.current.style.display = 'none';
+      props.closeModal();
+			props.removePublish();
+    }, 1000);
+	}
 
   window.addEventListener(
     'click',
@@ -105,7 +116,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
           }
         }
       )
-      .then(() => closeModal())
+      .then(() => removePublish())
       .catch((error: AxiosError) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };
@@ -316,7 +327,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
                       id="description"
                       fullWidth
                       sx={{ my: 1 }}
-                      label="Observaciones *"
+                      label="Observaciones"
                       onChange={(e) => setMensaje(e.target.value)}
                       multiline
                       rows={2}

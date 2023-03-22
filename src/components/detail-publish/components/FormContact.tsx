@@ -14,10 +14,12 @@ type FormContactType = {
 export const FormContact = ({
   idService,
   closeModal,
+  openMessage,
   loading
 }: {
   idService: string;
   closeModal: () => void;
+  openMessage: () => void;
   loading: (value: boolean) => void;
 }) => {
   const {
@@ -41,9 +43,14 @@ export const FormContact = ({
           }
         }
       )
-      .then(() => closeModal())
+      .then(() => openMessageSuccess())
       .finally(() => loading(false));
   };
+
+	const openMessageSuccess = () => {
+		closeModal()
+		openMessage()
+	}
   return (
     <Box component={'form'} onSubmit={handleSubmit(onSubmit)}>
       <Stack direction="row" sx={{ mb: 1 }} spacing={2}>

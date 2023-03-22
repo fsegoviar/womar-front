@@ -10,7 +10,7 @@ interface PropsPreview {
   price: number;
   address: string;
   urlImgCover: string;
-  openContact: () => void;
+  // openContact: () => void;
 }
 export const CardItemPage = (props: PropsPreview) => {
   const { IdUser } = parseJwt();
@@ -28,7 +28,7 @@ export const CardItemPage = (props: PropsPreview) => {
 
   const verifyIsLogged = () => {
     if (IdUser) {
-      props.openContact();
+      // props.openContact();
     } else {
       setOpenLogin(true);
     }

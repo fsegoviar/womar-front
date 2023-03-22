@@ -11,9 +11,11 @@ import { PageBase } from '../../components/PageBase';
 import { DetailService } from '../../interfaces';
 import axios, { AxiosError } from 'axios';
 import { SkeletonLoaderSections } from '../../components/SkeletonLoaderSections';
+import { DialogSuccess } from '../../components/navbar/components/DialogSuccess';
 
 export const ShipSectionPage = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [openMessage, setOpenMessage] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const [listShips, setListShips] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
@@ -23,6 +25,12 @@ export const ShipSectionPage = () => {
     search: '',
     tipoPublicacion: 1
   });
+
+	const handleCloseDialogSuccess= () => {
+    setTimeout(() => {
+      setOpenMessage(false);
+    }, 500);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -232,8 +240,15 @@ export const ShipSectionPage = () => {
             open={openModal}
             service={serviceSelected!}
             closeModal={() => setOpenModal(false)}
+            openMessage={() => setOpenMessage(true)}
           />
         )}
+				{openMessage && (
+					<DialogSuccess
+						open={openMessage}
+						handleClose={handleCloseDialogSuccess}
+					/>
+      	)}
       </Box>
     </PageBase>
   );

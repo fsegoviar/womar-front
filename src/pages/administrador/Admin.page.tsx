@@ -39,7 +39,7 @@ export const AdminPage = () => {
       setOpenLogin(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [countUsersFetch,publishAcceptFetch,publishRejectFetch]);
 
   const headerUserPanel = (options: any) => {
     return (
@@ -106,13 +106,13 @@ export const AdminPage = () => {
           <CardInfor
             bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Pendientes'}
+            title={'Publicaciones Aceptadas'}
             numberData={publishAccept}
           />
           <CardInfor
             bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Totales'}
+            title={'Publicaciones Rechazadas'}
             numberData={publishReject}
           />
         </Stack>

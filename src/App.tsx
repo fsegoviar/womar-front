@@ -22,7 +22,7 @@ function App() {
           element={<MaritimePersonnelPage />}
         />
         <Route path={'/otros_servicios'} element={<OtherSectionsPage />} />
-        <Route path={'/otros_servicios/buceo'} element={<BuceoPage />} />
+        <Route path={'/otros_servicios/:categoria'} element={<BuceoPage />} />
         <Route path={'/perfil/:userId'} element={<UserSectionPage />} />
         <Route path={'/publicar/:userId'} element={<PublishPage />} />
         <Route path={'resultados_busqueda'} element={<ResultSearch />} />

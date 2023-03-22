@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ObtenerPublicacionesPorEstado } from '../../../services';
 import { Grid } from '@mui/material';
 import { CardPublish } from './CardPublish';
@@ -8,12 +8,22 @@ import { DialogDetailPublish } from './DialogDetailPublish';
 export const PublishAdmin = () => {
   const { publish } = ObtenerPublicacionesPorEstado(1);
   const [openDetail, setOpenDetail] = useState(false);
+  const [listPublish, setListPublish] = useState<any[]>([]);
   const [selectedPublish, setSelectedPublish] = useState<DetailService>(null!);
 
   const handleOpenModal = (item: DetailService) => {
     setOpenDetail(true);
     setSelectedPublish(item);
   };
+
+	const removePublish = () => {
+		let index = listPublish.indexOf(selectedPublish)
+		setListPublish(listPublish.splice(index, 1))
+	}
+
+	useEffect(() => {
+   setListPublish(publish)
+  }, [publish]);
 
   return (
     <>
@@ -38,6 +48,7 @@ export const PublishAdmin = () => {
           publish={selectedPublish}
           open={openDetail}
           closeModal={() => setOpenDetail(false)}
+          removePublish={() => removePublish()}
         />
       )}
     </>

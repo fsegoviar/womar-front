@@ -12,6 +12,7 @@ type DetailPublishType = {
   service: DetailService;
   open: boolean;
   closeModal: () => void;
+  openMessage: () => void;
 };
 
 export const DetailPublish = (props: DetailPublishType) => {
@@ -31,6 +32,10 @@ export const DetailPublish = (props: DetailPublishType) => {
       props.closeModal();
     }, 1000);
   };
+
+	const openMessage = () => {
+		props.openMessage()
+	}
 
   window.addEventListener(
     'click',
@@ -116,6 +121,7 @@ export const DetailPublish = (props: DetailPublishType) => {
                   <FormContact
                     idService={String(props.service.id)}
                     closeModal={closeModal}
+                    openMessage={openMessage}
                     loading={setLoading}
                   />
                 </Grid>

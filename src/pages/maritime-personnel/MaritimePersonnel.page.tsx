@@ -11,8 +11,11 @@ import Box from '@mui/material/Box/Box';
 import { PageBase } from '../../components/PageBase';
 import axios, { AxiosError } from 'axios';
 import { DetailService } from '../../interfaces';
+import { DialogSuccess } from '../../components/navbar/components/DialogSuccess';
+
 
 export const MaritimePersonnelPage = () => {
+  const [openMessage, setOpenMessage] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const [listPublish, setListPublish] = useState<DetailService[]>([]);
@@ -23,6 +26,12 @@ export const MaritimePersonnelPage = () => {
     search: '',
     tipoPublicacion: 1
   });
+
+	const handleCloseDialogSuccess= () => {
+    setTimeout(() => {
+      setOpenMessage(false);
+    }, 500);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -234,8 +243,15 @@ export const MaritimePersonnelPage = () => {
             open={openModal}
             service={serviceSelected!}
             closeModal={() => setOpenModal(false)}
+						openMessage={() => setOpenMessage(true)}
           />
         )}
+				{openMessage && (
+					<DialogSuccess
+						open={openMessage}
+						handleClose={handleCloseDialogSuccess}
+					/>
+      	)}
       </Box>
     </PageBase>
   );

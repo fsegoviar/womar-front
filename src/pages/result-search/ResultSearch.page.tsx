@@ -8,16 +8,24 @@ import {
 } from '../../components';
 import { Box, Grid } from '@mui/material';
 import { DetailService } from '../../interfaces';
+import { DialogSuccess } from '../../components/navbar/components/DialogSuccess';
 
 export const ResultSearch = () => {
   const { state } = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
+  const [openMessage, setOpenMessage] = useState(false);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
     console.log('service', service);
     setServiceSelected(service);
+  };
+
+	const handleCloseDialogSuccess= () => {
+    setTimeout(() => {
+      setOpenMessage(false);
+    }, 500);
   };
 
   return (
@@ -156,8 +164,15 @@ export const ResultSearch = () => {
             open={openModal}
             service={serviceSelected!}
             closeModal={() => setOpenModal(false)}
+            openMessage={() => setOpenMessage(true)}
           />
         )}
+				{openMessage && (
+					<DialogSuccess
+						open={openMessage}
+						handleClose={handleCloseDialogSuccess}
+					/>
+      	)}
       </Box>
     </PageBase>
   );
