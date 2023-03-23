@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface PropsLogin {
   open: boolean;
@@ -9,7 +9,7 @@ export const DialogSuccess = (props: PropsLogin) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
 
-	useEffect(() => {
+  useEffect(() => {
     if (props.open) modalRef.current.style.display = 'flex';
   }, [props.open]);
 
@@ -45,8 +45,8 @@ export const DialogSuccess = (props: PropsLogin) => {
               className="top-0 right-0  h-full border-2 border-[#000aff] bg-white p-10 sm:w-12/12 mr-4 text-center"
               style={{ borderRadius: '70px' }}
             >
-							<h1>Contacto enviado exitosamente.</h1>
-          	</div>
+              <h1>Contacto enviado exitosamente.</h1>
+            </div>
           </div>
         </div>
       </div>

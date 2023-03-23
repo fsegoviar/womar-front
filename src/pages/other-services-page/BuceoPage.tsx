@@ -8,7 +8,7 @@ import { Grid } from '@mui/material';
 import { SkeletonLoaderSections } from '../../components/SkeletonLoaderSections';
 
 export const BuceoPage = () => {
-	const [filter, setFilter] = useState({
+  const [filter] = useState({
     categorias: [1],
     orderBy: true,
     search: '',
@@ -16,10 +16,9 @@ export const BuceoPage = () => {
   });
 
   const [listOthers, setListOthers] = useState<DetailService[]>([]);
-  const [selectedOffer, setSelectedOffer] = useState(true);
   const [load, setLoad] = useState(false);
 
-	useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       setLoad(true);
       await axios
@@ -50,26 +49,24 @@ export const BuceoPage = () => {
       {/*Aqui va el contenido de la sección que debe ser iterable
        llamando al componente CardItemPage
       */}
-			{load && (
-					<Grid item xs={12}>
-						<SkeletonLoaderSections />
-					</Grid>
-				)}
-			{listOthers!.length > 0 &&
-				!load &&
-				listOthers!.map((other, index) => (
-					<Grid item xs={12} key={index} lg={4}>
-						<CardItemPage
-								title={other.titulo}
-								price={other.precio}
-								address={other.direccion}
-								urlImgCover={other.urlImagenPrincipal}
-						/>
-					</Grid>
-			))}
-			{listOthers!.length === 0 && !load && (
-      	<NoContent />
-			)}
+      {load && (
+        <Grid item xs={12}>
+          <SkeletonLoaderSections />
+        </Grid>
+      )}
+      {listOthers!.length > 0 &&
+        !load &&
+        listOthers!.map((other, index) => (
+          <Grid item xs={12} key={index} lg={4}>
+            <CardItemPage
+              title={other.titulo}
+              price={other.precio}
+              address={other.direccion}
+              urlImgCover={other.urlImagenPrincipal}
+            />
+          </Grid>
+        ))}
+      {listOthers!.length === 0 && !load && <NoContent />}
       {/* Aqui va el ComponentDialog de DetailItem */}
       {/*TODO: Falta desarrollar el dialog de DatailItem */}
     </TemplatePage>
