@@ -80,7 +80,7 @@ export const ObtenerPublicacionDeUsuario = () => {
 export const ObtenerPublicacionesPorEstado = (id: number) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [publish, setPublish] = useState<DetailService[]>([]);
+  const [result, setPublish] = useState<DetailService[]>([]);
 
   const fetchData = async () => {
     await axios
@@ -108,7 +108,7 @@ export const ObtenerPublicacionesPorEstado = (id: number) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { publish, loading, error };
+  return { result, loading, error };
 };
 
 export const EditarPublicacion = (data: any, token: string) => {

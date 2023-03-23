@@ -6,7 +6,7 @@ import { DetailService } from '../../../interfaces';
 import { DialogDetailPublish } from './DialogDetailPublish';
 
 export const PublishAdmin = () => {
-  const { publish } = ObtenerPublicacionesPorEstado(1);
+  const { result: publishFetch } = ObtenerPublicacionesPorEstado(1);
   const [openDetail, setOpenDetail] = useState(false);
   const [listPublish, setListPublish] = useState<any[]>([]);
   const [selectedPublish, setSelectedPublish] = useState<DetailService>(null!);
@@ -17,20 +17,22 @@ export const PublishAdmin = () => {
   };
 
 	const removePublish = () => {
-		let index = listPublish.indexOf(selectedPublish)
-		setListPublish(listPublish.splice(index, 1))
+		let newListPublish = listPublish.filter(publish => {
+			return publish !== selectedPublish
+		})
+		setListPublish(newListPublish)
 	}
 
 	useEffect(() => {
-   setListPublish(publish)
-  }, [publish]);
+   setListPublish(publishFetch)
+  }, [publishFetch]);
 
   return (
     <>
-      {publish.length > 0 ? (
+      {listPublish.length > 0 ? (
         <>
           <Grid container>
-            {publish.map((item, index) => (
+            {listPublish.map((item, index) => (
               <Grid item xs={12} md={4} key={index} className="sm:px-3 py-2">
                 <CardPublish
                   publish={item}
