@@ -7,7 +7,8 @@ import { CardInfor } from './components/CardInfor';
 import {
   CantidadUsuario,
   PublicacionesAceptadas,
-  PublicacionesRechazadas
+  PublicacionesRechazadas,
+	PublicacionesPendientes
 } from '../../services';
 import { BsPeopleFill } from 'react-icons/bs';
 import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
@@ -24,9 +25,11 @@ export const AdminPage = () => {
   const [countUsers, setCountUsers] = useState(0);
   const [publishAccept, setPublishAccept] = useState(0);
   const [publishReject, setPublishReject] = useState(0);
+  const [publishPending, setPublishPending] = useState(0);
   const { result: countUsersFetch } = CantidadUsuario();
   const { result: publishAcceptFetch } = PublicacionesAceptadas();
   const { result: publishRejectFetch } = PublicacionesRechazadas();
+  const { result: publishPendingFetch } = PublicacionesPendientes();
 
   const { IdUser } = parseJwt();
 
@@ -35,11 +38,12 @@ export const AdminPage = () => {
       setCountUsers(countUsersFetch);
       setPublishAccept(publishAcceptFetch);
       setPublishReject(publishRejectFetch);
+      setPublishPending(publishPendingFetch);
     } else {
       setOpenLogin(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countUsersFetch,publishAcceptFetch,publishRejectFetch]);
+  }, [countUsersFetch,publishAcceptFetch,publishRejectFetch,publishPendingFetch]);
 
   const headerUserPanel = (options: any) => {
     return (
@@ -114,6 +118,12 @@ export const AdminPage = () => {
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
             title={'Publicaciones Rechazadas'}
             numberData={publishReject}
+          />
+					<CardInfor
+            bgCard="#000aff"
+            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+            title={'Publicaciones Pendientes'}
+            numberData={publishPending}
           />
         </Stack>
         <Divider sx={{ my: 4 }} />
