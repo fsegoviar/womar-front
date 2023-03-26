@@ -5,8 +5,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select,
-  Stack
+  Select
 } from '@mui/material';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -166,15 +165,12 @@ export const DialogRegister = (props: PropsRegister) => {
                       Nombre requerido
                     </span>
                   )}
-                  <Stack
-                    direction="row"
-                    sx={{ mb: 1, justifyContent: 'space-around' }}
-                    spacing={2}
-                  >
+                  <div className="columns-2">
                     <div className="flex flex-col">
                       <InputForm
                         size="small"
                         error={!!errors.ApellidoPaterno}
+                        className="w-full"
                         style={{
                           margin: errors.ApellidoPaterno
                             ? '10px 0 0 0'
@@ -187,9 +183,15 @@ export const DialogRegister = (props: PropsRegister) => {
                           minLength: 2
                         })}
                       />
-                      {errors.ApellidoPaterno && (
+                      {errors.ApellidoPaterno?.type === 'required' && (
                         <span className="text-red-500 text-sm font-light">
                           Apellido Paterno requerido
+                        </span>
+                      )}
+
+                      {errors.ApellidoPaterno?.type === 'minLength' && (
+                        <span className="text-red-500 text-sm font-light">
+                          Debe contener más de 2 caracteres
                         </span>
                       )}
                     </div>
@@ -197,14 +199,19 @@ export const DialogRegister = (props: PropsRegister) => {
                     <InputForm
                       size="small"
                       error={!!errors.ApellidoMaterno}
-                      style={{ margin: '10px 0', width: '49%' }}
+                      style={{ margin: '10px 0', width: '100%' }}
                       label="Apellido Materno"
                       {...register('ApellidoMaterno', {
                         required: false,
                         minLength: 3
                       })}
                     />
-                  </Stack>
+                    {errors.ApellidoMaterno?.type === 'minLength' && (
+                      <span className="text-red-500 text-sm font-light">
+                        Debe contener más de 2 caracteres
+                      </span>
+                    )}
+                  </div>
                   <FormControl
                     fullWidth
                     size="small"
@@ -236,11 +243,7 @@ export const DialogRegister = (props: PropsRegister) => {
                       </span>
                     )}
                   </FormControl>
-                  <Stack
-                    direction="row"
-                    sx={{ my: 1, justifyContent: 'space-around' }}
-                    spacing={2}
-                  >
+                  <div className="columns-2">
                     <div className="flex flex-col">
                       <InputForm
                         id="rut"
@@ -297,13 +300,18 @@ export const DialogRegister = (props: PropsRegister) => {
                           minLength: 5
                         })}
                       />
-                      {errors.Telefono && (
+                      {errors.Telefono?.type === 'required' && (
                         <span className="text-red-500 text-sm font-light">
                           Telefono requerido
                         </span>
                       )}
+                      {errors.Telefono?.type === 'minLength' && (
+                        <span className="text-red-500 text-sm font-light">
+                          Debe tener más de 5 dígitos
+                        </span>
+                      )}
                     </div>
-                  </Stack>
+                  </div>
                   <InputForm
                     error={!!errors.Email}
                     type={'email'}
