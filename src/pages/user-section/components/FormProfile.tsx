@@ -119,10 +119,16 @@ export const FormProfile = ({
           }}
         >
           {!urlImage && (
-            <p className="absolute top-0 left-0 cursor-pointer">
-              Ingresa tu imagen de perfil aqui
-            </p>
+            <div
+              className="absolute top-0 left-0 cursor-pointer px-5 py-10"
+              style={{ border: '2px solid #000aff', borderRadius: '20px' }}
+            >
+              <p className="w-full text-center">
+                Ingresa tu imagen de perfil aqui
+              </p>
+            </div>
           )}
+
           <input
             type="file"
             accept="image/*"
@@ -181,7 +187,7 @@ export const FormProfile = ({
                 mb: 1
               }}
             >
-              <InputLabel>Dirección (opcional)</InputLabel>
+              <InputLabel>Región (opcional)</InputLabel>
               <SelectForm
                 style={{ width: '100%' }}
                 label="Categoria"

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
+  CategoriesResponsive,
   ContainCategories,
   DetailPublish,
   PageBase,
+  SkeletonLoaderSections,
   SmartPreviewService
 } from '../../components';
 import { Box, Grid } from '@mui/material';
@@ -15,6 +17,14 @@ export const ResultSearch = () => {
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const [openMessage, setOpenMessage] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState(true);
+  const [filter, setFilter] = useState({
+    categorias: [1],
+    orderBy: true,
+    search: '',
+    tipoPublicacion: 1
+  });
+  const [load] = useState(false);
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
@@ -22,7 +32,7 @@ export const ResultSearch = () => {
     setServiceSelected(service);
   };
 
-	const handleCloseDialogSuccess= () => {
+  const handleCloseDialogSuccess = () => {
     setTimeout(() => {
       setOpenMessage(false);
     }, 500);
@@ -36,32 +46,50 @@ export const ResultSearch = () => {
           <Grid
             item
             xs={12}
-            className="w-full"
+            className="w-full h-auto relative"
             sx={{
-              height: '110px',
+              height: 'auto',
               background:
                 'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
             }}
           >
             <Grid container className="h-full">
-              <Grid item xs={3}>
-                <div className="flex justify-center items-center w-full h-full">
-                  <p className="text-3xl font-thin pr-5 text-white">Filtros</p>
+              <Grid item xs={12} sm={3} className="pt-5">
+                <div className="flex  justify-center items-center w-full h-full">
+                  <p className="text-xl font-thin pr-5 text-white">Filtros</p>
                   <Box
                     className="rounded-full bg-white"
                     style={{ border: '1px solid #000aff' }}
                   >
-                    <button className="text-[#000aff] px-10 py-1 text-xl bg-[#00e9ba] rounded-full">
+                    <button
+                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      style={{
+                        backgroundColor: selectedOffer ? '#00e9ba' : 'white'
+                      }}
+                      onClick={() => {
+                        setSelectedOffer(true);
+                        setFilter({ ...filter, tipoPublicacion: 1 });
+                      }}
+                    >
                       Buscan
                     </button>
-                    <button className="text-[#000aff] px-10 py-1 text-xl rounded-full">
+                    <button
+                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      style={{
+                        backgroundColor: !selectedOffer ? '#00e9ba' : 'white'
+                      }}
+                      onClick={() => {
+                        setSelectedOffer(false);
+                        setFilter({ ...filter, tipoPublicacion: 4 });
+                      }}
+                    >
                       Ofrecen
                     </button>
                   </Box>
                 </div>
               </Grid>
-              <Grid item xs={6} className="h-full flex">
-                <div className="flex flex-col h-full justify-center">
+              <Grid item xs={12} sm={6} className="flex justify-center py-5">
+                <div className="flex flex-col h-full justify-center ">
                   <div className="flex items-center mb-4">
                     <input
                       id="default-checkbox"
@@ -122,9 +150,9 @@ export const ResultSearch = () => {
                   </div>
                 </div>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} className="hidden sm:grid">
                 <div className="flex justify-center items-center w-full h-full">
-                  <p className="text-white font-bold text-3xl">Embarcaciones</p>
+                  <p className="text-white font-bold text-3xl">Resultados</p>
                   <div
                     className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"
                     style={{
@@ -137,24 +165,33 @@ export const ResultSearch = () => {
           </Grid>
           <Grid item xs={12} md={12} className="px-10">
             <Grid container sx={{ my: 5 }} spacing={2}>
+              {load && (
+                <Grid item xs={12}>
+                  <SkeletonLoaderSections />
+                </Grid>
+              )}
               {state!.length > 0 &&
-                state!.map((ship: any, index: any) => (
+                !load &&
+                state!.map((state: any, index: any) => (
                   <Grid item xs={12} key={index} lg={4}>
                     <SmartPreviewService
                       key={index}
-                      title={ship.titulo}
-                      price={ship.precio}
-                      direccion={ship.direccion}
-                      urlImgCover={ship.urlImagenPrincipal}
-                      openContact={() => openModalContact(ship)}
+                      title={state.titulo}
+                      price={state.precio}
+                      direccion={state.direccion}
+                      urlImgCover={state.urlImagenPrincipal}
+                      openContact={() => openModalContact(state)}
                     />
                   </Grid>
                 ))}
-              {state.length === 0 && (
+              {state!.length === 0 && !load && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
-              <section className="my-10 flex flex-col justify-center items-center w-full md:flex-row ">
+              <section className="hidden sm:flex my-10 flex-col justify-center items-center w-full md:flex-row ">
                 <ContainCategories />
+              </section>
+              <section className="my-5 flex sm:hidden justify-center w-full ">
+                <CategoriesResponsive />
               </section>
             </Grid>
           </Grid>
@@ -167,12 +204,12 @@ export const ResultSearch = () => {
             openMessage={() => setOpenMessage(true)}
           />
         )}
-				{openMessage && (
-					<DialogSuccess
-						open={openMessage}
-						handleClose={handleCloseDialogSuccess}
-					/>
-      	)}
+        {openMessage && (
+          <DialogSuccess
+            open={openMessage}
+            handleClose={handleCloseDialogSuccess}
+          />
+        )}
       </Box>
     </PageBase>
   );

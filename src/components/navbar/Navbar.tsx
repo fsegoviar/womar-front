@@ -51,6 +51,7 @@ export const Navbar = () => {
   const handleCloseSession = () => {
     setIsLogged(false);
     localStorage.removeItem('tokenWomar');
+    navigate('/');
   };
 
   const handleCloseDialogLogin = () => {
@@ -156,8 +157,20 @@ export const Navbar = () => {
           <BtnNavbar onClick={() => navigate(`/publicar/${IdUser}`)}>
             Publica
           </BtnNavbar>
-          <BtnNavbar onClick={() => setOpenLogin(true)}>Ingresa</BtnNavbar>
-          <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
+          <BtnNavbar
+            onClick={() => {
+              setOpenLogin(true);
+              setHiddenMenuResponsive(true);
+            }}
+          >
+            Ingresa
+          </BtnNavbar>
+          <BtnNavbar
+            onClick={() => {
+              setOpenRegisterLocal(true);
+              setHiddenMenuResponsive(true);
+            }}
+          >
             Registrate
           </BtnNavbar>
         </div>
