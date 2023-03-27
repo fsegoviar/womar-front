@@ -10,8 +10,22 @@ import {
   ShipSectionPage,
   UserSectionPage
 } from './pages';
+import { useDispatch } from 'react-redux';
+import { changeStateLogin } from './store/loginSlice';
+import { ObtenerInfoUsuario } from './services';
+import { useEffect } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+  const { fetchData } = ObtenerInfoUsuario();
+
+  useEffect(() => {
+    fetchData().then((response: any) => {
+      if (response.error) dispatch(changeStateLogin(false));
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <BrowserRouter>
       <Routes>

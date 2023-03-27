@@ -21,25 +21,17 @@ export const UserMenu = (props: PropsMenu) => {
   const { fetchData } = ObtenerInfoUsuario();
 
   useEffect(() => {
-    const fetch = async () => {
-      await fetchData()
-        .then((response: any) => {
-          if (response.result.imgPerfil) {
-            setUrlImgUser(response.result.imgPerfil);
-          }
-          setInfoUser(response.result);
+    fetchData()
+      .then((response: any) => {
+        if (response.result.imgPerfil) {
+          setUrlImgUser(response.result.imgPerfil);
+        }
+        setInfoUser(response.result);
+      })
+      .catch((error: any) => {
+        localStorage.removeItem('tokenWomar');
+      });
 
-          if (response.error) {
-            localStorage.removeItem('tokenWomar');
-            window.location.reload();
-          }
-        })
-        .catch((error: any) => {
-          localStorage.removeItem('tokenWomar');
-        });
-    };
-
-    fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

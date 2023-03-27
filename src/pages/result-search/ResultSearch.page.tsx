@@ -28,7 +28,6 @@ export const ResultSearch = () => {
 
   const openModalContact = (service: DetailService) => {
     setOpenModal(true);
-    console.log('service', service);
     setServiceSelected(service);
   };
 

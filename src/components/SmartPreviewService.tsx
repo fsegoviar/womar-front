@@ -4,6 +4,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { parseJwt } from '../utils';
 import { DialogLogin } from './navbar/components/DialogLogin';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeStateLogin } from '../store/loginSlice';
 
 interface PropsPreview {
   title: string;
@@ -16,6 +18,7 @@ interface PropsPreview {
 export const SmartPreviewService = (props: PropsPreview) => {
   const { IdUser } = parseJwt();
   const [openLogin, setOpenLogin] = useState(false);
+  const dispatch = useDispatch();
 
   const handleCloseDialogLogin = () => {
     setTimeout(() => {
@@ -25,6 +28,7 @@ export const SmartPreviewService = (props: PropsPreview) => {
 
   const handleOpenSession = (token: string) => {
     localStorage.setItem('tokenWomar', token);
+    dispatch(changeStateLogin(true));
   };
 
   const verifyIsLogged = () => {

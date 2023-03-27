@@ -9,6 +9,10 @@ import { TypeUser } from '../../interfaces';
 import { UserMenu } from './components/UserMenu';
 import { DialogLogin } from './components/DialogLogin';
 import { DialogRegister } from './components/DialogRegister';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { changeStateLogin } from '../../store/loginSlice';
+import { useDispatch } from 'react-redux';
 
 export const BtnNavbar = styled.button`
   color: #000afe;
@@ -43,13 +47,15 @@ export const Navbar = () => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegisterLocal, setOpenRegisterLocal] = useState(false);
   const { IdUser } = parseJwt();
-  const [isLogged, setIsLogged] = useState(
-    !!localStorage.getItem('tokenWomar')
-  );
+  // const [isLogged, setIsLogged] = useState(
+  //   !!localStorage.getItem('tokenWomar')
+  // );
   const [hiddenMenuResponsive, setHiddenMenuResponsive] = useState(true);
+  const isLogin = useSelector((state: RootState) => state.login.logged);
+  const dispatch = useDispatch();
 
   const handleCloseSession = () => {
-    setIsLogged(false);
+    dispatch(changeStateLogin(false));
     localStorage.removeItem('tokenWomar');
     navigate('/');
   };
@@ -62,8 +68,8 @@ export const Navbar = () => {
 
   const handleOpenSession = (token: string) => {
     localStorage.setItem('tokenWomar', token);
-
-    setIsLogged(true);
+    dispatch(changeStateLogin(true));
+    // setIsLogged(true);
   };
 
   const verifyLoggedOnPublish = (): void => {
@@ -112,7 +118,7 @@ export const Navbar = () => {
             </Box>
             {/* Botones */}
             <div className="hidden sm:block">
-              {!isLogged ? (
+              {!isLogin ? (
                 <>
                   <BtnNavbar onClick={() => verifyLoggedOnPublish()}>
                     Publica
