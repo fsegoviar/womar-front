@@ -53,10 +53,17 @@ export const PublishPage = () => {
       setListPublish(newListPublish);
     }
 
+    console.log('Publicación a cambiar =>', idPublishSelected);
+
     axios
       .post(
         `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado`,
-        { idPubicacion: idPublishSelected }
+        { idPublicacion: idPublishSelected },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+          }
+        }
       )
       .finally(() => setOpenModalDelete(false));
   };
