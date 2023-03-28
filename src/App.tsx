@@ -12,6 +12,7 @@ import {
 } from './pages';
 import { useDispatch } from 'react-redux';
 import { changeStateLogin } from './store/loginSlice';
+import { updateInfoUser } from './store/userSlice';
 import { ObtenerInfoUsuario } from './services';
 import { useEffect } from 'react';
 
@@ -21,7 +22,11 @@ function App() {
 
   useEffect(() => {
     fetchData().then((response: any) => {
-      if (response.error) dispatch(changeStateLogin(false));
+      if (response.error) {
+        dispatch(changeStateLogin(false));
+      } else {
+        dispatch(updateInfoUser(response.result.rol));
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
