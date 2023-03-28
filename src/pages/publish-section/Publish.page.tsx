@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import { Box, Container } from '@mui/system';
 import { PageBase } from '../../components/PageBase';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DetailService } from '../../interfaces';
 import { DisabledPublish } from './components/DisabledPublish';
 import { PublishComponent } from './components/PublishComponent';
@@ -13,15 +13,24 @@ import { EditPublish } from './components/EditPublish';
 import { CreateNewPublishRes } from './components/CreateNewPublishRes';
 import { ObtenerPublicacionDeUsuario } from '../../services';
 import { EditPublishRes } from './components/EditPublishRes';
+import axios from 'axios';
 
 export const PublishPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const { userId } = useParams();
   const { publishUser, loading } = ObtenerPublicacionDeUsuario();
   const [publishSelected, setPublishSelected] = useState<DetailService>();
+  const [listPublish, setListPublish] = useState<DetailService[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [idPublishDelete, setIdPublishDelete] = useState('');
+
+  useEffect(() => {
+    if (publishUser) setListPublish(publishUser);
+
+    console.log('List Publish =>', listPublish);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishUser]);
 
   const closeModal = () => setOpenModal(false);
 
@@ -33,6 +42,22 @@ export const PublishPage = () => {
   const deletePublish = (idPublish: string) => {
     setOpenModalDelete(true);
     setIdPublishDelete(idPublish);
+
+    let findPublish = listPublish.find((publish) => publish.id !== idPublish);
+    let newListPublish = listPublish.filter(
+      (publish) => publish.id !== idPublish
+    );
+
+    if (findPublish) {
+      findPublish.estado = 'DESACTIVADA';
+      newListPublish.push(findPublish);
+      setListPublish(newListPublish);
+    }
+
+    axios.post(
+      `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado`,
+      { idPubicacion: idPublish }
+    );
   };
 
   return (
@@ -87,10 +112,16 @@ export const PublishPage = () => {
           <Grid item xs={12} sm={11} sx={{ mt: 5 }}>
             <Grid container>
               {loading && <SkeletonLoader />}
-              {publishUser.length > 0 &&
+              {listPublish.length > 0 &&
                 !loading &&
-                publishUser.map((publish) => (
-                  <Grid item xs={12} sm={4} className="sm:px-3 py-2">
+                listPublish.map((publish, index) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={4}
+                    key={index}
+                    className="sm:px-3 py-2"
+                  >
                     <PublishComponent
                       key={publish.id}
                       publish={publish}

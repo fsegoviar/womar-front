@@ -53,6 +53,18 @@ export const PublishComponent = (props: PropsPublish) => {
             </p>
           </div>
         );
+      case StatusPublish.DESACTIVADA:
+        return (
+          <div className="w-full flex justify-center">
+            <p
+              className="p-0 text-gray-300 text-sm text-right  py-1 px-5 rounded-full flex items-center"
+              style={{ border: '2px solid gray' }}
+            >
+              <AiFillCloseCircle size={20} className="mr-1" />
+              <span>Desactivada</span>
+            </p>
+          </div>
+        );
       default:
         break;
     }

@@ -17,5 +17,6 @@ export type DetailService = {
 export enum StatusPublish {
   RECHAZADA = 'RECHAZADA',
   ACEPTADA = 'ACEPTADA',
-  PENDIENTE = 'PENDIENTE'
+  PENDIENTE = 'PENDIENTE',
+  DESACTIVADA = 'DESACTIVADA'
 }
