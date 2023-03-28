@@ -23,7 +23,8 @@ export const PublishPage = () => {
   const [listPublish, setListPublish] = useState<DetailService[]>([]);
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
-  const [idPublishDelete, setIdPublishDelete] = useState('');
+  const [idPublishSelected, setIdPublishSelected] = useState('');
+  const [isActivePublish, setIsActivePublish] = useState(false);
 
   useEffect(() => {
     if (publishUser) setListPublish(publishUser);
@@ -38,26 +39,26 @@ export const PublishPage = () => {
     setPublishSelected(publish);
     setOpenModalEdit(true);
   };
-
-  const deletePublish = (idPublish: string) => {
-    setOpenModalDelete(true);
-    setIdPublishDelete(idPublish);
-
-    let findPublish = listPublish.find((publish) => publish.id !== idPublish);
+  const handleDisabledPublish = (isEnabled: boolean) => {
+    let findPublish = listPublish.find(
+      (publish) => publish.id === idPublishSelected
+    );
     let newListPublish = listPublish.filter(
-      (publish) => publish.id !== idPublish
+      (publish) => publish.id !== idPublishSelected
     );
 
     if (findPublish) {
-      findPublish.estado = 'DESACTIVADA';
+      findPublish.activa = !isEnabled;
       newListPublish.push(findPublish);
       setListPublish(newListPublish);
     }
 
-    axios.post(
-      `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado`,
-      { idPubicacion: idPublish }
-    );
+    axios
+      .post(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ActualizarEstado`,
+        { idPubicacion: idPublishSelected }
+      )
+      .finally(() => setOpenModalDelete(false));
   };
 
   return (
@@ -125,12 +126,15 @@ export const PublishPage = () => {
                     <PublishComponent
                       key={publish.id}
                       publish={publish}
-                      deletePublish={deletePublish}
                       editPublish={editPublish}
+                      isActivePublish={setIsActivePublish}
+                      openModal={setOpenModal}
+                      openModalDelete={setOpenModalDelete}
+                      idPublishSelected={setIdPublishSelected}
                     />
                   </Grid>
                 ))}
-              {publishUser.length === 0 && !loading && (
+              {listPublish.length === 0 && !loading && (
                 <h1>No existen publicaciones para esta sección</h1>
               )}
             </Grid>
@@ -173,7 +177,8 @@ export const PublishPage = () => {
         <DisabledPublish
           open={openModalDelete}
           handleClose={() => setOpenModalDelete(false)}
-          idPublicacion={idPublishDelete}
+          isActive={isActivePublish}
+          handleDisabled={handleDisabledPublish}
         />
       )}
     </PageBase>

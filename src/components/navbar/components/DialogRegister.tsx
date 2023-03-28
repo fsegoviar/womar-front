@@ -101,8 +101,8 @@ export const DialogRegister = (props: PropsRegister) => {
     formData.append('ApellidoPaterno', data.ApellidoPaterno);
     data.ApellidoMaterno
       ? formData.append('ApellidoMaterno', String(data.ApellidoMaterno))
-      : formData.append('ApellidoMaterno', '');
-    formData.append('ComunaId', String(data.ComunaId));
+      : formData.append('ApellidoMaterno', '-');
+    formData.append('RegionId', String(data.ComunaId));
     formData.append('Rut', data.Rut);
     data.Telefono
       ? formData.append('Telefono', String(data.Telefono))
