@@ -1,14 +1,14 @@
 import { Container } from '@mui/system';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import { PageBase } from '../../components/PageBase';
-import { Divider, Stack } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
 import { CardInfor } from './components/CardInfor';
 
 import {
   CantidadUsuario,
   PublicacionesAceptadas,
   PublicacionesRechazadas,
-	PublicacionesPendientes
+  PublicacionesPendientes
 } from '../../services';
 import { BsPeopleFill } from 'react-icons/bs';
 import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
@@ -18,6 +18,10 @@ import { PublishAdmin } from './components/PublishAdmin';
 import { useEffect, useState } from 'react';
 import { parseJwt } from '../../utils';
 import { DialogLogin } from '../../components/navbar/components/DialogLogin';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { changeStateLogin } from '../../store/loginSlice';
+import { useDispatch } from 'react-redux';
 
 export const AdminPage = () => {
   const [openLogin, setOpenLogin] = useState(false);
@@ -27,9 +31,11 @@ export const AdminPage = () => {
   const [publishReject, setPublishReject] = useState(0);
   const [publishPending, setPublishPending] = useState(0);
   const { result: countUsersFetch } = CantidadUsuario();
-  const { result: publishAcceptFetch } = PublicacionesAceptadas();
+  const { result: publishAcceptFetch, error } = PublicacionesAceptadas();
   const { result: publishRejectFetch } = PublicacionesRechazadas();
   const { result: publishPendingFetch } = PublicacionesPendientes();
+  const isLogin = useSelector((state: RootState) => state.login.logged);
+  const dispatch = useDispatch();
 
   const { IdUser } = parseJwt();
 
@@ -43,7 +49,12 @@ export const AdminPage = () => {
       setOpenLogin(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countUsersFetch,publishAcceptFetch,publishRejectFetch,publishPendingFetch]);
+  }, [
+    countUsersFetch,
+    publishAcceptFetch,
+    publishRejectFetch,
+    publishPendingFetch
+  ]);
 
   const headerUserPanel = (options: any) => {
     return (
@@ -66,6 +77,7 @@ export const AdminPage = () => {
 
   const handleOpenSession = (token: string) => {
     localStorage.setItem('tokenWomar', token);
+    dispatch(changeStateLogin(true));
   };
 
   const headerPublishPanel = (options: any) => {
@@ -92,6 +104,25 @@ export const AdminPage = () => {
           mt: 10
         }}
       >
+        {error && isLogin && (
+          <Box
+            sx={{
+              width: '100%',
+              padding: '20px 0',
+              border: '2px solid red',
+              marginBottom: '10px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: '10px'
+            }}
+          >
+            <Typography variant="h6" color="red">
+              El usuario no contiene Permisos de administrador. Ingrese con otra
+              cuenta o recargue la página para intentar nuevamente
+            </Typography>
+          </Box>
+        )}
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={{ xs: 1, sm: 2, md: 12 }}
@@ -119,7 +150,7 @@ export const AdminPage = () => {
             title={'Publicaciones Rechazadas'}
             numberData={publishReject}
           />
-					<CardInfor
+          <CardInfor
             bgCard="#000aff"
             icon={<PeopleAltIcon sx={{ mx: 1 }} />}
             title={'Publicaciones Pendientes'}
