@@ -5,6 +5,8 @@ export type DetailService = {
   imagenes: string[];
   direccion: string;
   categoria: string;
+  categoriaId: number;
+  subCategoriaId: number;
   precio: number;
   titulo: string;
   tipo: string;
@@ -12,6 +14,7 @@ export type DetailService = {
   usuarioPublicante: string;
   activa: boolean;
   estado: string;
+  regionId: number;
 };
 
 export enum StatusPublish {

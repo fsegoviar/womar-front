@@ -60,7 +60,6 @@ type PropsDialog = {
 export const EditPublish = (props: PropsDialog) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
-  const [disabledSection, setDisabledSection] = useState(true);
   const { regiones } = ObtenerRegiones();
   const { categories } = ObtenerCategorias();
   const {
@@ -74,7 +73,10 @@ export const EditPublish = (props: PropsDialog) => {
       titulo: props.publish.titulo,
       // comunaId: props.publish.comuna.id,
       descripcion: props.publish.descripcion,
-      precio: props.publish.precio
+      precio: props.publish.precio,
+      categoriaId: props.publish.categoriaId,
+      regionId: props.publish.regionId,
+      subCategoriaId: props.publish.subCategoriaId
     }
   });
 
@@ -93,6 +95,19 @@ export const EditPublish = (props: PropsDialog) => {
     generateImgCarusel();
     generateImgUploaded();
     if (props.open) modalRef.current.style.display = 'flex';
+
+    axios
+      .get(
+        `${process.env.REACT_APP_URL_BACKEND}/Publicaciones/ObtenerSubCategorias/${props.publish.categoriaId}`
+      )
+      .then((response: any) => {
+        console.log('Obtener Subcategorias =>', response);
+        setSubCategorias(response.data);
+      })
+      .catch((error: AxiosError) =>
+        console.log('Error en ObtenerSubcategorias =>', error)
+      );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.open]);
 
@@ -139,16 +154,24 @@ export const EditPublish = (props: PropsDialog) => {
     console.log('Data', data);
 
     let formData = new FormData();
-    formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
-    for (const img of imgAgregadas) {
-      formData.append('NuevasFotos', img);
-    }
-    if (imgBorradas.length !== 0) {
-      for (const img of imgBorradas) {
-        formData.append('FotosRemovidas', img);
+    if (imgAgregadas.length === 0 && imgBorradas.length === 0) {
+      formData.append('NuevaImagenPrincipal', props.publish.imagenes[0]);
+      for (const img of props.publish.imagenes) {
+        formData.append('NuevasFotos', img);
       }
-    } else {
       formData.append('FotosRemovidas', '');
+    } else {
+      formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
+      for (const img of imgAgregadas) {
+        formData.append('NuevasFotos', img);
+      }
+      if (imgBorradas.length !== 0) {
+        for (const img of imgBorradas) {
+          formData.append('FotosRemovidas', img);
+        }
+      } else {
+        formData.append('FotosRemovidas', '');
+      }
     }
     formData.append('PublicacionId', props.publish.id);
     formData.append('Titulo', data.titulo);
@@ -200,7 +223,6 @@ export const EditPublish = (props: PropsDialog) => {
       .catch((error: AxiosError) =>
         console.log('Error en ObtenerSubcategorias =>', error)
       );
-    setDisabledSection(false);
   };
 
   const onChange = (
@@ -394,7 +416,13 @@ export const EditPublish = (props: PropsDialog) => {
                             Seleccione categoría
                           </option>
                           {categories.map((categorie, index) => (
-                            <option key={index} value={categorie.id!}>
+                            <option
+                              key={index}
+                              value={categorie.id!}
+                              selected={
+                                categorie.id === props.publish.categoriaId
+                              }
+                            >
                               {categorie.nombre}
                             </option>
                           ))}
@@ -407,7 +435,6 @@ export const EditPublish = (props: PropsDialog) => {
                       </div>
                       <div className="flex flex-col">
                         <SelectInputForm
-                          disabled={disabledSection}
                           {...register('subCategoriaId', {
                             required: true,
                             onChange(event: SelectChangeEvent) {
@@ -420,7 +447,14 @@ export const EditPublish = (props: PropsDialog) => {
                           </option>
                           {subCategorias.map(
                             (subCategoria: any, index: any) => (
-                              <option key={index} value={subCategoria.id!}>
+                              <option
+                                key={index}
+                                value={subCategoria.id!}
+                                selected={
+                                  subCategoria.id ===
+                                  props.publish.subCategoriaId
+                                }
+                              >
                                 {subCategoria.nombre}
                               </option>
                             )
@@ -451,7 +485,11 @@ export const EditPublish = (props: PropsDialog) => {
                               Seleccione región
                             </option>
                             {regiones.map((region, index) => (
-                              <option key={index} value={region.id!}>
+                              <option
+                                key={index}
+                                value={region.id!}
+                                selected={region.id === props.publish.regionId}
+                              >
                                 {region.nombre}
                               </option>
                             ))}
