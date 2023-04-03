@@ -19,14 +19,16 @@ export const ShipSectionPage = () => {
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const [listShips, setListShips] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
+  const [listSubcategorias, setListSubcategorias] = useState<number[]>([]);
   const [filter, setFilter] = useState({
-    categorias: [1],
+    subCategorias: [1, 2, 3, 4, 5, 6, 7, 8],
+    categorias: 1,
     orderBy: true,
     search: '',
     tipoPublicacion: 1
   });
 
-	const handleCloseDialogSuccess= () => {
+  const handleCloseDialogSuccess = () => {
     setTimeout(() => {
       setOpenMessage(false);
     }, 500);
@@ -64,6 +66,34 @@ export const ShipSectionPage = () => {
     setOpenModal(true);
     console.log('service', service);
     setServiceSelected(service);
+  };
+
+  const handleChangeSubCategoria = (
+    idSubcategoria: number,
+    checked: boolean
+  ) => {
+    checked
+      ? addSubcategoria(idSubcategoria)
+      : removeSubCategoria(idSubcategoria);
+  };
+
+  const addSubcategoria = (idSubCategoria: number) => {
+    let newListSubcategoria = listSubcategorias;
+    newListSubcategoria.push(idSubCategoria);
+
+    setListSubcategorias(newListSubcategoria);
+
+    setFilter({ ...filter, subCategorias: newListSubcategoria });
+  };
+
+  const removeSubCategoria = (idSubCategoria: number) => {
+    let filterSubcategoria = listSubcategorias.filter(
+      (id: number) => id !== idSubCategoria
+    );
+
+    setListSubcategorias(filterSubcategoria);
+
+    setFilter({ ...filter, subCategorias: filterSubcategoria });
   };
 
   return (
@@ -131,60 +161,143 @@ export const ShipSectionPage = () => {
                 <div className="flex flex-col h-full justify-center ">
                   <div className="flex items-center mb-4">
                     <input
-                      id="default-checkbox"
+                      id="barco-checkbox"
                       type="checkbox"
-                      value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(1, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="default-checkbox"
+                      htmlFor="barco-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Default checkbox
+                      Barco
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
-                      id="checked-checkbox"
+                      id="barcaza-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(2, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="checked-checkbox"
+                      htmlFor="barcaza-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Checked state
+                      Barcaza
                     </label>
                   </div>
                 </div>
                 <div className="flex flex-col h-full justify-center ml-4">
                   <div className="flex items-center mb-4">
                     <input
-                      id="default-checkbox"
+                      id="catamaran-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(3, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="default-checkbox"
+                      htmlFor="catamaran-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Default checkbox
+                      Catamarán
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
-                      id="checked-checkbox"
+                      id="remolcador-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(6, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="checked-checkbox"
+                      htmlFor="remolcador-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Checked state
+                      Remolcador
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col h-full justify-center ml-4">
+                  <div className="flex items-center mb-4">
+                    <input
+                      id="lancharapida-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(4, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="lancharapida-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Lancha Rápida
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="plataforma-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(7, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="plataforma-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Plataforma
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col h-full justify-center ml-4">
+                  <div className="flex items-center mb-4">
+                    <input
+                      id="menor-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(5, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="menor-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Menor de 25TRG
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="otros-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(8, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="otros-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Otros
                     </label>
                   </div>
                 </div>
@@ -243,12 +356,12 @@ export const ShipSectionPage = () => {
             openMessage={() => setOpenMessage(true)}
           />
         )}
-				{openMessage && (
-					<DialogSuccess
-						open={openMessage}
-						handleClose={handleCloseDialogSuccess}
-					/>
-      	)}
+        {openMessage && (
+          <DialogSuccess
+            open={openMessage}
+            handleClose={handleCloseDialogSuccess}
+          />
+        )}
       </Box>
     </PageBase>
   );

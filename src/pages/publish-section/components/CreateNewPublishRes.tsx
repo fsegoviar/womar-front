@@ -2,18 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   CrearPublicacion,
   ObtenerCategorias,
-  ObtenerComunas
+  ObtenerRegiones
 } from '../../../services';
-import {
-  Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Stack,
-  Box,
-  TextField
-} from '@mui/material';
+import { Grid, Stack, Box, TextField, SelectChangeEvent } from '@mui/material';
 import ImageUploading, {
   ImageListType,
   ImageType
@@ -23,37 +14,31 @@ import CloseIcon from '@mui/icons-material/Close';
 import { InputForm } from '../../../styles/InputForm';
 import styled from '@emotion/styled';
 import { LoadingComponent } from '../../../components';
+import axios, { AxiosError } from 'axios';
 
 type CreateNewPublishType = {
   open: boolean;
   close: () => void;
   userId: string;
+  publishCreated: (publish: any) => void;
 };
 
 type CreatePublishType = {
   title: string;
-  address: string;
-  price: number;
+  price: number | null;
   description: string;
-  categoriaId: number;
-  comunaId: number;
+  categoriaId: number | null;
+  subCategoriaId: number | null;
+  regionId: number | null;
   listImg: Blob;
 };
 
-const SelectForm = styled(Select)`
-  border-color: #c2c2c2;
+const SelectInputForm = styled.select`
+  border: 1px solid gray;
   border-radius: 10px;
-  & .MuiOutlinedInput-input {
-    border-color: white;
-  }
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: #c2c2c2;
-  }
-
-  &.Mui-focused fieldset {
-    border-color: #c2c2c2;
-  }
+  padding: 5px 5px;
+  margin: 5px 0;
+  color: gray;
 `;
 
 const TextAreaForm = styled(TextField)`
@@ -80,14 +65,18 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
   //-----
   const [images, setImages] = useState([]);
   const [countImg, setCountImg] = useState(0);
-  const { comunas } = ObtenerComunas();
+  const { regiones } = ObtenerRegiones();
   const { categories } = ObtenerCategorias();
   const [files, setFiles] = useState<any[]>([]);
   const [selectedOffer, setSelectedOffer] = useState(true);
+  const [errorImg, setErrorImg] = useState(false);
+  const [disabledSection, setDisabledSection] = useState(true);
+  const [subCategorias, setSubCategorias] = useState([]);
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm<CreatePublishType>();
   const [loading, setLoading] = useState(false);
@@ -113,41 +102,62 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
   const maxNumber = 5;
 
   const onSubmit: SubmitHandler<CreatePublishType> = async (data) => {
-    let formData = new FormData();
-    formData.append('ImagenPrincipal', files[0]);
-    for (const file of files) {
-      formData.append('Imagenes', file);
-    }
-    // selectedOffer
-    //   ? formData.append('TipoId', '1')
-    //   : formData.append('TipoId', '2');
-    if (selectedOffer) {
-      console.log('Se guarda con Id 1');
-      formData.append('TipoId', '1');
-    } else {
-      console.log('Se guarda con Id 4');
-      formData.append('TipoId', '4');
-    }
-    formData.append('Titulo', data.title);
-    formData.append('ComunaId', String(data.comunaId));
-    // formData.append('CategoriaId', String(data.categoriaId));
-    formData.append('CategoriaId', String(1));
-    formData.append('Precio', String(data.price));
-    formData.append('Descripcion', String(data.description));
-    formData.append('UsuarioId', String(props.userId));
+    if (files.length > 0) {
+      let formData = new FormData();
+      formData.append('ImagenPrincipal', files[0]);
+      for (const file of files) {
+        formData.append('Imagenes', file);
+      }
+      if (selectedOffer) {
+        formData.append('TipoId', '1');
+      } else {
+        formData.append('TipoId', '4');
+      }
+      formData.append('RegionId', String(data.regionId));
+      formData.append('SubcategoriaId', String(data.subCategoriaId));
+      formData.append('UsuarioId', String(props.userId));
+      formData.append('Titulo', data.title);
+      formData.append('CategoriaId', String(data.categoriaId));
+      formData.append('Descripcion', String(data.description));
+      formData.append('Precio', String(data.price));
 
-    // let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
-    setLoading(true);
-    const { cargarPublicacion } = CrearPublicacion(formData);
-    await cargarPublicacion()
+      // let listBlobs = file.map((f) => new Blob([f!], { type: 'image/png' }));
+      setLoading(true);
+      const { cargarPublicacion } = CrearPublicacion(formData);
+      await cargarPublicacion()
+        .then((response: any) => {
+          console.log('Respuesta Publicacion =>', response);
+          props.publishCreated(response.result.data);
+          closeModal();
+        })
+        .catch((response: any) => {
+          console.log('Respuesta ERROR =>', response);
+        })
+        .finally(() => setLoading(false));
+    } else {
+      setErrorImg(true);
+    }
+  };
+
+  const handleChangeCategory = () => {
+    console.log(
+      'GetValue Category in handleChangeCategory =>',
+      getValues('categoriaId')
+    );
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_URL_BACKEND
+        }/Publicaciones/ObtenerSubCategorias/${getValues('categoriaId')}`
+      )
       .then((response: any) => {
-        console.log('Respuesta Publicacion =>', response);
-        closeModal();
+        console.log('Obtener Subcategorias =>', response);
+        setSubCategorias(response.data);
       })
-      .catch((response: any) => {
-        console.log('Respuesta ERROR =>', response);
-      })
-      .finally(() => setLoading(false));
+      .catch((error: AxiosError) =>
+        console.log('Error en ObtenerSubcategorias =>', error)
+      );
+    setDisabledSection(false);
   };
 
   const onChange = (
@@ -264,7 +274,7 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                       </button>
                     </Grid>
                     &nbsp;
-                    <Grid xs={12} className="flex pl-0">
+                    <Grid item xs={12} className="flex pl-0">
                       {imageList.map((image: ImageType, index: number) => (
                         <div
                           key={index}
@@ -315,6 +325,11 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                   </div>
                 )}
               </ImageUploading>
+              {errorImg && (
+                <span className="text-red-500 text-sm font-thin">
+                  Debes subir por lo menos una imagen
+                </span>
+              )}
             </div>
             <Grid container>
               <Grid item xs={12} className="">
@@ -339,7 +354,7 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                         label="Titulo *"
                         {...register('title', { required: true })}
                       />
-                      <FormControl
+                      {/* <FormControl
                         fullWidth
                         size="small"
                         sx={{
@@ -366,18 +381,69 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                           }}
                         >
                           {categories.map((categorie, index) => (
-                            <MenuItem key={index} value={categorie.id}>
+                            <MenuItem key={index} value={categorie.id!}>
                               {categorie.nombre}
                             </MenuItem>
                           ))}
                         </SelectForm>
-                      </FormControl>
+                      </FormControl> */}
+                      <div className="flex flex-col">
+                        <SelectInputForm
+                          {...register('categoriaId', {
+                            required: true,
+                            onChange() {
+                              handleChangeCategory();
+                            }
+                          })}
+                        >
+                          <option value="" disabled>
+                            Seleccione categoría
+                          </option>
+                          {categories.map((categorie, index) => (
+                            <option key={index} value={categorie.id!}>
+                              {categorie.nombre}
+                            </option>
+                          ))}
+                        </SelectInputForm>
+                        {errors.categoriaId && (
+                          <span className="text-red-500 text-sm font-thin">
+                            Campo requerido
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <SelectInputForm
+                          disabled={disabledSection}
+                          {...register('subCategoriaId', {
+                            required: true,
+                            onChange(event: SelectChangeEvent) {
+                              console.log(event.target.value);
+                            }
+                          })}
+                        >
+                          <option value="" disabled>
+                            Seleccione sección
+                          </option>
+                          {subCategorias.map(
+                            (subCategoria: any, index: any) => (
+                              <option key={index} value={subCategoria.id!}>
+                                {subCategoria.nombre}
+                              </option>
+                            )
+                          )}
+                        </SelectInputForm>
+                        {errors.subCategoriaId && (
+                          <span className="text-red-500 text-sm font-thin">
+                            Campo requerido
+                          </span>
+                        )}
+                      </div>
                       <Stack
                         direction="row"
                         sx={{ mb: 1, justifyContent: 'space-around' }}
                         spacing={2}
                       >
-                        <FormControl
+                        {/* <FormControl
                           size="small"
                           sx={{
                             p: 0,
@@ -396,7 +462,7 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                             onChange={(evnt) => {
                               if (evnt.target.value) {
                                 setValue(
-                                  'comunaId',
+                                  'regionId',
                                   evnt.target.value as number
                                 );
                               }
@@ -408,7 +474,26 @@ export const CreateNewPublishRes = (props: CreateNewPublishType) => {
                               </MenuItem>
                             ))}
                           </SelectForm>
-                        </FormControl>
+                        </FormControl> */}
+                        <div className="flex flex-col">
+                          <SelectInputForm
+                            {...register('regionId', {
+                              required: true,
+                              onChange(event: SelectChangeEvent) {
+                                console.log(event.target.value);
+                              }
+                            })}
+                          >
+                            <option value="" disabled>
+                              Seleccione región
+                            </option>
+                            {regiones.map((region, index) => (
+                              <option key={index} value={region.id!}>
+                                {region.nombre}
+                              </option>
+                            ))}
+                          </SelectInputForm>
+                        </div>
                         <InputForm
                           error={!!errors.price}
                           id="price"

@@ -25,6 +25,7 @@ export const PublishPage = () => {
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [idPublishSelected, setIdPublishSelected] = useState('');
   const [isActivePublish, setIsActivePublish] = useState(false);
+  const [publishCreated, setPublishCreated] = useState();
 
   useEffect(() => {
     if (publishUser) setListPublish(publishUser);
@@ -32,6 +33,15 @@ export const PublishPage = () => {
     console.log('List Publish =>', listPublish);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publishUser]);
+
+  useEffect(() => {
+    if (publishCreated) {
+      let newListPublish = listPublish;
+      newListPublish.push(publishCreated);
+      setListPublish(newListPublish);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [publishCreated]);
 
   const closeModal = () => setOpenModal(false);
 
@@ -152,11 +162,13 @@ export const PublishPage = () => {
         <CreateNewPublish
           open={openModal}
           userId={userId!}
+          publishCreated={setPublishCreated}
           close={closeModal}
         />
       </div>
       <div className="block sm:hidden">
         <CreateNewPublishRes
+          publishCreated={setPublishCreated}
           open={openModal}
           userId={userId!}
           close={closeModal}

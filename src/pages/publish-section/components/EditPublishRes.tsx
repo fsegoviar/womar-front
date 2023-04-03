@@ -1,42 +1,25 @@
 import styled from '@emotion/styled';
-import {
-  Box,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-  TextField
-} from '@mui/material';
+import { Box, Grid, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import { DetailService } from '../../../interfaces';
-import { ObtenerCategorias, ObtenerComunas } from '../../../services';
+import { ObtenerCategorias, ObtenerRegiones } from '../../../services';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useRef, useState } from 'react';
 import ImageUploading, {
   ImageListType,
   ImageType
 } from 'react-images-uploading';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { LoadingComponent } from '../../../components';
 import CloseIcon from '@mui/icons-material/Close';
 import { InputForm } from '../../../styles/InputForm';
 import '../publish-section.styles.css';
 
-const SelectForm = styled(Select)`
-  border-color: #c2c2c2;
+const SelectInputForm = styled.select`
+  border: 1px solid gray;
   border-radius: 10px;
-  & .MuiOutlinedInput-input {
-    border-color: white;
-  }
-
-  & .MuiOutlinedInput-notchedOutline {
-    border-color: #c2c2c2;
-  }
-
-  &.Mui-focused fieldset {
-    border-color: #c2c2c2;
-  }
+  padding: 5px 5px;
+  margin: 5px 0;
+  color: gray;
 `;
 
 const TextAreaForm = styled(TextField)`
@@ -64,6 +47,9 @@ type TypeForm = {
   descripcion: string;
   precio: number;
   enable: boolean;
+  categoriaId: number | null;
+  subCategoriaId: number | null;
+  regionId: number | null;
 };
 
 type PropsDialog = {
@@ -76,11 +62,14 @@ export const EditPublishRes = (props: PropsDialog) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
 
-  const { comunas } = ObtenerComunas();
+  const { regiones } = ObtenerRegiones();
   const { categories } = ObtenerCategorias();
+  const [subCategorias, setSubCategorias] = useState([]);
+  const [disabledSection, setDisabledSection] = useState(true);
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors }
   } = useForm<TypeForm>({
     defaultValues: {
@@ -193,6 +182,27 @@ export const EditPublishRes = (props: PropsDialog) => {
     let newListImgBorradas = imgBorradas;
     newListImgBorradas.push(String(images[index].dataURL));
     setImgBorradas(newListImgBorradas);
+  };
+
+  const handleChangeCategory = () => {
+    console.log(
+      'GetValue Category in handleChangeCategory =>',
+      getValues('categoriaId')
+    );
+    axios
+      .get(
+        `${
+          process.env.REACT_APP_URL_BACKEND
+        }/Publicaciones/ObtenerSubCategorias/${getValues('categoriaId')}`
+      )
+      .then((response: any) => {
+        console.log('Obtener Subcategorias =>', response);
+        setSubCategorias(response.data);
+      })
+      .catch((error: AxiosError) =>
+        console.log('Error en ObtenerSubcategorias =>', error)
+      );
+    setDisabledSection(false);
   };
 
   const onChange = (
@@ -315,7 +325,7 @@ export const EditPublishRes = (props: PropsDialog) => {
                       </button>
                     </Grid>
                     &nbsp;
-                    <Grid xs={12} className="flex pl-0">
+                    <Grid item xs={12} className="flex pl-0">
                       {imageList.map((image: ImageType, index: number) => (
                         <div
                           key={index}
@@ -388,61 +398,81 @@ export const EditPublishRes = (props: PropsDialog) => {
                         label="Titulo *"
                         {...register('titulo', { required: true })}
                       />
-                      <FormControl
-                        fullWidth
-                        size="small"
-                        sx={{
-                          p: 0,
-                          m: 0,
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          mb: 1
-                        }}
-                      >
-                        <InputLabel>Categoria</InputLabel>
-                        <SelectForm
-                          style={{ width: '100%' }}
-                          label="Categoria"
-                          readOnly
+                      <div className="flex flex-col">
+                        <SelectInputForm
+                          {...register('categoriaId', {
+                            required: true,
+                            onChange() {
+                              handleChangeCategory();
+                            }
+                          })}
                         >
+                          <option value="" disabled>
+                            Seleccione categoría
+                          </option>
                           {categories.map((categorie, index) => (
-                            <MenuItem key={index} value={categorie.id}>
+                            <option key={index} value={categorie.id!}>
                               {categorie.nombre}
-                            </MenuItem>
+                            </option>
                           ))}
-                        </SelectForm>
-                      </FormControl>
+                        </SelectInputForm>
+                        {errors.categoriaId && (
+                          <span className="text-red-500 text-sm font-thin">
+                            Campo requerido
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex flex-col">
+                        <SelectInputForm
+                          disabled={disabledSection}
+                          {...register('subCategoriaId', {
+                            required: true,
+                            onChange(event: SelectChangeEvent) {
+                              console.log(event.target.value);
+                            }
+                          })}
+                        >
+                          <option value="" disabled>
+                            Seleccione sección
+                          </option>
+                          {subCategorias.map(
+                            (subCategoria: any, index: any) => (
+                              <option key={index} value={subCategoria.id!}>
+                                {subCategoria.nombre}
+                              </option>
+                            )
+                          )}
+                        </SelectInputForm>
+                        {errors.subCategoriaId && (
+                          <span className="text-red-500 text-sm font-thin">
+                            Campo requerido
+                          </span>
+                        )}
+                      </div>
                       <Stack
                         direction="row"
                         sx={{ mb: 1, justifyContent: 'space-around' }}
                         spacing={2}
                       >
-                        <FormControl
-                          size="small"
-                          sx={{
-                            p: 0,
-                            m: 0,
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            width: '49%'
-                          }}
-                        >
-                          <InputLabel>Comuna</InputLabel>
-                          <SelectForm
-                            style={{ width: '100%' }}
-                            label="Comuna"
-                            required
-                            readOnly
+                        <div className="flex flex-col">
+                          <SelectInputForm
+                            {...register('regionId', {
+                              required: true,
+                              onChange(event: SelectChangeEvent) {
+                                console.log(event.target.value);
+                              }
+                            })}
                           >
-                            {comunas.map((comuna, index) => (
-                              <MenuItem key={index} value={comuna.id}>
-                                {comuna.nombre}
-                              </MenuItem>
+                            <option value="" disabled>
+                              Seleccione región
+                            </option>
+                            {regiones.map((region, index) => (
+                              <option key={index} value={region.id!}>
+                                {region.nombre}
+                              </option>
                             ))}
-                          </SelectForm>
-                        </FormControl>
+                          </SelectInputForm>
+                        </div>
                         <InputForm
                           error={!!errors.precio}
                           id="price"
@@ -463,7 +493,7 @@ export const EditPublishRes = (props: PropsDialog) => {
                         sx={{ my: 1 }}
                         label="Descripción *"
                         multiline
-                        rows={3}
+                        rows={1}
                         variant="outlined"
                         {...register('descripcion', { required: true })}
                       />

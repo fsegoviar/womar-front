@@ -13,21 +13,22 @@ import axios, { AxiosError } from 'axios';
 import { DetailService } from '../../interfaces';
 import { DialogSuccess } from '../../components/navbar/components/DialogSuccess';
 
-
 export const MaritimePersonnelPage = () => {
   const [openMessage, setOpenMessage] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [serviceSelected, setServiceSelected] = useState<DetailService>();
   const [listPublish, setListPublish] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
+  const [listSubcategorias, setListSubcategorias] = useState<number[]>([]);
   const [filter, setFilter] = useState({
-    categorias: [2],
+    subCategorias: [8, 9, 10, 11, 12, 13, 14, 15],
+    categorias: 2,
     orderBy: true,
     search: '',
     tipoPublicacion: 1
   });
 
-	const handleCloseDialogSuccess= () => {
+  const handleCloseDialogSuccess = () => {
     setTimeout(() => {
       setOpenMessage(false);
     }, 500);
@@ -65,6 +66,34 @@ export const MaritimePersonnelPage = () => {
     setOpenModal(true);
     console.log('service', service);
     setServiceSelected(service);
+  };
+
+  const handleChangeSubCategoria = (
+    idSubcategoria: number,
+    checked: boolean
+  ) => {
+    checked
+      ? addSubcategoria(idSubcategoria)
+      : removeSubCategoria(idSubcategoria);
+  };
+
+  const addSubcategoria = (idSubCategoria: number) => {
+    let newListSubcategoria = listSubcategorias;
+    newListSubcategoria.push(idSubCategoria);
+
+    setListSubcategorias(newListSubcategoria);
+
+    setFilter({ ...filter, subCategorias: newListSubcategoria });
+  };
+
+  const removeSubCategoria = (idSubCategoria: number) => {
+    let filterSubcategoria = listSubcategorias.filter(
+      (id: number) => id !== idSubCategoria
+    );
+
+    setListSubcategorias(filterSubcategoria);
+
+    setFilter({ ...filter, subCategorias: filterSubcategoria });
   };
 
   return (
@@ -132,60 +161,144 @@ export const MaritimePersonnelPage = () => {
                 <div className="flex flex-col h-full justify-center ">
                   <div className="flex items-center mb-4">
                     <input
-                      id="default-checkbox"
+                      id="profesionales-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(9, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="default-checkbox"
+                      htmlFor="profesionales-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Default checkbox
+                      Profesionales acuícolas
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
-                      id="checked-checkbox"
+                      id="tripulacion-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(13, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="checked-checkbox"
+                      htmlFor="tripulacion-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Checked state
+                      Tripulación
                     </label>
                   </div>
                 </div>
                 <div className="flex flex-col h-full justify-center ml-4">
                   <div className="flex items-center mb-4">
                     <input
-                      id="default-checkbox"
+                      id="rovs-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(10, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="default-checkbox"
+                      htmlFor="rovs-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Default checkbox
+                      Rov`s
                     </label>
                   </div>
                   <div className="flex items-center">
                     <input
-                      id="checked-checkbox"
+                      id="boceo-checkbox"
                       type="checkbox"
                       value=""
                       className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(14, evt.target.checked)
+                      }
                     />
                     <label
-                      htmlFor="checked-checkbox"
+                      htmlFor="buceo-checkbox"
                       className="ml-2 text-sm font-thin text-white"
                     >
-                      Checked state
+                      Buceo
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col h-full justify-center ml-4">
+                  <div className="flex items-center mb-4">
+                    <input
+                      id="operaciones-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(11, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="operaciones-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Operaciones
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="administrativos-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(15, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="administrativos-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Administrativos
+                    </label>
+                  </div>
+                </div>
+                <div className="flex flex-col h-full justify-center ml-4">
+                  <div className="flex items-center mb-4">
+                    <input
+                      id="operarios-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(12, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="operarios-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Operarios
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="otros-checkbox"
+                      type="checkbox"
+                      value=""
+                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                      onChange={(evt: any) =>
+                        handleChangeSubCategoria(8, evt.target.checked)
+                      }
+                    />
+                    <label
+                      htmlFor="otros-checkbox"
+                      className="ml-2 text-sm font-thin text-white"
+                    >
+                      Otros
                     </label>
                   </div>
                 </div>
@@ -243,15 +356,15 @@ export const MaritimePersonnelPage = () => {
             open={openModal}
             service={serviceSelected!}
             closeModal={() => setOpenModal(false)}
-						openMessage={() => setOpenMessage(true)}
+            openMessage={() => setOpenMessage(true)}
           />
         )}
-				{openMessage && (
-					<DialogSuccess
-						open={openMessage}
-						handleClose={handleCloseDialogSuccess}
-					/>
-      	)}
+        {openMessage && (
+          <DialogSuccess
+            open={openMessage}
+            handleClose={handleCloseDialogSuccess}
+          />
+        )}
       </Box>
     </PageBase>
   );

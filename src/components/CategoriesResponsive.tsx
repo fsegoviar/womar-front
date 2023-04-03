@@ -27,7 +27,7 @@ const dataNavigation = [
   },
   {
     site: '/otros_srvicios',
-    title: 'Otros Servicios',
+    title: 'Servicios',
     icon: <MiscellaneousServicesIcon sx={{ width: '30px', height: '30px' }} />
   }
 ];
