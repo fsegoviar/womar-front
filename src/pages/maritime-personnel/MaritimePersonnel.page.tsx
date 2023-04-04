@@ -20,13 +20,22 @@ export const MaritimePersonnelPage = () => {
   const [listPublish, setListPublish] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
   const [listSubcategorias, setListSubcategorias] = useState<number[]>([]);
+  const initialSubCategorias = [8, 9, 10, 11, 12, 13, 14, 15];
+  const [counterFilter, setCounterFilter] = useState(0);
   const [filter, setFilter] = useState({
-    subCategorias: [8, 9, 10, 11, 12, 13, 14, 15],
+    subCategorias: initialSubCategorias,
     categorias: 2,
     orderBy: true,
     search: '',
     tipoPublicacion: 1
   });
+
+  useEffect(() => {
+    if (counterFilter === 0) {
+      setFilter({ ...filter, subCategorias: initialSubCategorias });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [counterFilter, setCounterFilter]);
 
   const handleCloseDialogSuccess = () => {
     setTimeout(() => {
@@ -82,6 +91,7 @@ export const MaritimePersonnelPage = () => {
     newListSubcategoria.push(idSubCategoria);
 
     setListSubcategorias(newListSubcategoria);
+    setCounterFilter(counterFilter + 1);
 
     setFilter({ ...filter, subCategorias: newListSubcategoria });
   };
@@ -92,6 +102,7 @@ export const MaritimePersonnelPage = () => {
     );
 
     setListSubcategorias(filterSubcategoria);
+    setCounterFilter(counterFilter - 1);
 
     setFilter({ ...filter, subCategorias: filterSubcategoria });
   };

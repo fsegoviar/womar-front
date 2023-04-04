@@ -20,8 +20,10 @@ export const ShipSectionPage = () => {
   const [listShips, setListShips] = useState<DetailService[]>([]);
   const [load, setLoad] = useState(false);
   const [listSubcategorias, setListSubcategorias] = useState<number[]>([]);
+  const initialSubCategorias = [1, 2, 3, 4, 5, 6, 7, 8];
+  const [counterFilter, setCounterFilter] = useState(0);
   const [filter, setFilter] = useState({
-    subCategorias: [1, 2, 3, 4, 5, 6, 7, 8],
+    subCategorias: initialSubCategorias,
     categorias: 1,
     orderBy: true,
     search: '',
@@ -33,6 +35,13 @@ export const ShipSectionPage = () => {
       setOpenMessage(false);
     }, 500);
   };
+
+  useEffect(() => {
+    if (counterFilter === 0) {
+      setFilter({ ...filter, subCategorias: initialSubCategorias });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [counterFilter, setCounterFilter]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,6 +91,7 @@ export const ShipSectionPage = () => {
     newListSubcategoria.push(idSubCategoria);
 
     setListSubcategorias(newListSubcategoria);
+    setCounterFilter(counterFilter + 1);
 
     setFilter({ ...filter, subCategorias: newListSubcategoria });
   };
@@ -92,6 +102,7 @@ export const ShipSectionPage = () => {
     );
 
     setListSubcategorias(filterSubcategoria);
+    setCounterFilter(counterFilter - 1);
 
     setFilter({ ...filter, subCategorias: filterSubcategoria });
   };

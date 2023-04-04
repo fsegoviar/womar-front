@@ -16,15 +16,14 @@ export const PublishAdmin = () => {
     setSelectedPublish(item);
   };
 
-	const removePublish = () => {
-		let newListPublish = listPublish.filter(publish => {
-			return publish !== selectedPublish
-		})
-		setListPublish(newListPublish)
-	}
+  const removePublish = () => {
+    setListPublish(
+      listPublish.filter((publish) => publish !== selectedPublish)
+    );
+  };
 
-	useEffect(() => {
-   setListPublish(publishFetch)
+  useEffect(() => {
+    setListPublish(publishFetch);
   }, [publishFetch]);
 
   return (

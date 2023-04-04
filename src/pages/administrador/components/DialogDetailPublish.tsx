@@ -67,15 +67,15 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
     }, 1000);
   };
 
-	const removePublish = () => {
-		containerRef.current.classList.add('close');
+  const removePublish = () => {
+    containerRef.current.classList.add('close');
     setTimeout(() => {
       containerRef.current.classList.remove('close');
       modalRef.current.style.display = 'none';
       props.closeModal();
-			props.removePublish();
+      props.removePublish();
     }, 1000);
-	}
+  };
 
   window.addEventListener(
     'click',
@@ -96,7 +96,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
           }
         }
       )
-      .then(() => closeModal())
+      .then(() => removePublish())
       .catch((error: AxiosError) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };
