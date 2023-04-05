@@ -8,7 +8,7 @@ import { HiOutlineClipboardDocumentList } from 'react-icons/hi2';
 import { UserTable } from './UserTable';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { PublishAdmin } from './components/PublishAdmin';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { parseJwt } from '../../utils';
 import { DialogLogin } from '../../components/navbar/components/DialogLogin';
 import { useSelector } from 'react-redux';
@@ -30,6 +30,7 @@ export const AdminPage = () => {
   const userRol = useSelector((state: RootState) => state.userRol.rol);
   const { fetchData } = ObtenerInfoUsuario();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { IdUser } = parseJwt();
 
@@ -86,23 +87,25 @@ export const AdminPage = () => {
       .then((response: any) => setPublishPending(response.data));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     console.log('UserROL =>', userRol, isLogin);
-
-    fetchData().then((response: any) => {
-      if (IdUser && response.result.rol === 'Administrador') {
-        setIsAdmin(true);
-        fetchCantidadUsuario();
-        fetchPubAceptadas();
-        fetchPubRechazada();
-        fetchPubPendiente();
-      } else {
-        setIsAdmin(false);
-        if (!IdUser) {
-          setOpenLogin(true);
+    setLoading(true);
+    fetchData()
+      .then((response: any) => {
+        if (IdUser && response.result.rol === 'Administrador') {
+          setIsAdmin(true);
+          fetchCantidadUsuario();
+          fetchPubAceptadas();
+          fetchPubRechazada();
+          fetchPubPendiente();
+        } else {
+          setIsAdmin(false);
+          if (!IdUser) {
+            setOpenLogin(true);
+          }
         }
-      }
-    });
+      })
+      .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -146,88 +149,92 @@ export const AdminPage = () => {
 
   return (
     <PageBase>
-      <Container
-        maxWidth={'xl'}
-        sx={{
-          minHeight: '90vh',
-          height: 'auto',
-          position: 'relative',
-          mt: 10
-        }}
-      >
-        {!isAdmin && isLogin && (
-          <Box
-            sx={{
-              width: '100%',
-              padding: '20px 0',
-              border: '2px solid red',
-              marginBottom: '10px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: '10px'
-            }}
-          >
-            <Typography variant="h6" color="red">
-              El usuario no contiene Permisos de administrador. Ingrese con otra
-              cuenta o recargue la página para intentar nuevamente
-            </Typography>
-          </Box>
-        )}
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={{ xs: 1, sm: 2, md: 12 }}
+      {!loading ? (
+        <Container
+          maxWidth={'xl'}
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
+            minHeight: '90vh',
+            height: 'auto',
+            position: 'relative',
+            mt: 10
           }}
         >
-          <CardInfor
-            bgCard="#000aff"
-            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Usuarios Registrados'}
-            numberData={countUsers}
-          />
-          <CardInfor
-            bgCard="#000aff"
-            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Aceptadas'}
-            numberData={publishAccept}
-          />
-          <CardInfor
-            bgCard="#000aff"
-            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Rechazadas'}
-            numberData={publishReject}
-          />
-          <CardInfor
-            bgCard="#000aff"
-            icon={<PeopleAltIcon sx={{ mx: 1 }} />}
-            title={'Publicaciones Pendientes'}
-            numberData={publishPending}
-          />
-        </Stack>
-        <Divider sx={{ my: 4 }} />
-        {isAdmin ? (
-          <TabView>
-            <TabPanel
-              header="Panel de Usuarios"
-              headerTemplate={headerUserPanel}
+          {!isAdmin && isLogin && (
+            <Box
+              sx={{
+                width: '100%',
+                padding: '20px 0',
+                border: '2px solid red',
+                marginBottom: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: '10px'
+              }}
             >
-              <UserTable />
-            </TabPanel>
-            <TabPanel
-              header="Panel de Publicaciones"
-              headerTemplate={headerPublishPanel}
-            >
-              <PublishAdmin />
-            </TabPanel>
-          </TabView>
-        ) : (
-          <span>Sin datos</span>
-        )}
-      </Container>
+              <Typography variant="h6" color="red">
+                El usuario no contiene Permisos de administrador. Ingrese con
+                otra cuenta o recargue la página para intentar nuevamente
+              </Typography>
+            </Box>
+          )}
+          <Stack
+            direction={{ xs: 'column', sm: 'row' }}
+            spacing={{ xs: 1, sm: 2, md: 12 }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <CardInfor
+              bgCard="#000aff"
+              icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+              title={'Usuarios Registrados'}
+              numberData={countUsers}
+            />
+            <CardInfor
+              bgCard="#000aff"
+              icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+              title={'Publicaciones Aceptadas'}
+              numberData={publishAccept}
+            />
+            <CardInfor
+              bgCard="#000aff"
+              icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+              title={'Publicaciones Rechazadas'}
+              numberData={publishReject}
+            />
+            <CardInfor
+              bgCard="#000aff"
+              icon={<PeopleAltIcon sx={{ mx: 1 }} />}
+              title={'Publicaciones Pendientes'}
+              numberData={publishPending}
+            />
+          </Stack>
+          <Divider sx={{ my: 4 }} />
+          {isAdmin ? (
+            <TabView>
+              <TabPanel
+                header="Panel de Usuarios"
+                headerTemplate={headerUserPanel}
+              >
+                <UserTable />
+              </TabPanel>
+              <TabPanel
+                header="Panel de Publicaciones"
+                headerTemplate={headerPublishPanel}
+              >
+                <PublishAdmin />
+              </TabPanel>
+            </TabView>
+          ) : (
+            <span>Sin datos</span>
+          )}
+        </Container>
+      ) : (
+        <>Cargnado..</>
+      )}
       {openLogin && (
         <DialogLogin
           open={openLogin}

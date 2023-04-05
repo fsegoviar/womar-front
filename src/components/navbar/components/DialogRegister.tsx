@@ -122,7 +122,9 @@ export const DialogRegister = (props: PropsRegister) => {
       .catch((error: AxiosError) => {
         console.log('Error =>', error);
         if (error.response && error.response.status === 400) {
-          setErrorEmail('Correo en uso');
+          setErrorEmail(
+            '( * ) Ha ocurrido un problema al registrar esta cuenta'
+          );
         } else {
           setLoading(false);
         }
@@ -328,7 +330,7 @@ export const DialogRegister = (props: PropsRegister) => {
                     type={'email'}
                     size="small"
                     style={{
-                      marginBottom: errors.Email || errorEmail ? '' : '10px',
+                      marginBottom: errors.Email ? '' : '10px',
                       width: '100%'
                     }}
                     label="Correo electrónico *"
@@ -347,11 +349,7 @@ export const DialogRegister = (props: PropsRegister) => {
                       Formato de correo no valido
                     </span>
                   )}
-                  {errorEmail && (
-                    <span className="text-red-500 text-sm font-light">
-                      {errorEmail}
-                    </span>
-                  )}
+
                   <InputForm
                     error={!!errors.Password}
                     type={'password'}
@@ -381,6 +379,14 @@ export const DialogRegister = (props: PropsRegister) => {
                     <span className="text-red-500 text-sm font-light">
                       Debe tener como máximo 16 caracteres
                     </span>
+                  )}
+
+                  {errorEmail && (
+                    <Box>
+                      <span className="text-red-500 text-sm font-light">
+                        {errorEmail}
+                      </span>
+                    </Box>
                   )}
                   <Box
                     className="flex justify-center"
