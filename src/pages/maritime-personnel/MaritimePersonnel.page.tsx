@@ -142,7 +142,7 @@ export const MaritimePersonnelPage = () => {
                     style={{ border: '1px solid #000aff' }}
                   >
                     <button
-                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      className="text-[#000aff] px-5 w-[50%] py-1 text-xl rounded-full"
                       style={{
                         backgroundColor: selectedOffer ? '#00e9ba' : 'white'
                       }}
@@ -154,7 +154,7 @@ export const MaritimePersonnelPage = () => {
                       Buscan
                     </button>
                     <button
-                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      className="text-[#000aff] px-5 w-[50%] py-1 text-xl rounded-full"
                       style={{
                         backgroundColor: !selectedOffer ? '#00e9ba' : 'white'
                       }}

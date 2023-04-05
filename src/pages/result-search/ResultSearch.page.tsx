@@ -61,7 +61,7 @@ export const ResultSearch = () => {
                     style={{ border: '1px solid #000aff' }}
                   >
                     <button
-                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      className="text-[#000aff] w-[50%] px-5 py-1 text-lg rounded-full"
                       style={{
                         backgroundColor: selectedOffer ? '#00e9ba' : 'white'
                       }}
@@ -73,7 +73,7 @@ export const ResultSearch = () => {
                       Buscan
                     </button>
                     <button
-                      className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                      className="text-[#000aff] w-[50%] px-5 py-1 text-lg rounded-full"
                       style={{
                         backgroundColor: !selectedOffer ? '#00e9ba' : 'white'
                       }}
@@ -87,70 +87,9 @@ export const ResultSearch = () => {
                   </Box>
                 </div>
               </Grid>
-              <Grid item xs={12} sm={6} className="flex justify-center py-5">
-                <div className="flex flex-col h-full justify-center ">
-                  <div className="flex items-center mb-4">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-thin text-white"
-                    >
-                      Default checkbox
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      id="checked-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="checked-checkbox"
-                      className="ml-2 text-sm font-thin text-white"
-                    >
-                      Checked state
-                    </label>
-                  </div>
-                </div>
-                <div className="flex flex-col h-full justify-center ml-4">
-                  <div className="flex items-center mb-4">
-                    <input
-                      id="default-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="default-checkbox"
-                      className="ml-2 text-sm font-thin text-white"
-                    >
-                      Default checkbox
-                    </label>
-                  </div>
-                  <div className="flex items-center">
-                    <input
-                      id="checked-checkbox"
-                      type="checkbox"
-                      value=""
-                      className="w-4 h-4 accent-[#00e9ba] text-[#00e9ba] bg-gray-100 border-gray-300 rounded focus:ring-[#00e9ba] dark:focus:ring-[#00e9ba] dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label
-                      htmlFor="checked-checkbox"
-                      className="ml-2 text-sm font-thin text-white"
-                    >
-                      Checked state
-                    </label>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={3} className="hidden sm:grid">
-                <div className="flex justify-center items-center w-full h-full">
+
+              <Grid item xs={3} sm={9} className="hidden sm:grid ">
+                <div className="flex justify-end items-center w-full h-full">
                   <p className="text-white font-bold text-3xl">Resultados</p>
                   <div
                     className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"

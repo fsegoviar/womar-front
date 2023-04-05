@@ -140,7 +140,7 @@ export const OtherSectionsPage = () => {
                 style={{ border: '1px solid #000aff' }}
               >
                 <button
-                  className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                  className="text-[#000aff] w-[50%] px-5  py-1 text-xl rounded-full"
                   style={{
                     backgroundColor: selectedOffer ? '#00e9ba' : 'white'
                   }}
@@ -152,7 +152,7 @@ export const OtherSectionsPage = () => {
                   Buscan
                 </button>
                 <button
-                  className="text-[#000aff] px-5 sm:px-10 py-1 text-xl rounded-full"
+                  className="text-[#000aff] w-[50%] px-5  py-1 text-xl rounded-full"
                   style={{
                     backgroundColor: !selectedOffer ? '#00e9ba' : 'white'
                   }}
