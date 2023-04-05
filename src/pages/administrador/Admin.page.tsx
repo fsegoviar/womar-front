@@ -128,6 +128,7 @@ export const AdminPage = () => {
   const handleOpenSession = (token: string) => {
     localStorage.setItem('tokenWomar', token);
     dispatch(changeStateLogin(true));
+    window.location.reload();
   };
 
   const headerPublishPanel = (options: any) => {

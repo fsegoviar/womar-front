@@ -67,6 +67,7 @@ export const DialogRegister = (props: PropsRegister) => {
   const modalRef = useRef<HTMLDivElement>(null!);
   const containerRef = useRef<HTMLDivElement>(null!);
   const [inputRut, setInputRut] = useState('');
+  const [errorEmail, setErrorEmail] = useState('');
 
   useEffect(() => {
     setValue('Role', 'Cliente');
@@ -114,9 +115,19 @@ export const DialogRegister = (props: PropsRegister) => {
 
     const { registrar } = Registrar(formData);
     registrar()
-      .then(() => props.setOpenRegisterLocal(false))
-      .catch((error: AxiosError) => console.log('Error =>', error))
-      .finally(() => setLoading(false));
+      .then(() => {
+        props.setOpenRegisterLocal(false);
+        setLoading(false);
+      })
+      .catch((error: AxiosError) => {
+        console.log('Error =>', error);
+        if (error.response && error.response.status === 400) {
+          setErrorEmail('Correo en uso');
+        } else {
+          setLoading(false);
+        }
+      });
+    // .finally(() => setLoading(false));
   };
 
   return (
@@ -317,7 +328,7 @@ export const DialogRegister = (props: PropsRegister) => {
                     type={'email'}
                     size="small"
                     style={{
-                      marginBottom: errors.Email ? '' : '10px',
+                      marginBottom: errors.Email || errorEmail ? '' : '10px',
                       width: '100%'
                     }}
                     label="Correo electrónico *"
@@ -334,6 +345,11 @@ export const DialogRegister = (props: PropsRegister) => {
                   {errors.Email?.type === 'pattern' && (
                     <span className="text-red-500 text-sm font-light">
                       Formato de correo no valido
+                    </span>
+                  )}
+                  {errorEmail && (
+                    <span className="text-red-500 text-sm font-light">
+                      {errorEmail}
                     </span>
                   )}
                   <InputForm
