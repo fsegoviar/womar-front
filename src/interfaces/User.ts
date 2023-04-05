@@ -4,7 +4,7 @@ export interface InfoUser {
   apellidoPaterno: string;
   apellidoMaterno: string;
   imgPerfil: string;
-  comunaId: number;
+  regionId: number | null;
   rut: string | null;
   telefono: string;
 }

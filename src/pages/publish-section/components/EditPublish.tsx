@@ -194,7 +194,7 @@ export const EditPublish = (props: PropsDialog) => {
           }
         }
       )
-      .then(() => props.close)
+      .then(() => props.close(false))
       .catch((error: any) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };

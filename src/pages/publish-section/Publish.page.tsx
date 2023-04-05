@@ -43,6 +43,11 @@ export const PublishPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [publishCreated]);
 
+  const closeEditPublish = (value: boolean) => {
+    setOpenModalEdit(false);
+    window.location.reload();
+  };
+
   const closeModal = () => setOpenModal(false);
 
   const editPublish = (publish: DetailService) => {
@@ -179,14 +184,14 @@ export const PublishPage = () => {
           <div className="hidden sm:block">
             <EditPublish
               open={openModalEdit}
-              close={setOpenModalEdit}
+              close={closeEditPublish}
               publish={publishSelected!}
             />
           </div>
           <div className="block sm:hidden">
             <EditPublishRes
               open={openModalEdit}
-              close={setOpenModalEdit}
+              close={closeEditPublish}
               publish={publishSelected!}
             />
           </div>

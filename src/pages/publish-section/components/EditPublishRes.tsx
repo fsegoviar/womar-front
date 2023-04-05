@@ -173,7 +173,7 @@ export const EditPublishRes = (props: PropsDialog) => {
           }
         }
       )
-      .then((response: any) => console.log('Response =>', response))
+      .then((response: any) => props.close(false))
       .catch((error: any) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };

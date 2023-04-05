@@ -2,7 +2,7 @@ import { Box, Container } from '@mui/system';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { InputForm } from '../../../styles/InputForm';
 import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
-import { ActualizarInfoUsuario, ObtenerComunas } from '../../../services';
+import { ActualizarInfoUsuario, ObtenerRegiones } from '../../../services';
 import { AxiosError } from 'axios';
 import { InfoUser } from '../../../interfaces';
 import { useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ type TypeForm = {
   apellidoPaterno: string;
   apellidoMaterno: string;
   rut: string;
-  comunaId: string;
+  regionId: string;
   telefono: string;
 };
 
@@ -39,7 +39,7 @@ export const FormProfile = ({
   apellidoMaterno,
   apellidoPaterno,
   rut,
-  comunaId,
+  regionId,
   telefono,
   imgPerfil,
   nombre
@@ -53,7 +53,7 @@ export const FormProfile = ({
     defaultValues: {
       apellidoMaterno,
       apellidoPaterno,
-      comunaId: String(comunaId),
+      regionId: String(regionId),
       nombre,
       rut: rut ?? '',
       telefono: telefono ?? ''
@@ -61,7 +61,7 @@ export const FormProfile = ({
   });
   const [urlImage, setUrlImage] = useState('');
   const [fileChange, setFileChange] = useState<any>();
-  const { comunas } = ObtenerComunas();
+  const { regiones } = ObtenerRegiones();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -77,7 +77,7 @@ export const FormProfile = ({
     formData.append('Nombre', data.nombre);
     formData.append('ApellidoPaterno', data.apellidoPaterno);
     formData.append('ApellidoMaterno', data.apellidoMaterno);
-    formData.append('ComunaId', data.comunaId);
+    formData.append('RegionId', data.regionId);
     formData.append('Telefono', data.telefono);
     formData.append('ImagenPerfil', fileChange);
 
@@ -193,13 +193,13 @@ export const FormProfile = ({
                 label="Categoria"
                 onChange={(evnt: any) => {
                   if (evnt.target.value) {
-                    setValue('comunaId', evnt.target.value);
+                    setValue('regionId', evnt.target.value);
                   }
                 }}
               >
-                {comunas.map((categorie, index) => (
-                  <MenuItem key={index} value={categorie.id}>
-                    {categorie.nombre}
+                {regiones.map((region, index) => (
+                  <MenuItem key={index} value={region.id}>
+                    {region.nombre}
                   </MenuItem>
                 ))}
               </SelectForm>
