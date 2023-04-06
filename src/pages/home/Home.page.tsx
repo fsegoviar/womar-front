@@ -11,7 +11,6 @@ import { CardItem } from './components/CardItem';
 import { ItemFooter } from './components/ItemFooter';
 import { Contactanos } from './components/Contactanos';
 import { DialogLogin } from '../../components/navbar/components/DialogLogin';
-import { parseJwt } from '../../utils';
 
 export const HomePage = () => {
   let slides = [
@@ -54,7 +53,6 @@ export const HomePage = () => {
 
   const [openContact, setOpenContact] = useState(false);
   const [openLogin, setOpenLogin] = useState(false);
-  const { IdUser } = parseJwt();
 
   const handleCloseDialogLogin = () => {
     setTimeout(() => {
@@ -71,11 +69,7 @@ export const HomePage = () => {
   };
 
   const verifyLogged = (): void => {
-    if (IdUser) {
-      setOpenContact(true);
-    } else {
-      setOpenLogin(true);
-    }
+    setOpenContact(true);
   };
 
   return (

@@ -117,7 +117,7 @@ export const PublishComponent = (props: PropsPublish) => {
           <p className="block text-center font-bold sm:text-lg">
             {props.publish.titulo}
           </p>
-          {props.publish.activa && props.publish.estado === 'PENDIENTE' ? (
+          {!props.publish.activa ? (
             <div className="w-full flex justify-center">
               <p
                 className="p-0 text-gray-500 text-sm text-right  py-1 px-5 rounded-full flex items-center"
@@ -199,7 +199,7 @@ export const PublishComponent = (props: PropsPublish) => {
             </div>
           ) : (
             <div className="flex sm:block">
-              {props.publish.estado === StatusPublish.PENDIENTE ? (
+              {/* {props.publish.estado === StatusPublish.PENDIENTE ? (
                 <>
                   <button className="text-white rounded-full text-sm mx-1 py-1 px-3 cursor-default  bg-gray-500">
                     Dar de baja
@@ -261,7 +261,22 @@ export const PublishComponent = (props: PropsPublish) => {
                     </>
                   )}
                 </>
-              )}
+              )} */}
+              <button
+                className="text-white rounded-full py-1 px-3 text-sm cursor-pointer"
+                type="submit"
+                onClick={() => {
+                  props.isActivePublish(true);
+                  props.openModalDelete(true);
+                  props.idPublishSelected(props.publish.id);
+                }}
+                style={{
+                  background:
+                    'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+                }}
+              >
+                Habilitar
+              </button>
             </div>
           )}
         </div>

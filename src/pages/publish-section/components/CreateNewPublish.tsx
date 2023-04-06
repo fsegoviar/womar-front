@@ -66,10 +66,10 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
   //-----
   const [images, setImages] = useState([]);
   const [countImg, setCountImg] = useState(0);
+  const [files, setFiles] = useState<any[]>([]);
   const { regiones } = ObtenerRegiones();
   const { categories } = ObtenerCategorias();
   const [subCategorias, setSubCategorias] = useState([]);
-  const [files, setFiles] = useState<any[]>([]);
   const [selectedOffer, setSelectedOffer] = useState(true);
   const [limitImg, setLimitImg] = useState(false);
   const [disabledSection, setDisabledSection] = useState(true);
@@ -79,6 +79,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
     getValues,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors }
   } = useForm<CreatePublishType>({
     defaultValues: {
@@ -95,6 +96,14 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
   useEffect(() => {
     if (props.open) modalRef.current.style.display = 'flex';
   }, [props.open]);
+
+  const resetForm = () => {
+    reset();
+    setImages([]);
+    setCountImg(0);
+    setFiles([]);
+    setSelectedOffer(true);
+  };
 
   const closeModal = (): void => {
     containerRef.current.classList.add('close');
@@ -139,6 +148,7 @@ export const CreateNewPublish = (props: CreateNewPublishType) => {
         .then((response: any) => {
           console.log('Respuesta Publicacion =>', response);
           props.publishCreated(response.result.data);
+          resetForm();
           closeModal();
         })
         .catch((response: any) => {
