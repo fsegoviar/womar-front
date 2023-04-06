@@ -72,16 +72,33 @@ export const PublishComponent = (props: PropsPublish) => {
       }}
     >
       {props.publish.activa ? (
-        <Box
-          sx={{
-            width: '45%',
-            height: '220px',
-            backgroundImage: `url(${props.publish.urlImagenPrincipal})`,
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover'
-          }}
-        ></Box>
+        <>
+          {props.publish.estado === StatusPublish.PENDIENTE ||
+          props.publish.estado === StatusPublish.DESACTIVADA ? (
+            <Box
+              sx={{
+                width: '45%',
+                height: '220px',
+                backgroundImage: `url(${props.publish.urlImagenPrincipal})`,
+                filter: 'grayscale(100%)',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover'
+              }}
+            ></Box>
+          ) : (
+            <Box
+              sx={{
+                width: '45%',
+                height: '220px',
+                backgroundImage: `url(${props.publish.urlImagenPrincipal})`,
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover'
+              }}
+            ></Box>
+          )}
+        </>
       ) : (
         <Box
           sx={{
