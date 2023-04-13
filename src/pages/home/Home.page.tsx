@@ -162,19 +162,19 @@ export const HomePage = () => {
               className="text-white font-bold text-[2.8rem]"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
-              ¿AÚN
+              ¿Aún
             </h2>
             <h2
               className="text-white font-medium text-[2.8rem] pl-40"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
-              TIENES
+              tienes
             </h2>
             <h2
               className="text-white font-medium text-[2.8rem] pl-60"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
-              DUDAS?
+              dudas?
             </h2>
           </div>
           <div className="grid-span-2 flex items-center">
