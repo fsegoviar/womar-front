@@ -44,7 +44,7 @@ export const SmartPreviewService = (props: PropsPreview) => {
       <Card
         className="flex w-full cursor-pointer h-40"
         sx={{
-          border: '3px solid #000aff',
+          border: '1px solid #000aff',
           transition: 'all 0.4s',
           borderRadius: '35px',
           '&:hover': {
