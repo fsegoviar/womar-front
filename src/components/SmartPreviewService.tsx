@@ -62,7 +62,7 @@ export const SmartPreviewService = (props: PropsPreview) => {
           }}
         ></Box>
         <Box className="flex flex-col justify-center w-7/12 sm:w-5/12">
-          <CardContent className="flex flex-col justify-center items-center">
+          <CardContent className="flex flex-col justify-center items-start">
             <h6 className="text-center font-bold text-sm sm:text-[20px]">
               {props.title}
             </h6>
