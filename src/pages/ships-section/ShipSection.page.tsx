@@ -126,12 +126,14 @@ export const ShipSectionPage = () => {
               <Grid item xs={12} className="grid sm:hidden">
                 <div className="flex justify-center items-center w-full h-full pt-5">
                   <p className="text-white font-bold text-xl">Embarcaciones</p>
-                  <div
-                    className="bg-contain bg-no-repeat bg-center w-12 h-12 ml-2"
-                    style={{
-                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
-                    }}
-                  ></div>
+									<div style={{clipPath: 'circle(50% at 50% 50%)', backgroundColor: '#f7f7f7', display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '5px'}}>
+										<div
+											className="bg-contain bg-no-repeat bg-center w-12 h-12"
+											style={{
+												backgroundImage: `url(${require('../../assets/images/ico-embaraciones.png')})`
+											}}
+										></div>
+									</div>
                 </div>
               </Grid>
               <Grid item xs={12} sm={3} className="pt-5">
@@ -316,12 +318,14 @@ export const ShipSectionPage = () => {
               <Grid item xs={3} className="hidden sm:grid">
                 <div className="flex justify-center items-center w-full h-full">
                   <p className="text-white font-bold text-3xl">Embarcaciones</p>
-                  <div
-                    className="bg-contain bg-no-repeat bg-center w-16 h-16 ml-2"
-                    style={{
-                      backgroundImage: `url(${require('../../assets/images/ico-embarcaciones-blanco.png')})`
-                    }}
-                  ></div>
+									<div style={{clipPath: 'circle(50% at 50% 50%)', backgroundColor: '#f7f7f7', display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '5px'}}>
+										<div
+											className="bg-contain bg-no-repeat bg-center w-16 h-16"
+											style={{
+												backgroundImage: `url(${require('../../assets/images/ico-embaraciones.png')})`
+											}}
+										></div>
+									</div>
                 </div>
               </Grid>
             </Grid>
