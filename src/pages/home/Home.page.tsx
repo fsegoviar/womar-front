@@ -159,7 +159,7 @@ export const HomePage = () => {
         >
           <div className="grid-span-1 flex flex-col items-center pt-10">
             <h2
-              className="text-white font-bold text-[2.8rem]"
+              className="text-white font-medium text-[2.8rem]"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
               ¿Aún
@@ -187,6 +187,7 @@ export const HomePage = () => {
                 onClick={verifyLogged}
               ></div>
               {/* Texto */}
+							<p>&nbsp;</p>
               <p
                 style={{ width: '100px' }}
                 className="text-center text-white pt-5"

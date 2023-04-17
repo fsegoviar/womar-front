@@ -14,7 +14,8 @@ export const ItemFooter = (props: PropsItem) => {
         }}
       ></div>
       {/* Texto */}
-      <p style={{ width: '100px' }} className="text-center text-white pt-5">
+			<p>&nbsp;</p>
+      <p style={{ width: '100px' }} className="text-center text-white">
         {props.text}
       </p>
     </div>
