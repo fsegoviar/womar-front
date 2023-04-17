@@ -187,7 +187,7 @@ export const HomePage = () => {
                 onClick={verifyLogged}
               ></div>
               {/* Texto */}
-							<p>&nbsp;</p>
+              <p>&nbsp;</p>
               <p
                 style={{ width: '100px' }}
                 className="text-center text-white pt-5"
