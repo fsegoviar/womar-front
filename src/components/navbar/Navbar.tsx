@@ -30,7 +30,6 @@ export const BtnNavbar = styled.button`
   transition-delay: 2s;
 
   :hover {
-    text-align: left;
     color: #ffffff;
     background: rgb(0, 229, 182);
     border: none;
