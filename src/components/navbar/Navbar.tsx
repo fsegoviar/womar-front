@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { parseJwt } from '../../utils';
-import { AppBar, Box, Container, Toolbar } from '@mui/material';
+import { AppBar, Box, Grid, Toolbar } from '@mui/material';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import styled from '@emotion/styled';
 import { SearchBar } from './components/SearchBar';
@@ -87,6 +87,8 @@ export const Navbar = () => {
     }, 500);
   };
 
+	const isNotSmScreen = window.innerWidth >= 600;
+
   return (
     <>
       <AppBar
@@ -94,15 +96,16 @@ export const Navbar = () => {
         sx={{ backgroundColor: '#FFFFFF', position: 'fixed', zIndex: 45 }}
         className="h-24"
       >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters className="h-24">
+        <Grid>
+          <Toolbar disableGutters className="h-24" style={{ padding: isNotSmScreen ? '0 2.5rem 0 2.5rem' : '0'}}>
             {/* Logo Womar */}
             <Box
-              className="bg-center bg-no-repeat bg-contain my-2 cursor-pointer w-28 mr-3 h-24 md:m-0 md:w-56 md:h-14 "
+              className="bg-no-repeat bg-contain my-2 cursor-pointer w-28  md:w-56 mr-3 h-24 md:m-0  md:h-14"
               sx={{
                 flexGrow: 1,
                 backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`
               }}
+							style={{ backgroundPosition: isNotSmScreen ? '' : 'center'}}
               onClick={() => navigate('/')}
             ></Box>
             {/* Barra de busqueda */}
@@ -125,7 +128,7 @@ export const Navbar = () => {
                   <BtnNavbar onClick={() => setOpenLogin(true)}>
                     Ingresar
                   </BtnNavbar>
-                  <BtnNavbar onClick={() => setOpenRegisterLocal(true)}>
+                  <BtnNavbar onClick={() => setOpenRegisterLocal(true)} style={{marginRight: 0}}>
                     Registrarse
                   </BtnNavbar>
                 </>
@@ -155,7 +158,7 @@ export const Navbar = () => {
               />
             </div>
           </Toolbar>
-        </Container>
+        </Grid>
       </AppBar>
       {!hiddenMenuResponsive && (
         <div className="fixed top-0 left-0 w-full h-24 mt-24 flex justify-center items-center z-50 px-5 bg-white">

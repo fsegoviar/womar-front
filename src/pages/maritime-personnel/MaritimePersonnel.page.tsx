@@ -119,7 +119,8 @@ export const MaritimePersonnelPage = () => {
             sx={{
               height: 'auto',
               background:
-                'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)'
+                'linear-gradient(90deg, rgba(0,10,255,1) 0%, rgba(0,191,232,1) 50%, rgba(0,233,186,1) 100%)',
+								padding: '0 2.5rem 0 2.5rem'
             }}
           >
             <Grid container className="h-full">
@@ -137,7 +138,7 @@ export const MaritimePersonnelPage = () => {
                 </div>
               </Grid>
               <Grid item xs={12} sm={3} className="pt-5">
-                <div className="flex  justify-center items-center w-full h-full">
+                <div className="flex items-center w-full h-full">
                   <p className="text-xl font-thin pr-5 text-white">Filtros</p>
                   <Box
                     className="rounded-full bg-white"
@@ -317,7 +318,7 @@ export const MaritimePersonnelPage = () => {
                 </div>
               </Grid>
               <Grid item xs={3} className="hidden sm:grid">
-                <div className="flex justify-center items-center w-full h-full">
+                <div className="flex justify-end items-center w-full h-full">
                   <p className="text-white font-bold text-3xl">
                     Personal Marítimo
                   </p>
