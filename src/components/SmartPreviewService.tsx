@@ -1,6 +1,5 @@
 import { Box, Card, CardContent, Chip, Typography } from '@mui/material';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { parseJwt } from '../utils';
 import { DialogLogin } from './navbar/components/DialogLogin';
 import { useState } from 'react';
@@ -68,11 +67,12 @@ export const SmartPreviewService = (props: PropsPreview) => {
             </h6>
             <p className="flex justify-center py-2 text-gray-500 text-sm font-thin sm:font-normal">
               {/* <LocationOnIcon /> {props.direccion} */}
-							<img
-								src={`${require('./../assets/images/ico-ubicacion.png')}`}
-								style={{ height: '20px', width: '20px', marginRight: '5px'}}
-								alt="1"
-							/> {props.direccion}
+              <img
+                src={`${require('./../assets/images/ico-ubicacion.png')}`}
+                style={{ height: '20px', width: '20px', marginRight: '5px' }}
+                alt="1"
+              />{' '}
+              {props.direccion}
             </p>
             <Typography component="div" className="text-center">
               <Chip icon={<AttachMoneyIcon />} label={String(props.price)} />
