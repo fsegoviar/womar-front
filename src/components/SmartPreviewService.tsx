@@ -67,7 +67,12 @@ export const SmartPreviewService = (props: PropsPreview) => {
               {props.title}
             </h6>
             <p className="flex justify-center py-2 text-gray-500 text-sm font-thin sm:font-normal">
-              <LocationOnIcon /> {props.direccion}
+              {/* <LocationOnIcon /> {props.direccion} */}
+							<img
+								src={`${require('./../assets/images/ico-ubicacion.png')}`}
+								style={{ height: '20px', width: '20px', marginRight: '5px'}}
+								alt="1"
+							/> {props.direccion}
             </p>
             <Typography component="div" className="text-center">
               <Chip icon={<AttachMoneyIcon />} label={String(props.price)} />

@@ -19,7 +19,12 @@ export const CardItem = (props: PropsCard) => {
         <h2 className="font-bold text-2xl">{props.title}</h2>
         <label className="flex first-line:block font-thin text-md">
           {' '}
-          <RiMapPin2Fill size={24} className="mr-2" color="blue" />
+          {/* <RiMapPin2Fill size={24} className="mr-2" color="blue" /> */}
+					<img
+						src={`${require('./../../../assets/images/ico-ubicacion.png')}`}
+						style={{ height: '20px', width: '20px', marginRight: '5px'}}
+						alt="1"
+					/>
           {props.direction}
         </label>
         <label className="block font-thin text-md">$ {props.price}</label>

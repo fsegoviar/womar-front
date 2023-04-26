@@ -190,7 +190,7 @@ export const HomePage = () => {
               <p>&nbsp;</p>
               <p
                 style={{ width: '100px' }}
-                className="text-center text-white pt-5"
+                className="text-center text-white"
               >
                 Contáctanos
               </p>
