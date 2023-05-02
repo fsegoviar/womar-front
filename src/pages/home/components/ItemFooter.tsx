@@ -11,7 +11,7 @@ export const ItemFooter = (props: PropsItem) => {
     <div className="flex flex-col justify-center items-center mx-7 z-0 cursor-pointer" onClick={whatsapp}>
       {/* Icono */}
       <div
-        className="bg-center bg-contain bg-no-repeat w-[7rem] h-[6rem]"
+        className="bg-center bg-contain bg-no-repeat w-16 h-16 md:w-[7rem] md:h-[6rem]"
         style={{
           backgroundImage: `url(${props.img})`
         }}
