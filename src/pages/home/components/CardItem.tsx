@@ -8,7 +8,7 @@ type PropsCard = {
 
 export const CardItem = (props: PropsCard) => {
   return (
-    <div className="h-[450px] xs:w-full sm:w-11/12 bg-white rounded-3xl">
+    <div className="h-[450px] xs:w-full bg-white rounded-3xl" style={{margin: '0 20px 0 20px'}}>
       {/* imagen */}
       <div
         className="rounded-3xl bg-center bg-cover bg-no-repeat w-full h-[270px]"

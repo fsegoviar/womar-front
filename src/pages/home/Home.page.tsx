@@ -90,12 +90,12 @@ export const HomePage = () => {
           background:
             'linear-gradient(90deg, rgba(0,233,186,1) 0%, rgba(0,191,232,1) 50%, rgba(0,10,255,1) 100%)'
         }}
-        className="flex flex-col justify-center items-center h-[600px]"
+        className="flex flex-col justify-center h-[600px]"
       >
         <h1 className="font-light text-white mt-10 text-lg text-center sm:text-2xl tracking-[.40em]">
           SERVICIOS MARÍTIMOS MÁS RECIENTES
         </h1>
-        <Carousel className=" z-0 w-[80%] h-[550px]" responsive={responsive}>
+        <Carousel className="z-0 md:w-[97%] h-[550px] md:pl-[25px]" responsive={responsive}>
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
@@ -149,7 +149,8 @@ export const HomePage = () => {
       <footer
         className="relative bg-center bg-cover bg-no-repeat w-full h-72 mt-10"
         style={{
-          backgroundImage: `url(${require('../../assets/images/footer.jpg')})`
+          backgroundImage: `url(${require('../../assets/images/footer.jpg')})`,
+					padding: '0 40px 0 40px'
         }}
       >
         {/* Footer Versión escritorio */}
@@ -157,7 +158,7 @@ export const HomePage = () => {
           className="relative grid-cols-3 hidden sm:grid"
           style={{ zIndex: '9999' }}
         >
-          <div className="grid-span-1 flex flex-col items-center pt-10">
+          <div className="grid-span-1 flex flex-col pt-10">
             <h2
               className="text-white font-medium text-[2.8rem]"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
@@ -165,22 +166,22 @@ export const HomePage = () => {
               ¿Aún
             </h2>
             <h2
-              className="text-white font-medium text-[2.8rem] pl-40"
+              className="text-white font-medium text-[2.8rem] pl-40 md:pl-[5rem]"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
               tienes
             </h2>
             <h2
-              className="text-white font-medium text-[2.8rem] pl-60"
+              className="text-white font-medium text-[2.8rem] pl-60 md:pl-[10rem]"
               style={{ textShadow: '2px 2px rgba(0, 0, 0, 0.2)' }}
             >
               dudas?
             </h2>
           </div>
-          <div className="grid-span-2 flex items-center">
+          <div className="grid-span-2 flex items-center" style={{justifyContent: 'space-around'}}>
             <div className="flex flex-col justify-center items-center mx-7">
               <div
-                className="bg-center bg-contain bg-no-repeat w-16 h-16 cursor-pointer z-40"
+                className="bg-center bg-contain bg-no-repeat w-[7rem] h-[6rem] cursor-pointer z-40"
                 style={{
                   backgroundImage: `url(${require('../../assets/images/ico-avion.png')})`
                 }}
