@@ -45,7 +45,7 @@ type TypeForm = {
   idPublicacion: number;
   titulo: string;
   descripcion: string;
-  precio: number;
+  precio: string;
   enable: boolean;
   categoriaId: number | null;
   subCategoriaId: number | null;
@@ -56,6 +56,10 @@ type PropsDialog = {
   publish: DetailService;
   open: boolean;
   close: (value: boolean) => void;
+};
+
+const formatPrice = (value: number) => {
+	return new Intl.NumberFormat('es-ES', {}).format(value);
 };
 
 export const EditPublishRes = (props: PropsDialog) => {
@@ -77,7 +81,7 @@ export const EditPublishRes = (props: PropsDialog) => {
       titulo: props.publish.titulo,
       // comunaId: props.publish.comuna.id,
       descripcion: props.publish.descripcion,
-      precio: props.publish.precio
+      precio: formatPrice(props.publish.precio)
     }
   });
 
@@ -156,7 +160,7 @@ export const EditPublishRes = (props: PropsDialog) => {
     }
     formData.append('Titulo', data.titulo);
     formData.append('Descripcion', data.descripcion);
-    formData.append('Precio', String(data.precio));
+    formData.append('Precio', String(data.precio).replaceAll('.', ''));
     formData.append('Activo', String('true'));
 
     setLoading(true);

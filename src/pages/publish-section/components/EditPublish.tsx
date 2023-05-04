@@ -180,7 +180,7 @@ export const EditPublish = (props: PropsDialog) => {
     formData.append('PublicacionId', props.publish.id);
     formData.append('Titulo', data.titulo);
     formData.append('Descripcion', data.descripcion);
-    formData.append('Precio', String(data.precio));
+    formData.append('Precio', String(data.precio).replaceAll('.', ''));
     formData.append('CategoriaId', String(data.categoriaId));
     formData.append('SubCategoriaId', String(data.subCategoriaId));
 
