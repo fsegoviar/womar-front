@@ -10,7 +10,7 @@ import {
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import { AxiosError } from 'axios';
+import axios, { AxiosError } from 'axios';
 import Typography from '@mui/material/Typography';
 import styled from '@emotion/styled';
 import { InputForm } from '../../../styles/InputForm';
@@ -117,6 +117,22 @@ export const DialogRegister = (props: PropsRegister) => {
     registrar()
       .then(() => {
         props.setOpenRegisterLocal(false);
+				axios
+          .post(`${process.env.REACT_APP_URL_BACKEND}/Security/Login`, {
+            accessToken: '',
+            email: data.Email,
+            password: data.Password,
+            tipo: TypeUser.LOCAL
+          })
+          .then((res: any) => {
+						localStorage.setItem('tokenWomar', res.data.token);
+            window.location.reload();
+            // setOpen(false);
+          })
+          .catch((error: any) => {
+            console.log('Error Login session =>', error);
+          })
+          .finally(() => setLoading(false));
         setLoading(false);
       })
       .catch((error: AxiosError) => {
