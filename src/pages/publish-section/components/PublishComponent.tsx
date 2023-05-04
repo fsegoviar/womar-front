@@ -60,6 +60,11 @@ export const PublishComponent = (props: PropsPublish) => {
         break;
     }
   };
+	
+	const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('es-ES', {}).format(value);
+  };
+
 
   return (
     <Card
@@ -158,7 +163,7 @@ export const PublishComponent = (props: PropsPublish) => {
           <Typography component="div" sx={{ textAlign: 'center' }}>
             <Chip
               icon={<AttachMoneyIcon />}
-              label={String(props.publish.precio)}
+              label={formatPrice(props.publish.precio)}
             />
           </Typography>
         </CardContent>

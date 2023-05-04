@@ -44,7 +44,7 @@ type TypeForm = {
   idPublicacion: number;
   titulo: string;
   descripcion: string;
-  precio: number;
+  precio: string;
   enable: boolean;
   categoriaId: number | null;
   subCategoriaId: number | null;
@@ -55,6 +55,10 @@ type PropsDialog = {
   publish: DetailService;
   open: boolean;
   close: (value: boolean) => void;
+};
+
+const formatPrice = (value: number) => {
+	return new Intl.NumberFormat('es-ES', {}).format(value);
 };
 
 export const EditPublish = (props: PropsDialog) => {
@@ -73,7 +77,7 @@ export const EditPublish = (props: PropsDialog) => {
       titulo: props.publish.titulo,
       // comunaId: props.publish.comuna.id,
       descripcion: props.publish.descripcion,
-      precio: props.publish.precio,
+      precio: formatPrice(props.publish.precio),
       categoriaId: props.publish.categoriaId,
       regionId: props.publish.regionId,
       subCategoriaId: props.publish.subCategoriaId

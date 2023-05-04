@@ -2,11 +2,15 @@ import React from 'react';
 type PropsCard = {
   title: string;
   direction: string;
-  price: string;
+  price: number;
   img: string;
 };
 
 export const CardItem = (props: PropsCard) => {
+	const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('es-ES', {}).format(value);
+  };
+
   return (
     <div className="h-[450px] xs:w-full bg-white rounded-3xl" style={{margin: '0 20px 0 20px'}}>
       {/* imagen */}
@@ -26,7 +30,7 @@ export const CardItem = (props: PropsCard) => {
           />
           {props.direction}
         </label>
-        <label className="block font-thin text-md">$ {props.price}</label>
+        <label className="block font-thin text-md">$ {formatPrice(props.price)}</label>
       </div>
     </div>
   );

@@ -7,6 +7,10 @@ type PropsCardPublish = {
   openCard: () => void;
 };
 
+const formatPrice = (value: number) => {
+	return new Intl.NumberFormat('es-ES', {}).format(value);
+};
+
 export const CardPublish = (props: PropsCardPublish) => {
   return (
     <Card
@@ -62,7 +66,7 @@ export const CardPublish = (props: PropsCardPublish) => {
           <Typography component="div" sx={{ textAlign: 'center' }}>
             <Chip
               icon={<AttachMoneyIcon />}
-              label={String(props.publish.precio)}
+              label={formatPrice(props.publish.precio)}
             />
           </Typography>
         </CardContent>

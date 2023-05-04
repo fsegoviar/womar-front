@@ -121,6 +121,10 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
       .finally(() => setLoading(false));
   };
 
+	const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('es-ES', {}).format(value);
+  };
+
   return (
     <div
       className="window-background-modal-admin"
@@ -282,7 +286,7 @@ export const DialogDetailPublish = (props: PropsDetailPublish) => {
                           }}
                           size="small"
                           disabled
-                          value={props.publish.precio}
+                          value={formatPrice(props.publish.precio)}
                         />
                       </Stack>
                     </Grid>

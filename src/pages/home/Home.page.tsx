@@ -100,31 +100,31 @@ export const HomePage = () => {
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
             direction="Dirección 1"
-            price="300.000"
+            price={300000}
           />
           <CardItem
             img={require('../../assets/images/naves-1.png')}
             title="Servicio de turismo"
             direction="Dirección 1"
-            price="250.000"
+            price={250000}
           />
           <CardItem
             img={require('../../assets/images/naves-2.png')}
             title="Servicio de transporte"
             direction="Dirección 2"
-            price="2.050.000"
+            price={2050000}
           />
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
             direction="Dirección 1"
-            price="300.000"
+            price={300000}
           />
           <CardItem
             img={require('../../assets/images/img-servicio1.png')}
             title="Servicio de turismo"
             direction="Dirección 1"
-            price="300.000"
+            price={300000}
           />
         </Carousel>
       </section>

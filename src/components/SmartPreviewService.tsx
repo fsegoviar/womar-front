@@ -38,6 +38,10 @@ export const SmartPreviewService = (props: PropsPreview) => {
     }
   };
 
+	const formatPrice = (value: number) => {
+    return new Intl.NumberFormat('es-ES', {}).format(value);
+  };
+
   return (
     <>
       <Card
@@ -75,7 +79,7 @@ export const SmartPreviewService = (props: PropsPreview) => {
               {props.direccion}
             </p>
             <Typography component="div" className="text-center">
-              <Chip icon={<AttachMoneyIcon />} label={String(props.price)} />
+              <Chip icon={<AttachMoneyIcon />} label={formatPrice(props.price)} />
             </Typography>
           </CardContent>
         </Box>
