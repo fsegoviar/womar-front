@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
 import { BsChevronCompactLeft, BsChevronCompactRight } from 'react-icons/bs';
 import { RxDotFilled } from 'react-icons/rx';
@@ -35,6 +36,8 @@ export const SimpleCarousel = () => {
   const goToSlide = (slideIndex: number) => {
     setCurrentIndex(slideIndex);
   };
+
+	setTimeout(nextSlide, 4000);
 
   return (
     <div className=" m-auto relative h-[220px] sm:h-[520px] w-screen z-1">
