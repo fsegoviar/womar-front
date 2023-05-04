@@ -4,10 +4,12 @@ import { InputForm } from '../../../styles/InputForm';
 import { FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import { ActualizarInfoUsuario, ObtenerRegiones } from '../../../services';
 import { AxiosError } from 'axios';
-import { InfoUser } from '../../../interfaces';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { updateUserProfile } from '../../../store/userSlice';
 
 const SelectForm = styled(Select)`
   border-color: #c2c2c2;
@@ -25,66 +27,65 @@ const SelectForm = styled(Select)`
   }
 `;
 
-type TypeForm = {
-  nombre: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  rut: string;
-  regionId: string;
-  telefono: string;
-};
-
-export const FormProfile = ({
-  id,
-  apellidoMaterno,
-  apellidoPaterno,
-  rut,
-  regionId,
-  telefono,
-  imgPerfil,
-  nombre
-}: InfoUser) => {
+export const FormProfile = () => {
+  const user = useSelector((state: RootState) => state.userRol);
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors }
-  } = useForm<TypeForm>({
+  } = useForm<any>({
     defaultValues: {
-      apellidoMaterno,
-      apellidoPaterno,
-      regionId: String(regionId),
-      nombre,
-      rut: rut ?? '',
-      telefono: telefono ?? ''
+      Nombre: user?.nombre ?? '',
+      ApellidoPaterno: user?.apellidoPaterno ?? '',
+      ApellidoMaterno: user?.apellidoMaterno ?? '',
+      RegionId: user?.regionId ?? 0,
+      Telefono: user?.fono ?? '',
+      ImagenPerfil: user?.imgPerfil ?? ''
     }
   });
   const [urlImage, setUrlImage] = useState('');
   const [fileChange, setFileChange] = useState<any>();
   const { regiones } = ObtenerRegiones();
+  const [regionSelected, setRegionSelected] = useState<any>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setUrlImage(imgPerfil);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    console.log('User => ', user);
+    if (user) {
+      setUrlImage(user.imgPerfil);
+      const findRegion = regiones.find((region) => region.id === user.regionId);
+      if (findRegion) setRegionSelected(findRegion);
 
-  const onSubmit: SubmitHandler<TypeForm> = async (data) => {
+      setValue('Nombre', user.nombre);
+      setValue('ApellidoPaterno', user.apellidoPaterno);
+      setValue('ApellidoMaterno', user.apellidoMaterno);
+      setValue('RegionId', user.regionId);
+      setValue('Telefono', user.fono);
+      setValue('ImagenPerfil', user.imgPerfil);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
     console.log('Data', data);
 
     let formData = new FormData();
-    formData.append('Nombre', data.nombre);
-    formData.append('ApellidoPaterno', data.apellidoPaterno);
-    formData.append('ApellidoMaterno', data.apellidoMaterno);
-    formData.append('RegionId', data.regionId);
-    formData.append('Telefono', data.telefono);
+    formData.append('Nombre', data.Nombre);
+    formData.append('ApellidoPaterno', data.ApellidoPaterno);
+    formData.append('ApellidoMaterno', data.ApellidoMaterno);
+    formData.append('RegionId', data.RegionId);
+    formData.append('Telefono', data.Telefono);
     formData.append('ImagenPerfil', fileChange);
 
     const { actualizarInfoUsuario } = ActualizarInfoUsuario(formData);
     setLoading(true);
     await actualizarInfoUsuario()
-      .then(() => navigate('/'))
+      .then((response: any) => {
+        updateUserProfile(response.result);
+        navigate('/');
+      })
       .catch((error: AxiosError) => console.log('Error =>', error))
       .finally(() => setLoading(false));
   };
@@ -141,10 +142,11 @@ export const FormProfile = ({
           error={!!errors.nombre}
           id="name"
           style={{ margin: '10px 0', width: '100%' }}
-          placeholder="Nombres *"
-          {...register('nombre', { required: true })}
+          placeholder={'Nombre*'}
+          {...register('Nombre', { required: true })}
         />
-        {errors.nombre && <RequiredField />}
+        {/* <input type="text" {...register('Nombre', { required: true })} /> */}
+        {errors.Nombre && <RequiredField />}
         <Grid
           container
           sx={{ mb: 1, justifyContent: 'space-around' }}
@@ -155,8 +157,8 @@ export const FormProfile = ({
               error={!!errors.apellidoPaterno}
               style={{ margin: '10px 0' }}
               id="surname1"
-              placeholder="Apellido Paterno *"
-              {...register('apellidoPaterno', { required: true })}
+              placeholder={user.apellidoPaterno ?? 'Apellido Paterno *'}
+              {...register('ApellidoPaterno', { required: true })}
             />
             {errors.apellidoPaterno && <RequiredField />}
           </Grid>
@@ -164,8 +166,8 @@ export const FormProfile = ({
             <InputForm
               error={!!errors.apellidoMaterno}
               style={{ margin: '10px 0' }}
-              placeholder="Apellido Materno *"
-              {...register('apellidoMaterno', { required: true })}
+              placeholder={user.apellidoMaterno ?? 'Apellido Materno *'}
+              {...register('ApellidoMaterno', { required: true })}
             />
             {errors.apellidoMaterno && <RequiredField />}
           </Grid>
@@ -191,9 +193,10 @@ export const FormProfile = ({
               <SelectForm
                 style={{ width: '100%' }}
                 label="Categoria"
+                value={regionSelected}
                 onChange={(evnt: any) => {
                   if (evnt.target.value) {
-                    setValue('regionId', evnt.target.value);
+                    setValue('RegionId', evnt.target.value.id);
                   }
                 }}
               >
@@ -210,8 +213,8 @@ export const FormProfile = ({
               id="phone"
               type={'number'}
               style={{ width: '100%' }}
-              placeholder="Telefono"
-              {...register('telefono', { required: true })}
+              placeholder={user.fono ?? 'Telefono'}
+              {...register('Telefono', { required: true })}
             />
             {errors.telefono && <RequiredField />}
           </Grid>

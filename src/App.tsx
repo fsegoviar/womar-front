@@ -24,7 +24,8 @@ function App() {
       if (response.error) {
         dispatch(changeStateLogin(false));
       } else {
-        dispatch(updateInfoUser(response.result.rol));
+        console.log('Response ObtenerInfoUsuario => ', response);
+        dispatch(updateInfoUser(response.result));
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

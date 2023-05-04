@@ -1,31 +1,11 @@
 import { PageBase } from '../../components/PageBase';
 import { Box, Container } from '@mui/system';
-import { ObtenerInfoUsuario } from '../../services';
 import { FormProfile } from './components/FormProfile';
-import { Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { SkeletonLoader } from './components/SkeletonLoader';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 export const UserSectionPage = () => {
-  const [infoUser, setInfoUser] = useState<any>();
-  const { fetchData } = ObtenerInfoUsuario();
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetch = async () => {
-      setLoading(true);
-      await fetchData()
-        .then((response: any) => {
-          console.log('InfoUser =>', response.result);
-
-          setInfoUser(response.result);
-        })
-        .finally(() => setLoading(false));
-    };
-
-    fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const user = useSelector((state: RootState) => state.userRol);
 
   return (
     <PageBase>
@@ -38,7 +18,7 @@ export const UserSectionPage = () => {
           justifyContent: 'center'
         }}
       >
-        {loading && (
+        {/* {loading && (
           <Box
             className="w-full md:w-5/12"
             sx={{
@@ -50,8 +30,8 @@ export const UserSectionPage = () => {
           >
             <SkeletonLoader />
           </Box>
-        )}
-        {infoUser && !loading && (
+        )} */}
+        {user && (
           <Box
             className="w-full md:w-5/12"
             sx={{
@@ -61,13 +41,8 @@ export const UserSectionPage = () => {
               border: '2px solid #000aff'
             }}
           >
-            <FormProfile {...infoUser} />
+            <FormProfile />
           </Box>
-        )}
-        {!infoUser && !loading && (
-          <Typography variant="h4" className="text-center">
-            Usuario no encontrado
-          </Typography>
         )}
       </Container>
     </PageBase>

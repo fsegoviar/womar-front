@@ -7,7 +7,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { parseJwt } from '../../../utils';
-import { ObtenerInfoUsuario } from '../../../services';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 interface PropsMenu {
   handleCloseSession: () => void;
@@ -15,25 +16,14 @@ interface PropsMenu {
 export const UserMenu = (props: PropsMenu) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [urlImgUser, setUrlImgUser] = useState('');
-  const [infoUser, setInfoUser] = useState<any>();
+
   const navigate = useNavigate();
   const { IdUser } = parseJwt();
-  const { fetchData } = ObtenerInfoUsuario();
+  const user = useSelector((state: RootState) => state.userRol);
 
   useEffect(() => {
-    fetchData()
-      .then((response: any) => {
-        if (response.result.imgPerfil) {
-          setUrlImgUser(response.result.imgPerfil);
-        }
-        setInfoUser(response.result);
-      })
-      .catch((error: any) => {
-        localStorage.removeItem('tokenWomar');
-      });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (user) setUrlImgUser(user.imgPerfil);
+  }, [user]);
 
   function stringToColor(string: string) {
     let hash = 0;
@@ -76,7 +66,7 @@ export const UserMenu = (props: PropsMenu) => {
     <>
       <Tooltip title="Configuraciones">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          {urlImgUser !== '' && infoUser && (
+          {urlImgUser !== '' && user && (
             <Avatar
               src={urlImgUser}
               sx={{
@@ -85,10 +75,10 @@ export const UserMenu = (props: PropsMenu) => {
               }}
             ></Avatar>
           )}
-          {infoUser && urlImgUser === '' && (
+          {user && urlImgUser === '' && (
             <Avatar
               {...stringAvatar(
-                `${infoUser?.nombre} ${infoUser?.apellidoPaterno} ${infoUser?.apellidoMaterno}`
+                `${user?.nombre} ${user?.apellidoPaterno} ${user?.apellidoMaterno}`
               )}
               sx={{ bgcolor: '#0bafdd' }}
               src="/static/images/avatar/2.jpg"
