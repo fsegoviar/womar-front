@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { updateUserProfile } from '../../../store/userSlice';
 import { useDispatch } from 'react-redux';
+import { Region } from '../../../interfaces';
 
 const SelectForm = styled(Select)`
   border-color: #c2c2c2;
@@ -48,17 +49,20 @@ export const FormProfile = () => {
   const [urlImage, setUrlImage] = useState('');
   const [fileChange, setFileChange] = useState<any>();
   const { regiones } = ObtenerRegiones();
-  const [regionSelected, setRegionSelected] = useState<any>();
+  const [regionSelected, setRegionSelected] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user) {
+      // console.log('USER =>', user);
       setUrlImage(user.imgPerfil);
-      const findRegion = regiones.find((region) => region.id === user.regionId);
-      console.log('Find Region', findRegion);
-      if (findRegion) setRegionSelected(findRegion);
+      const findRegion = regiones.find(
+        (region: Region) => region.id === user.regionId
+      );
+      // console.log('Find Region', findRegion);
+      if (findRegion) setRegionSelected(findRegion.nombre);
 
       setValue('Nombre', user.nombre);
       setValue('ApellidoPaterno', user.apellidoPaterno);
@@ -68,10 +72,16 @@ export const FormProfile = () => {
       setValue('ImagenPerfil', user.imgPerfil);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, regiones]);
 
   const onSubmit: SubmitHandler<any> = async (data) => {
     console.log('Data', data);
+
+    const findRegion = regiones.find(
+      (region: Region) => region.nombre === regionSelected
+    );
+
+    if (findRegion) data.RegionId = findRegion.id;
 
     let formData = new FormData();
     formData.append('Nombre', data.Nombre);
@@ -197,14 +207,11 @@ export const FormProfile = () => {
                 name="nombre"
                 value={regionSelected}
                 onChange={(evnt: any) => {
-                  console.log('Event Change => ', evnt.target.value);
-                  if (evnt.target.value) {
-                    setValue('RegionId', evnt.target.value);
-                  }
+                  setRegionSelected(evnt.target.value);
                 }}
               >
                 {regiones.map((region, index) => (
-                  <MenuItem key={index} value={region.id}>
+                  <MenuItem key={index} value={region.nombre}>
                     {region.nombre}
                   </MenuItem>
                 ))}
