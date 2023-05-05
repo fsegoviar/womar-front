@@ -58,7 +58,7 @@ type PropsDialog = {
 };
 
 const formatPrice = (value: number) => {
-	return new Intl.NumberFormat('es-ES', {}).format(value);
+  return new Intl.NumberFormat('es-ES', {}).format(value);
 };
 
 export const EditPublish = (props: PropsDialog) => {
@@ -183,6 +183,7 @@ export const EditPublish = (props: PropsDialog) => {
     formData.append('Precio', String(data.precio).replaceAll('.', ''));
     formData.append('CategoriaId', String(data.categoriaId));
     formData.append('SubCategoriaId', String(data.subCategoriaId));
+    formData.append('RegionId', String(data.regionId));
 
     setLoading(true);
 

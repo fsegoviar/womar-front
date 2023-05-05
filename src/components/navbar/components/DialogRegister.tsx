@@ -117,7 +117,7 @@ export const DialogRegister = (props: PropsRegister) => {
     registrar()
       .then(() => {
         props.setOpenRegisterLocal(false);
-				axios
+        axios
           .post(`${process.env.REACT_APP_URL_BACKEND}/Security/Login`, {
             accessToken: '',
             email: data.Email,
@@ -125,7 +125,7 @@ export const DialogRegister = (props: PropsRegister) => {
             tipo: TypeUser.LOCAL
           })
           .then((res: any) => {
-						localStorage.setItem('tokenWomar', res.data.token);
+            localStorage.setItem('tokenWomar', res.data.token);
             window.location.reload();
             // setOpen(false);
           })
@@ -279,13 +279,28 @@ export const DialogRegister = (props: PropsRegister) => {
                         size="small"
                         error={!!errors.Email}
                         value={inputRut}
+                        onKeyDown={(input: any) => {
+                          console.log('K', input.keyCode);
+                          const esNumero =
+                            (input.keyCode >= 48 && input.keyCode <= 57) || // números de teclado normal
+                            (input.keyCode >= 96 && input.keyCode <= 105) ||
+                            input.keyCode === 75 ||
+                            input.keyCode === 8; // números del teclado numérico
+
+                          if (!esNumero) {
+                            input.preventDefault(); // detiene la propagación del evento
+                          }
+                        }}
                         style={{ margin: errors.Rut ? '10px 0 0 0' : '10px 0' }}
                         label="Rut"
                         {...register('Rut', {
                           required: true,
                           onChange: (e) => {
                             console.log('e', e.target.value);
-                            if (e.target.value !== '-') {
+                            if (
+                              e.target.value !== '-' &&
+                              e.target.value !== ''
+                            ) {
                               setInputRut(
                                 String(ChileanRutify.formatRut(e.target.value))
                               );
@@ -298,7 +313,6 @@ export const DialogRegister = (props: PropsRegister) => {
                             }
                           },
                           validate: (v) => {
-                            console.log(ChileanRutify.validRut(v));
                             return ChileanRutify.validRut(v);
                           }
                         })}
