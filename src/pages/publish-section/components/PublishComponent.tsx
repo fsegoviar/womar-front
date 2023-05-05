@@ -174,11 +174,6 @@ export const PublishComponent = (props: PropsPublish) => {
                 <>
                   <button
                     className="text-white rounded-full text-sm mx-1 py-1 px-3 cursor-default  bg-gray-500"
-                    onClick={() => {
-                      props.isActivePublish(false);
-                      props.openModalDelete(true);
-                      props.idPublishSelected(props.publish.id);
-                    }}
                   >
                     Dar de baja
                   </button>
