@@ -59,7 +59,7 @@ type PropsDialog = {
 };
 
 const formatPrice = (value: number) => {
-	return new Intl.NumberFormat('es-ES', {}).format(value);
+  return new Intl.NumberFormat('es-ES', {}).format(value);
 };
 
 export const EditPublishRes = (props: PropsDialog) => {
@@ -147,21 +147,32 @@ export const EditPublishRes = (props: PropsDialog) => {
 
     let formData = new FormData();
     formData.append('PublicacionId', props.publish.id);
-    formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
-    for (const img of imgAgregadas) {
-      formData.append('NuevasFotos', img);
-    }
-    if (imgBorradas.length !== 0) {
-      for (const img of imgBorradas) {
-        formData.append('FotosRemovidas', img);
+    if (imgAgregadas.length === 0 && imgBorradas.length === 0) {
+      formData.append('NuevaImagenPrincipal', props.publish.imagenes[0]);
+      for (const img of props.publish.imagenes) {
+        formData.append('NuevasFotos', img);
       }
-    } else {
       formData.append('FotosRemovidas', '');
+    } else {
+      formData.append('NuevaImagenPrincipal', imgAgregadas[0]);
+      for (const img of imgAgregadas) {
+        formData.append('NuevasFotos', img);
+      }
+      if (imgBorradas.length !== 0) {
+        for (const img of imgBorradas) {
+          formData.append('FotosRemovidas', img);
+        }
+      } else {
+        formData.append('FotosRemovidas', '');
+      }
     }
     formData.append('Titulo', data.titulo);
     formData.append('Descripcion', data.descripcion);
     formData.append('Precio', String(data.precio).replaceAll('.', ''));
     formData.append('Activo', String('true'));
+    formData.append('CategoriaId', String(data.categoriaId));
+    formData.append('SubCategoriaId', String(data.subCategoriaId));
+    formData.append('RegionId', String(data.regionId));
 
     setLoading(true);
 
