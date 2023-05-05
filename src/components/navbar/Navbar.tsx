@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { changeStateLogin } from '../../store/loginSlice';
 import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { updateInfoUser } from '../../store/userSlice';
 
 export const BtnNavbar = styled.button`
   color: #000afe;
@@ -51,6 +53,7 @@ export const Navbar = () => {
   // );
   const [hiddenMenuResponsive, setHiddenMenuResponsive] = useState(true);
   const isLogin = useSelector((state: RootState) => state.login.logged);
+  const user = useSelector((state: RootState) => state.userRol);
   const dispatch = useDispatch();
 
   const handleCloseSession = () => {
@@ -65,9 +68,20 @@ export const Navbar = () => {
     }, 500);
   };
 
-  const handleOpenSession = (token: string) => {
+  const handleOpenSession = async (token: string) => {
     localStorage.setItem('tokenWomar', token);
-    dispatch(changeStateLogin(true));
+
+    await axios
+      .get(`${process.env.REACT_APP_URL_BACKEND}/Security/ObtenerInfo`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('tokenWomar')}`
+        }
+      })
+      .then((response: any) => {
+        dispatch(updateInfoUser(response.data));
+        dispatch(changeStateLogin(true));
+      });
+
     // setIsLogged(true);
   };
 
@@ -87,7 +101,7 @@ export const Navbar = () => {
     }, 500);
   };
 
-	const isNotSmScreen = window.innerWidth >= 600;
+  const isNotSmScreen = window.innerWidth >= 600;
 
   return (
     <>
@@ -97,7 +111,11 @@ export const Navbar = () => {
         className="h-24"
       >
         <Grid>
-          <Toolbar disableGutters className="h-24" style={{ padding: isNotSmScreen ? '0 2.5rem 0 2.5rem' : '0'}}>
+          <Toolbar
+            disableGutters
+            className="h-24"
+            style={{ padding: isNotSmScreen ? '0 2.5rem 0 2.5rem' : '0' }}
+          >
             {/* Logo Womar */}
             <Box
               className="bg-no-repeat bg-contain my-2 cursor-pointer w-28  md:w-56 mr-3 h-24 md:m-0  md:h-14"
@@ -105,7 +123,7 @@ export const Navbar = () => {
                 flexGrow: 1,
                 backgroundImage: `url(${require('../../assets/images/logo-womar-2.png')})`
               }}
-							style={{ backgroundPosition: isNotSmScreen ? '' : 'center'}}
+              style={{ backgroundPosition: isNotSmScreen ? '' : 'center' }}
               onClick={() => navigate('/')}
             ></Box>
             {/* Barra de busqueda */}
@@ -120,7 +138,7 @@ export const Navbar = () => {
             </Box>
             {/* Botones */}
             <div className="hidden sm:block">
-              {!isLogin ? (
+              {!isLogin || !user ? (
                 <>
                   <BtnNavbar onClick={() => verifyLoggedOnPublish()}>
                     Publicar
@@ -128,7 +146,10 @@ export const Navbar = () => {
                   <BtnNavbar onClick={() => setOpenLogin(true)}>
                     Ingresar
                   </BtnNavbar>
-                  <BtnNavbar onClick={() => setOpenRegisterLocal(true)} style={{marginRight: 0}}>
+                  <BtnNavbar
+                    onClick={() => setOpenRegisterLocal(true)}
+                    style={{ marginRight: 0 }}
+                  >
                     Registrarse
                   </BtnNavbar>
                 </>

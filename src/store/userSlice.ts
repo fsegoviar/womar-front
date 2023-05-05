@@ -42,6 +42,7 @@ export const userSlice = createSlice({
       return Object.assign({}, state, action.payload);
     },
     updateUserProfile: (state, action: PayloadAction<UserState>) => {
+      state = Object.assign({}, state, action.payload);
       return Object.assign({}, state, action.payload);
     }
   }

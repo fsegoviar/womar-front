@@ -24,7 +24,7 @@ function App() {
       if (response.error) {
         dispatch(changeStateLogin(false));
       } else {
-        console.log('Response ObtenerInfoUsuario => ', response);
+        // console.log('Response ObtenerInfoUsuario => ', response);
         dispatch(updateInfoUser(response.result));
       }
     });

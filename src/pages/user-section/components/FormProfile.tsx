@@ -10,6 +10,7 @@ import styled from '@emotion/styled';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { updateUserProfile } from '../../../store/userSlice';
+import { useDispatch } from 'react-redux';
 
 const SelectForm = styled(Select)`
   border-color: #c2c2c2;
@@ -50,12 +51,13 @@ export const FormProfile = () => {
   const [regionSelected, setRegionSelected] = useState<any>();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('User => ', user);
     if (user) {
       setUrlImage(user.imgPerfil);
       const findRegion = regiones.find((region) => region.id === user.regionId);
+      console.log('Find Region', findRegion);
       if (findRegion) setRegionSelected(findRegion);
 
       setValue('Nombre', user.nombre);
@@ -83,7 +85,7 @@ export const FormProfile = () => {
     setLoading(true);
     await actualizarInfoUsuario()
       .then((response: any) => {
-        updateUserProfile(response.result);
+        dispatch(updateUserProfile(response.result));
         navigate('/');
       })
       .catch((error: AxiosError) => console.log('Error =>', error))
@@ -192,11 +194,12 @@ export const FormProfile = () => {
               <InputLabel>Región (opcional)</InputLabel>
               <SelectForm
                 style={{ width: '100%' }}
-                label="Categoria"
+                name="nombre"
                 value={regionSelected}
                 onChange={(evnt: any) => {
+                  console.log('Event Change => ', evnt.target.value);
                   if (evnt.target.value) {
-                    setValue('RegionId', evnt.target.value.id);
+                    setValue('RegionId', evnt.target.value);
                   }
                 }}
               >
@@ -207,6 +210,30 @@ export const FormProfile = () => {
                 ))}
               </SelectForm>
             </FormControl>
+            {/* <select
+              onChange={(evnt: any) => {
+                console.log(
+                  'Event Change => ',
+                  JSON.parse(evnt.target.value).id
+                );
+                if (evnt.target.value) {
+                  setValue('RegionId', JSON.parse(evnt.target.value).id);
+                  setRegionSelected(JSON.parse(evnt.target.value));
+                }
+              }}
+            >
+              {regiones.map((region, index) => (
+                <option
+                  key={index}
+                  value={JSON.stringify({
+                    id: region.id,
+                    nombre: region.nombre
+                  })}
+                >
+                  {region.nombre}
+                </option>
+              ))}
+            </select> */}
           </Grid>
           <Grid item xs={6}>
             <InputForm
